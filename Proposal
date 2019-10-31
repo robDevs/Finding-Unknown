@@ -1,0 +1,15 @@
+Title: Finding Unknown
+
+Purpose:  The purpose of this game is to evade enemy galaxies and planets to destroy them. Throughout this story, the ultimate goal is to find out who are character really is. Who is he? Where did they come from? These planets we evade have higher technology and at the end of levels we are able to take a piece to help us in our ultimate goal.
+
+Description of Product:  Desktop Application with key controllers as well as a game controller that can be plugged in through the USB.  The program will be written in C++ and called Raylib.  This game will include space graphics and collision warning systems.  This program is very original since we are the  villain an not the hero.
+
+Audience/ Stakeholders: Out audience will be gamers and Melissa since she will be grading this. Our stakeholders would be the client (Melissa), us as game developers, and our consumers.  Melissa is out client since she is giving us fundamental requirements and a time frame to complete this program. As the developers we are building the game and have to make sure we satisfy the client so we ultimately get a good grade.  The consumers have to have a functioning game that is able to understand and control.
+
+Strengths/Scalability: This game can definitely be expanded. It could be pushed to a mobile device or even hosted online. The security of this program is good since we are not hosting this program on a site and therefore do not have to deal with cross site injections and server attacks and other such security risks.  This game will be a desktop application and be very reliable. It will be written in a well established language.  The strength of this program is that this is a big genre and we have a lot to go off of, but we can still be original with being a villain instead of the hero.
+
+Functional and NonFunctional Requirements:
+Functional - How to maneuver characters using keys or using a game controller. Developed in C++ and RayLib graphics.  Save data stored in JSON files.
+Non-Functional - Player can use different keys to maneuver character. There will be multiple levels and an arcade mode.
+
+Schedule: Trello- Team Gant
