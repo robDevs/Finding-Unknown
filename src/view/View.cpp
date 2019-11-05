@@ -1,0 +1,93 @@
+#include "View.h"
+
+void control_info::init() {
+  up_pressed = false;
+  up_held = false;
+  up_released = false;
+
+  down_pressed = false;
+  down_held = false;
+  down_released = false;
+
+  left_pressed = false;
+  left_held = false;
+  left_released = false;
+
+  right_pressed = false;
+  right_held = false;
+  right_released = false;
+}
+
+void View::initView(int width, int height) {
+  screenWidth = width;
+  screenHeight = height;
+
+  InitWindow(screenWidth, screenHeight, "Finding Unknown");
+  SetTargetFPS(60);
+}
+
+bool View::getWindowStatus() {
+  return WindowShouldClose();
+}
+
+void View::drawTexture(int x, int y, Texture2D texture) {
+  DrawTexture(texture, x, y, WHITE);
+}
+
+void View::drawText(std::string text, int x, int y, int size, Color color) {
+  DrawText(text.c_str(), x, y, size, color);
+}
+control_info View::getControlInfo() {
+  control_info gamepad;
+  gamepad.init();
+
+  if(IsKeyPressed(KEY_W)) {
+    gamepad.up_pressed = true;
+  }
+
+  if(IsKeyDown(KEY_W)) {
+    gamepad.up_held = true;
+  }
+
+  if(IsKeyReleased(KEY_W)) {
+    gamepad.up_released = true;
+  }
+
+  if(IsKeyPressed(KEY_A)) {
+    gamepad.left_pressed = true;
+  }
+
+  if(IsKeyDown(KEY_A)) {
+    gamepad.left_held = true;
+  }
+
+  if(IsKeyReleased(KEY_A)) {
+    gamepad.left_released = true;
+  }
+
+  if(IsKeyPressed(KEY_S)) {
+    gamepad.down_pressed = true;
+  }
+
+  if(IsKeyDown(KEY_S)) {
+    gamepad.down_held = true;
+  }
+
+  if(IsKeyReleased(KEY_S)) {
+    gamepad.down_released = true;
+  }
+
+  if(IsKeyPressed(KEY_D)) {
+    gamepad.right_pressed = true;
+  }
+
+  if(IsKeyDown(KEY_D)) {
+    gamepad.right_held = true;
+  }
+
+  if(IsKeyReleased(KEY_D)) {
+    gamepad.right_released = true;
+  }
+
+  return gamepad;
+}
