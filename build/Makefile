@@ -1,5 +1,5 @@
 #OBJS specifies which files to compile as part of the project
-OBJS = main.cpp view/View.cpp
+OBJS = ../src/main.cpp ../src/view/View.cpp
 
 #CC specifies which compiler we're using
 CC = g++
