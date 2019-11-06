@@ -5,7 +5,7 @@ int main(void)
 {
     View view;
 
-    view.initView(800, 450);
+    view.initView(1280, 720);
 
     while (!view.getWindowStatus())
     {
