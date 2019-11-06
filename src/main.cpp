@@ -23,6 +23,7 @@ int main(void)
             if(gamepad.left_held) view.drawText("left", 190, 230, 20, BLACK);
             if(gamepad.down_held) view.drawText("down", 190, 260, 20, BLACK);
             if(gamepad.right_held) view.drawText("right", 190, 290, 20, BLACK);
+            if(gamepad.enter_held) view.drawText("enter", 190, 320, 20, BLACK);
 
         EndDrawing();
     }

@@ -16,6 +16,10 @@ void control_info::init() {
   right_pressed = false;
   right_held = false;
   right_released = false;
+
+  enter_pressed = false;
+  enter_held = false;
+  enter_released = false;
 }
 
 void View::initView(int width, int height) {
@@ -40,6 +44,68 @@ void View::drawText(std::string text, int x, int y, int size, Color color) {
 control_info View::getControlInfo() {
   control_info gamepad;
   gamepad.init();
+
+  if (IsGamepadAvailable(GAMEPAD_PLAYER1)) {
+    if(IsGamepadButtonPressed(GAMEPAD_PLAYER1, GAMEPAD_BUFFALOSNES_BUTTON_LEFT)) {
+      gamepad.left_pressed = true;
+    }
+
+    if(IsGamepadButtonDown(GAMEPAD_PLAYER1, GAMEPAD_BUFFALOSNES_BUTTON_LEFT)) {
+      gamepad.left_held = true;
+    }
+
+    if(IsGamepadButtonReleased(GAMEPAD_PLAYER1, GAMEPAD_BUFFALOSNES_BUTTON_LEFT)) {
+      gamepad.left_released = true;
+    }
+
+    if(IsGamepadButtonPressed(GAMEPAD_PLAYER1, GAMEPAD_BUFFALOSNES_BUTTON_RIGHT)) {
+      gamepad.right_pressed = true;
+    }
+
+    if(IsGamepadButtonDown(GAMEPAD_PLAYER1, GAMEPAD_BUFFALOSNES_BUTTON_RIGHT)) {
+      gamepad.right_held = true;
+    }
+
+    if(IsGamepadButtonReleased(GAMEPAD_PLAYER1, GAMEPAD_BUFFALOSNES_BUTTON_RIGHT)) {
+      gamepad.right_released = true;
+    }
+
+    if(IsGamepadButtonPressed(GAMEPAD_PLAYER1, GAMEPAD_BUFFALOSNES_BUTTON_UP)) {
+      gamepad.up_pressed = true;
+    }
+
+    if(IsGamepadButtonDown(GAMEPAD_PLAYER1, GAMEPAD_BUFFALOSNES_BUTTON_UP)) {
+      gamepad.up_held = true;
+    }
+
+    if(IsGamepadButtonReleased(GAMEPAD_PLAYER1, GAMEPAD_BUFFALOSNES_BUTTON_UP)) {
+      gamepad.up_released = true;
+    }
+
+    if(IsGamepadButtonPressed(GAMEPAD_PLAYER1, GAMEPAD_BUFFALOSNES_BUTTON_DOWN)) {
+      gamepad.down_pressed = true;
+    }
+
+    if(IsGamepadButtonDown(GAMEPAD_PLAYER1, GAMEPAD_BUFFALOSNES_BUTTON_DOWN)) {
+      gamepad.down_held = true;
+    }
+
+    if(IsGamepadButtonReleased(GAMEPAD_PLAYER1, GAMEPAD_BUFFALOSNES_BUTTON_DOWN)) {
+      gamepad.down_released = true;
+    }
+
+    if(IsGamepadButtonPressed(GAMEPAD_PLAYER1, GAMEPAD_BUFFALOSNES_BUTTON_B)) {
+      gamepad.enter_pressed = true;
+    }
+
+    if(IsGamepadButtonDown(GAMEPAD_PLAYER1, GAMEPAD_BUFFALOSNES_BUTTON_B)) {
+      gamepad.enter_held = true;
+    }
+
+    if(IsGamepadButtonReleased(GAMEPAD_PLAYER1, GAMEPAD_BUFFALOSNES_BUTTON_B)) {
+      gamepad.enter_released = true;
+    }
+  }
 
   if(IsKeyPressed(KEY_W)) {
     gamepad.up_pressed = true;
@@ -87,6 +153,18 @@ control_info View::getControlInfo() {
 
   if(IsKeyReleased(KEY_D)) {
     gamepad.right_released = true;
+  }
+
+  if(IsKeyPressed(KEY_ENTER)) {
+    gamepad.enter_pressed = true;
+  }
+
+  if(IsKeyDown(KEY_ENTER)) {
+    gamepad.enter_held = true;
+  }
+
+  if(IsKeyReleased(KEY_ENTER)) {
+    gamepad.enter_released = true;
   }
 
   return gamepad;

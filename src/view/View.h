@@ -6,6 +6,23 @@
 #include <string>
 
 //-------------------------------------------------------------------------------------------
+// Define info about Buffalo snes style controller. Tested on ubuntu linux
+//-------------------------------------------------------------------------------------------
+
+#define GAMEPAD_BUFFALOSNES_BUTTON_B            7
+#define GAMEPAD_BUFFALOSNES_BUTTON_A            6
+#define GAMEPAD_BUFFALOSNES_BUTTON_Y            8
+#define GAMEPAD_BUFFALOSNES_BUTTON_X            5
+#define GAMEPAD_BUFFALOSNES_BUTTON_UP           1
+#define GAMEPAD_BUFFALOSNES_BUTTON_DOWN         3
+#define GAMEPAD_BUFFALOSNES_BUTTON_LEFT         4
+#define GAMEPAD_BUFFALOSNES_BUTTON_RIGHT        2
+#define GAMEPAD_BUFFALOSNES_BUTTON_START        15
+#define GAMEPAD_BUFFALOSNES_BUTTON_SELECT       13
+#define GAMEPAD_BUFFALOSNES_BUTTON_L            9
+#define GAMEPAD_BUFFALOSNES_BUTTON_R            11
+
+//-------------------------------------------------------------------------------------------
 // Control info struct. 
 // Allows the controller (controller.h) not worry about the button and only the action. 
 //-------------------------------------------------------------------------------------------
@@ -26,6 +43,10 @@ struct control_info {
   bool right_pressed;
   bool right_held;
   bool right_released;
+
+  bool enter_pressed;
+  bool enter_held;
+  bool enter_released;
 };
 
 //------------------------------------------------------------------------------------------
