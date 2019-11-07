@@ -22,6 +22,21 @@
 #define GAMEPAD_BUFFALOSNES_BUTTON_L            9
 #define GAMEPAD_BUFFALOSNES_BUTTON_R            11
 
+/*
+#define GAMEPAD_BUFFALOSNES_BUTTON_B            1
+#define GAMEPAD_BUFFALOSNES_BUTTON_A            0
+#define GAMEPAD_BUFFALOSNES_BUTTON_Y            3
+#define GAMEPAD_BUFFALOSNES_BUTTON_X            2
+#define GAMEPAD_BUFFALOSNES_BUTTON_UP           axis1 -1
+#define GAMEPAD_BUFFALOSNES_BUTTON_DOWN         axis1 +1
+#define GAMEPAD_BUFFALOSNES_BUTTON_LEFT         axis0 -1
+#define GAMEPAD_BUFFALOSNES_BUTTON_RIGHT        axis0 +1
+#define GAMEPAD_BUFFALOSNES_BUTTON_START        7
+#define GAMEPAD_BUFFALOSNES_BUTTON_SELECT       6
+#define GAMEPAD_BUFFALOSNES_BUTTON_L            4
+#define GAMEPAD_BUFFALOSNES_BUTTON_R            5
+*/
+
 //-------------------------------------------------------------------------------------------
 // Control info struct.
 // Allows the controller (controller.h) not worry about the button and only the action.
