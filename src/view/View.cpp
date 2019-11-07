@@ -20,6 +20,10 @@ void control_info::init() {
   enter_pressed = false;
   enter_held = false;
   enter_released = false;
+
+  back_pressed = false;
+  back_held = false;
+  back_released = false;
 }
 
 void View::initView(int width, int height) {
@@ -44,7 +48,7 @@ void View::drawText(std::string text, int x, int y, int size, Color color) {
 control_info View::getControlInfo() {
   control_info gamepad;
   gamepad.init();
-
+  //Read the input from usb gamepad.
   if (IsGamepadAvailable(GAMEPAD_PLAYER1)) {
     if(IsGamepadButtonPressed(GAMEPAD_PLAYER1, GAMEPAD_BUFFALOSNES_BUTTON_LEFT)) {
       gamepad.left_pressed = true;
@@ -105,8 +109,20 @@ control_info View::getControlInfo() {
     if(IsGamepadButtonReleased(GAMEPAD_PLAYER1, GAMEPAD_BUFFALOSNES_BUTTON_B)) {
       gamepad.enter_released = true;
     }
-  }
 
+    if(IsGamepadButtonPressed(GAMEPAD_PLAYER1, GAMEPAD_BUFFALOSNES_BUTTON_A)) {
+      gamepad.back_pressed = true;
+    }
+
+    if(IsGamepadButtonDown(GAMEPAD_PLAYER1, GAMEPAD_BUFFALOSNES_BUTTON_A)) {
+      gamepad.back_held = true;
+    }
+
+    if(IsGamepadButtonReleased(GAMEPAD_PLAYER1, GAMEPAD_BUFFALOSNES_BUTTON_A)) {
+      gamepad.back_released = true;
+    }
+  }
+  //Read the input from the keyboard.
   if(IsKeyPressed(KEY_W)) {
     gamepad.up_pressed = true;
   }
@@ -165,6 +181,18 @@ control_info View::getControlInfo() {
 
   if(IsKeyReleased(KEY_ENTER)) {
     gamepad.enter_released = true;
+  }
+
+  if(IsKeyPressed(KEY_BACKSPACE)) {
+    gamepad.back_pressed = true;
+  }
+
+  if(IsKeyDown(KEY_BACKSPACE)) {
+    gamepad.back_held = true;
+  }
+
+  if(IsKeyReleased(KEY_BACKSPACE)) {
+    gamepad.back_released = true;
   }
 
   return gamepad;
