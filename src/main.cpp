@@ -26,6 +26,16 @@ int main(void)
             if(gamepad.enter_held) view.drawText("enter", 190, 320, 20, BLACK);
             if(gamepad.back_held) view.drawText("back", 190, 350, 20, BLACK);
 
+            DrawText(FormatText("DETECTED AXIS [%i]:", GetGamepadAxisCount(GAMEPAD_PLAYER1)), 10, 50, 10, MAROON);
+
+                for (int i = 0; i < GetGamepadAxisCount(GAMEPAD_PLAYER1); i++)
+                {
+                    DrawText(FormatText("AXIS %i: %.02f", i, GetGamepadAxisMovement(GAMEPAD_PLAYER1, i)), 20, 70 + 20*i, 10, DARKGRAY);
+                }
+
+                if (GetGamepadButtonPressed() != -1) DrawText(FormatText("DETECTED BUTTON: %i", GetGamepadButtonPressed()), 10, 430, 10, RED);
+                else DrawText("DETECTED BUTTON: NONE", 10, 430, 10, GRAY);
+
         EndDrawing();
     }
 
