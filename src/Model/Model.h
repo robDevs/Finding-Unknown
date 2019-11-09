@@ -7,7 +7,7 @@
 class Entity {
 private:
     int className;
-    int textureName; 
+    int textureName;
     float xPos;
     float yPos;
     float xVel;
@@ -17,7 +17,7 @@ private:
     int moveType;
     int status;
     int health;
-    Rectangle rect;   
+    Rectangle rect;
 public:
     void (*hit)();
     void (*update)();
@@ -28,6 +28,7 @@ public:
     void setXvel(float vel);
     void setYvel(float vel);
     void setSpeed(float speed);
+    void move();
     float getX();
     float getY();
     bool getSolid();

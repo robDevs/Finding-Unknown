@@ -1,12 +1,12 @@
 #include "Model.h"
 
 //---------------------------------------------
-// Entity class functions. 
+// Entity class functions.
 //---------------------------------------------
 void Entity::setName(int name) {
     className = name;
 }
-void Entity::setTextureName(int name) { 
+void Entity::setTextureName(int name) {
     textureName = name;
 }
 void Entity::setX(float x) {
@@ -23,6 +23,10 @@ void Entity::setYvel(float vel) {
 }
 void Entity::setSpeed(float speed) {
     this->speed = speed;
+}
+void Entity::move() {
+  xPos += xVel;
+  yPos += yVel;
 }
 float Entity::getX() {
     return xPos;
@@ -46,10 +50,10 @@ int Entity::getHealth() {
     return health;
 }
 //---------------------------------------------
-// End Entity class functions. 
+// End Entity class functions.
 //---------------------------------------------
 
 
 //---------------------------------------------
-// Entity call back functions go here. 
+// Entity call back functions go here.
 //---------------------------------------------
