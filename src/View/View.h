@@ -49,6 +49,9 @@
 #define BG_00010        10
 #define BG_00011        11
 #define BG_00012        12
+#define TITLE_          13
+#define BEAM_A          14
+#define BEAM_B          15
 
 
 //-------------------------------------------------------------------------------------------
@@ -89,7 +92,7 @@ class View {
 private:
   float screenWidth;
   float screenHeight;
-  Texture2D textures[13];
+  Texture2D textures[16];
 
 
 public:
@@ -100,9 +103,15 @@ public:
   bool getWindowStatus(); // check if the window should close (If x thing was pressed. )
   bool loadTextures(float xScale, float yScale); //return false if textures failed to load.
   void freeTextures();
-  void drawTexture(int x, int y, int texture); // Draws a texture at the given pos.
+  void drawTexture(int x, int y, int texture, Color color); // Draws a texture at the given pos.
   void drawText(std::string text, int x, int y, int size, Color color); // draws text at given pos.
   control_info getControlInfo(); // read input and return a control_info struct.
+
+  float getScreenWidth();
+  float getScreenHeight();
+
+  int getTextureWidth(int i);
+  int getTextureHeight(int i);
 };
 
 #endif

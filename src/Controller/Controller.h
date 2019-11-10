@@ -18,6 +18,7 @@ private:
 public:
   Controller();
   void entityLoop();
+  void doIntro();
   void gameLoop();
   void doMenu();
   void doGame();

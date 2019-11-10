@@ -37,7 +37,7 @@ void View::initView(int width, int height, float *xScale, float *yScale) {
   if(!IsWindowReady()) InitWindow(screenWidth, screenHeight, "Finding Unknown");
   else SetWindowSize(width, height);
 
-  SetWindowPosition(0, 0); 
+  SetWindowPosition(0, 0);
 
   loadTextures(*xScale, *yScale);
 
@@ -123,10 +123,25 @@ bool View::loadTextures(float xScale, float yScale) {
     ImageResizeNN(&tempImage, tempImage.width * xScale, tempImage.height * yScale);
     textures[12] = LoadTextureFromImage(tempImage);
     UnloadImage(tempImage);
+
+    tempImage = LoadImage("assets/TitleWIP.png");
+    ImageResizeNN(&tempImage, tempImage.width * xScale, tempImage.height * yScale);
+    textures[13] = LoadTextureFromImage(tempImage);
+    UnloadImage(tempImage);
+
+    tempImage = LoadImage("assets/TitleScreen/Beam/Beam_A.png");
+    ImageResizeNN(&tempImage, tempImage.width * xScale, tempImage.height * yScale);
+    textures[14] = LoadTextureFromImage(tempImage);
+    UnloadImage(tempImage);
+
+    tempImage = LoadImage("assets/TitleScreen/Beam/Beam_A.png");
+    ImageResizeNN(&tempImage, tempImage.width * xScale, tempImage.height * yScale);
+    textures[15] = LoadTextureFromImage(tempImage);
+    UnloadImage(tempImage);
 }
 
 void View::freeTextures() {
-    for(int i = 0; i < 13; i++) {
+    for(int i = 0; i < 15; i++) {
         UnloadTexture(textures[i]);
     }
 }
@@ -144,8 +159,8 @@ bool View::getWindowStatus() {
   return WindowShouldClose();
 }
 
-void View::drawTexture(int x, int y, int texture) {
-  DrawTexture(textures[texture], x, y, WHITE);
+void View::drawTexture(int x, int y, int texture, Color color) {
+  DrawTexture(textures[texture], x, y, color);
 }
 
 void View::drawText(std::string text, int x, int y, int size, Color color) {
@@ -302,4 +317,20 @@ control_info View::getControlInfo() {
   }
 
   return gamepad;
+}
+
+float View::getScreenWidth() {
+    return screenWidth;
+}
+
+float View::getScreenHeight() {
+    return screenHeight;
+}
+
+int View::getTextureWidth(int i) {
+    return textures[i].width;
+}
+
+int View::getTextureHeight(int i) {
+    return textures[i].height;
 }
