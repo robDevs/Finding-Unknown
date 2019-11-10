@@ -14,7 +14,7 @@ private:
   std::vector<Entity> entities;
   View view;
   int gamestatus;
-
+  float xScale, yScale;
 public:
   Controller();
   void entityLoop();

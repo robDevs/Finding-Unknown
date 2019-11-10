@@ -26,16 +26,114 @@ void control_info::init() {
   back_released = false;
 }
 
-void View::initView(int width, int height) {
+void View::initView(int width, int height, float *xScale, float *yScale) {
   screenWidth = width;
   screenHeight = height;
 
-  InitWindow(screenWidth, screenHeight, "Finding Unknown");
+  *xScale = screenWidth/1280;
+  *yScale = screenHeight/720;
+
+
+  if(!IsWindowReady()) InitWindow(screenWidth, screenHeight, "Finding Unknown");
+  else SetWindowSize(width, height);
+
+  SetWindowPosition(0, 0); 
+
+  loadTextures(*xScale, *yScale);
+
   SetTargetFPS(60);
+}
+
+void View::setScale(float width, float height,float *xScale, float *yScale) {
+    screenWidth = width;
+    screenHeight = height;
+
+    *xScale = width/1280.00;
+    *yScale = height/720.00;
+}
+
+bool View::loadTextures(float xScale, float yScale) {
+    Image tempImage;
+
+    for(int i = 0; i < 13; i++) {
+        UnloadTexture(textures[i]);
+    }
+
+    tempImage = LoadImage("assets/TitleScreen/BG/NoAlpha/BG_00000.png");
+    ImageResizeNN(&tempImage, tempImage.width * xScale, tempImage.height * yScale);
+    textures[0] = LoadTextureFromImage(tempImage);
+    UnloadImage(tempImage);
+
+    tempImage = LoadImage("assets/TitleScreen/BG/NoAlpha/BG_00001.png");
+    ImageResizeNN(&tempImage, tempImage.width * xScale, tempImage.height * yScale);
+    textures[1] = LoadTextureFromImage(tempImage);
+    UnloadImage(tempImage);
+
+    tempImage = LoadImage("assets/TitleScreen/BG/NoAlpha/BG_00002.png");
+    ImageResizeNN(&tempImage, tempImage.width * xScale, tempImage.height * yScale);
+    textures[2] = LoadTextureFromImage(tempImage);
+    UnloadImage(tempImage);
+
+    tempImage = LoadImage("assets/TitleScreen/BG/NoAlpha/BG_00003.png");
+    ImageResizeNN(&tempImage, tempImage.width * xScale, tempImage.height * yScale);
+    textures[3] = LoadTextureFromImage(tempImage);
+    UnloadImage(tempImage);
+
+    tempImage = LoadImage("assets/TitleScreen/BG/NoAlpha/BG_00004.png");
+    ImageResizeNN(&tempImage, tempImage.width * xScale, tempImage.height * yScale);
+    textures[4] = LoadTextureFromImage(tempImage);
+    UnloadImage(tempImage);
+
+    tempImage = LoadImage("assets/TitleScreen/BG/NoAlpha/BG_00005.png");
+    ImageResizeNN(&tempImage, tempImage.width * xScale, tempImage.height * yScale);
+    textures[5] = LoadTextureFromImage(tempImage);
+    UnloadImage(tempImage);
+
+    tempImage = LoadImage("assets/TitleScreen/BG/NoAlpha/BG_00006.png");
+    ImageResizeNN(&tempImage, tempImage.width * xScale, tempImage.height * yScale);
+    textures[6] = LoadTextureFromImage(tempImage);
+    UnloadImage(tempImage);
+
+    tempImage = LoadImage("assets/TitleScreen/BG/NoAlpha/BG_00007.png");
+    ImageResizeNN(&tempImage, tempImage.width * xScale, tempImage.height * yScale);
+    textures[7] = LoadTextureFromImage(tempImage);
+    UnloadImage(tempImage);
+
+    tempImage = LoadImage("assets/TitleScreen/BG/NoAlpha/BG_00008.png");
+    ImageResizeNN(&tempImage, tempImage.width * xScale, tempImage.height * yScale);
+    textures[8] = LoadTextureFromImage(tempImage);
+    UnloadImage(tempImage);
+
+    tempImage = LoadImage("assets/TitleScreen/BG/NoAlpha/BG_00009.png");
+    ImageResizeNN(&tempImage, tempImage.width * xScale, tempImage.height * yScale);
+    textures[9] = LoadTextureFromImage(tempImage);
+    UnloadImage(tempImage);
+
+    tempImage = LoadImage("assets/TitleScreen/BG/NoAlpha/BG_00010.png");
+    ImageResizeNN(&tempImage, tempImage.width * xScale, tempImage.height * yScale);
+    textures[10] = LoadTextureFromImage(tempImage);
+    UnloadImage(tempImage);
+
+    tempImage = LoadImage("assets/TitleScreen/BG/NoAlpha/BG_00011.png");
+    ImageResizeNN(&tempImage, tempImage.width * xScale, tempImage.height * yScale);
+    textures[11] = LoadTextureFromImage(tempImage);
+    UnloadImage(tempImage);
+
+    tempImage = LoadImage("assets/TitleScreen/BG/NoAlpha/BG_00012.png");
+    ImageResizeNN(&tempImage, tempImage.width * xScale, tempImage.height * yScale);
+    textures[12] = LoadTextureFromImage(tempImage);
+    UnloadImage(tempImage);
+}
+
+void View::freeTextures() {
+    for(int i = 0; i < 13; i++) {
+        UnloadTexture(textures[i]);
+    }
 }
 
 void View::startFrame() {
   BeginDrawing();
+  ClearBackground(RAYWHITE);
 }
 
 void View::endFrame() {
@@ -46,8 +144,8 @@ bool View::getWindowStatus() {
   return WindowShouldClose();
 }
 
-void View::drawTexture(int x, int y, Texture2D texture) {
-  DrawTexture(texture, x, y, WHITE);
+void View::drawTexture(int x, int y, int texture) {
+  DrawTexture(textures[texture], x, y, WHITE);
 }
 
 void View::drawText(std::string text, int x, int y, int size, Color color) {
