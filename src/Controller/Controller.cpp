@@ -6,7 +6,7 @@ Controller::Controller() {
   yScale = 1;
 
   view.initView(2560,1440, &xScale, &yScale);
-  SetWindowPosition(0, 0);
+  SetWindowPosition(1440, 0);
 
   gameLoop();
 }
@@ -108,11 +108,20 @@ void Controller::doMenu() {
 
     if(view.getWindowStatus()) break;
 
-
-
     view.drawTexture(0,0,frame, WHITE);
 
     view.drawTexture(view.getScreenWidth()/2 - view.getTextureWidth(TITLE_)/2, 0 + view.getScreenHeight()/16*yScale, TITLE_, WHITE);
+
+    DrawText(FormatText("DETECTED AXIS [%i]:", GetGamepadAxisCount(GAMEPAD_PLAYER1)), 10, 50, 10, WHITE);
+
+    for (int i = 0; i < GetGamepadAxisCount(GAMEPAD_PLAYER1); i++)
+    {
+        DrawText(FormatText("AXIS %i: %.02f", i, GetGamepadAxisMovement(GAMEPAD_PLAYER1, i)), 20, 70 + 20*i, 10, WHITE);
+    }
+
+    if (GetGamepadButtonPressed() != -1) DrawText(FormatText("DETECTED BUTTON: %i", GetGamepadButtonPressed()), 10, 430, 10, WHITE);
+    else DrawText("DETECTED BUTTON: NONE", 10, 430, 10, GRAY);
+
 
     view.endFrame();
   }

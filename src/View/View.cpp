@@ -124,7 +124,7 @@ bool View::loadTextures(float xScale, float yScale) {
     textures[12] = LoadTextureFromImage(tempImage);
     UnloadImage(tempImage);
 
-    tempImage = LoadImage("assets/TitleWIP.png");
+    tempImage = LoadImage("assets/TitleScreen/Logo.png");
     ImageResizeNN(&tempImage, tempImage.width * xScale, tempImage.height * yScale);
     textures[13] = LoadTextureFromImage(tempImage);
     UnloadImage(tempImage);
