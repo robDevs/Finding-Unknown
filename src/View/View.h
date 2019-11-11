@@ -4,6 +4,10 @@
 #include "raylib.h"
 
 #include <string>
+#include <vector>
+
+#include <iostream>
+
 
 //-------------------------------------------------------------------------------------------
 // Define info about Buffalo snes style controller. Tested on ubuntu linux
@@ -53,6 +57,8 @@
 #define BEAM_A          14
 #define BEAM_B          15
 
+#define BURST_SPRITESHEET       0
+
 
 //-------------------------------------------------------------------------------------------
 // Control info struct.
@@ -85,6 +91,21 @@ struct control_info {
   bool back_released;
 };
 
+struct frame {
+    int x;
+    int y;
+    float width;
+    float height;
+};
+
+struct sprite_sheet {
+    Texture2D texture;
+    float frameWidth;
+    float frameHeight;
+    std::vector<frame> frames;
+    void setFrames(std::string path, float xScale, float yScale);
+};
+
 //------------------------------------------------------------------------------------------
 // The view handles drawing things and getting input from user.
 //------------------------------------------------------------------------------------------
@@ -93,6 +114,7 @@ private:
   float screenWidth;
   float screenHeight;
   Texture2D textures[16];
+  sprite_sheet sprite_sheets[1];
 
 
 public:
@@ -106,6 +128,8 @@ public:
   void drawTexture(int x, int y, int texture, Color color); // Draws a texture at the given pos.
   void drawText(std::string text, int x, int y, int size, Color color); // draws text at given pos.
   control_info getControlInfo(); // read input and return a control_info struct.
+
+  void drawSprite(int x, int y, int spriteSheet, int frame, Color color);
 
   float getScreenWidth();
   float getScreenHeight();

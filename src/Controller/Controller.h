@@ -8,6 +8,7 @@
 
 #define STATUS_MENU         0
 #define STATUS_PLAYING      1
+#define STATUS_QUIT         2
 
 class Controller {
 private:

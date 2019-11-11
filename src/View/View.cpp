@@ -26,12 +26,43 @@ void control_info::init() {
   back_released = false;
 }
 
+void sprite_sheet::setFrames(std::string path, float xScale, float yScale) {
+    int x = 0;
+    int y = 0;
+
+    Image tempImage;
+
+    tempImage = LoadImage(path.c_str());
+    ImageResizeNN(&tempImage, tempImage.width * xScale, tempImage.height * yScale);
+    texture = LoadTextureFromImage(tempImage);
+    UnloadImage(tempImage);
+
+    int x_frames = (float) texture.width / (frameWidth * xScale);
+    int y_frames = (float) texture.height / (frameHeight * yScale);
+
+    for(int i = 0; i < x_frames * y_frames; i++) {
+        frame currentFrame;
+        currentFrame.x = x;
+        currentFrame.y = y;
+        currentFrame.width = frameWidth*xScale;
+        currentFrame.height = frameHeight*yScale;
+
+        frames.push_back(currentFrame);
+
+        x += frameWidth*xScale;
+        if(x >= texture.width) {
+            x = 0;
+            y += frameHeight*xScale;
+        }
+    }
+}
+
 void View::initView(int width, int height, float *xScale, float *yScale) {
   screenWidth = width;
   screenHeight = height;
 
-  *xScale = screenWidth/1280;
-  *yScale = screenHeight/720;
+  *xScale = screenWidth/1280.00;
+  *yScale = screenHeight/720.00;
 
 
   if(!IsWindowReady()) InitWindow(screenWidth, screenHeight, "Finding Unknown");
@@ -40,6 +71,10 @@ void View::initView(int width, int height, float *xScale, float *yScale) {
   SetWindowPosition(0, 0);
 
   loadTextures(*xScale, *yScale);
+
+  sprite_sheets[0].frameWidth = 400;
+  sprite_sheets[0].frameHeight = 400;
+  sprite_sheets[0].setFrames("assets/BurstEffect/Burst_SpriteSheet.png", *xScale, *yScale);
 
   SetTargetFPS(60);
 }
@@ -161,6 +196,15 @@ bool View::getWindowStatus() {
 
 void View::drawTexture(int x, int y, int texture, Color color) {
   DrawTexture(textures[texture], x, y, color);
+}
+
+void View::drawSprite(int x, int y, int spriteSheet, int frame, Color color) {
+    Rectangle rect;
+    rect.x = sprite_sheets[spriteSheet].frames[frame].x;
+    rect.y = sprite_sheets[spriteSheet].frames[frame].y;
+    rect.width = sprite_sheets[spriteSheet].frames[frame].width;
+    rect.height = sprite_sheets[spriteSheet].frames[frame].height;
+    DrawTextureRec(sprite_sheets[spriteSheet].texture, rect, (Vector2) {x, y}, color);
 }
 
 void View::drawText(std::string text, int x, int y, int size, Color color) {
