@@ -92,8 +92,8 @@ struct control_info {
 };
 
 struct frame {
-    int x;
-    int y;
+    float x;
+    float y;
     float width;
     float height;
 };
@@ -104,6 +104,7 @@ struct sprite_sheet {
     float frameHeight;
     std::vector<frame> frames;
     void setFrames(std::string path, float xScale, float yScale);
+    void unloadTexture();
 };
 
 //------------------------------------------------------------------------------------------

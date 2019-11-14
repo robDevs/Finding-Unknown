@@ -18,7 +18,7 @@ void Controller::entityLoop() {
 
 void Controller::gameLoop() {
   while(!view.getWindowStatus() && gamestatus != STATUS_QUIT) {
-    //doIntro(); //un-comment to test sprites after re-scaling. 
+    //doIntro(); //un-comment to test sprites after re-scaling.
     if(gamestatus == STATUS_START) {
       doIntro();
     }
@@ -85,7 +85,7 @@ void Controller::doIntro() {
       view.drawTexture(view.getScreenWidth()/2 - view.getTextureWidth(TITLE_)/2, titlePos, TITLE_, (Color){255,255,255,titleFade});
 
       if(beamPos + view.getTextureWidth(BEAM_A) > view.getScreenWidth()) {
-          view.drawSprite(view.getScreenWidth() - (400.00*xScale)/2, view.getScreenHeight()/2 - (400.00*yScale)/2, BURST_SPRITESHEET, frameBurst, WHITE);
+          view.drawSprite(view.getScreenWidth() - (200.00*xScale), view.getScreenHeight()/2 - (200.00*yScale), BURST_SPRITESHEET, frameBurst, WHITE);
       }
 
       view.endFrame();
@@ -166,7 +166,7 @@ void Controller::doSettings(){
                 view.initView(1280, 720, &xScale, &yScale);
                 break;
             case 1: //temp change res. Coming soon: settingsMenu();
-                view.initView(1920,1080, &xScale, &yScale);
+                view.initView(1366,768, &xScale, &yScale);
                 break;
             case 2:
                 view.initView(2560, 1440, &xScale, &yScale);

@@ -27,8 +27,8 @@ void control_info::init() {
 }
 
 void sprite_sheet::setFrames(std::string path, float xScale, float yScale) {
-    int x = 0;
-    int y = 0;
+    float x = 0;
+    float y = 0;
 
     Image tempImage;
 
@@ -38,13 +38,13 @@ void sprite_sheet::setFrames(std::string path, float xScale, float yScale) {
     }
 
     tempImage = LoadImage(path.c_str());
-    ImageResizeNN(&tempImage, tempImage.width * xScale, tempImage.height * yScale);
+    ImageResizeNN(&tempImage, (float)tempImage.width * xScale, (float)tempImage.height * yScale);
     texture = LoadTextureFromImage(tempImage);
     UnloadImage(tempImage);
 
-    int x_frames = (float) texture.width / (frameWidth * xScale);
-    int y_frames = (float) texture.height / (frameHeight * yScale);
-
+    float x_frames = (float) texture.width / (frameWidth * xScale);
+    float y_frames = (float) texture.height / (frameHeight * yScale);
+    std::cout << "-----------frames: " <<  x_frames * y_frames << std::endl;
     for(int i = 0; i < x_frames * y_frames; i++) {
         frame currentFrame;
         currentFrame.x = x;
@@ -62,6 +62,10 @@ void sprite_sheet::setFrames(std::string path, float xScale, float yScale) {
     }
 }
 
+void sprite_sheet::unloadTexture() {
+  UnloadTexture(texture);
+}
+
 void View::initView(int width, int height, float *xScale, float *yScale) {
   screenWidth = width;
   screenHeight = height;
@@ -74,6 +78,8 @@ void View::initView(int width, int height, float *xScale, float *yScale) {
   else SetWindowSize(width, height);
 
   SetWindowPosition(0, 0);
+
+  freeTextures();
 
   loadTextures(*xScale, *yScale);
 
@@ -183,6 +189,9 @@ bool View::loadTextures(float xScale, float yScale) {
 void View::freeTextures() {
     for(int i = 0; i < 15; i++) {
         UnloadTexture(textures[i]);
+    }
+    for(int i = 0; i < 1; i++) {
+      sprite_sheets[i].unloadTexture();
     }
 }
 
