@@ -1,0 +1,18 @@
+Functional - 
+How to maneuver characters using keys or using a game controller.
+  In doing this the user can use both the arrow keys and later a controller that will 
+  be implemented.
+Developed in C++ and RayLib graphics. 
+A functional requirement will allows the user to shoot objects that are in its way, Whether
+this is an astroid or an enemy vessel. The user will do this by hitting the space bar,
+or using the controller.
+Save data stored in JSON files.
+  The data saved will be the users progress throughout the game. This will include levels
+  they have completed as well as their current progress in a level.
+Non-Functional - 
+Player can use different keys to maneuver character. 
+  The player will be able to see how they move using on the screen.
+There will be multiple levels and an arcade mode.
+Player will have a home screen and will be able to see the screen and how the player moves.
+This should be a secure game as it will be a desktop application.
+It should eventually be able to run online and become an app game.
