@@ -32,6 +32,11 @@ void sprite_sheet::setFrames(std::string path, float xScale, float yScale) {
 
     Image tempImage;
 
+    //empty the frames vector #spritesheet scaling bug fix attempt 1
+    while(!frames.empty()) {
+        frames.pop_back();
+    }
+
     tempImage = LoadImage(path.c_str());
     ImageResizeNN(&tempImage, tempImage.width * xScale, tempImage.height * yScale);
     texture = LoadTextureFromImage(tempImage);

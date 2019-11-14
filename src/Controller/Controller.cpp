@@ -4,7 +4,7 @@ Controller::Controller() {
   gamestatus = STATUS_START;
   xScale = 1;
   yScale = 1;
-  
+
   view.initView(1280,720, &xScale, &yScale);
 
   gameLoop();
@@ -18,6 +18,7 @@ void Controller::entityLoop() {
 
 void Controller::gameLoop() {
   while(!view.getWindowStatus() && gamestatus != STATUS_QUIT) {
+    //doIntro(); //un-comment to test sprites after re-scaling. 
     if(gamestatus == STATUS_START) {
       doIntro();
     }
