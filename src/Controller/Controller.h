@@ -6,9 +6,11 @@
 #include "../Model/Model.h"
 #include "../View/View.h"
 
-#define STATUS_MENU         0
-#define STATUS_PLAYING      1
-#define STATUS_QUIT         2
+#define STATUS_START        0
+#define STATUS_MENU         1
+#define STATUS_PLAYING      2
+#define STATUS_QUIT         3
+#define STATUS_SETTINGS     4
 
 class Controller {
 private:
@@ -22,6 +24,7 @@ public:
   void doIntro();
   void gameLoop();
   void doMenu();
+  void doSettings();
   void doGame();
 };
 
