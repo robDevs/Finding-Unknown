@@ -104,6 +104,7 @@ void Controller::doMenu() {
     if(gamepad.enter_released) {
         switch (cursor_pos) {
             case 0:
+                gamestatus = STATUS_PLAYING;
                 break;
             case 1:
                 gamestatus = STATUS_SETTINGS;
@@ -145,8 +146,6 @@ void Controller::doMenu() {
     view.drawText("Play", view.getScreenWidth()/2, view.getScreenHeight()/2, 40*((xScale+yScale)/2), (cursor_pos == 0) ? (Color) {0,0,255,255} : (Color) {255,255,255,255});
     view.drawText("Settings", view.getScreenWidth()/2, view.getScreenHeight()/2 + 40*((xScale+yScale)/2), 40*((xScale+yScale)/2), (cursor_pos == 1) ? (Color) {0,0,255,255} : (Color) {255,255,255,255});
     view.drawText("Quit", view.getScreenWidth()/2, view.getScreenHeight()/2 + 80*((xScale+yScale)/2), 40*((xScale+yScale)/2), (cursor_pos == 2) ? (Color) {0,0,255,255} : (Color) {255,255,255,255});
-
-
 
     view.endFrame();
   }
@@ -221,5 +220,43 @@ void Controller::doSettings(){
 }
 
 void Controller::doGame() {
+  player.update = &player_update;
+  player.setX(100);
+  player.setY(100);
+  while(gamestatus == STATUS_PLAYING) {
+    if(view.getWindowStatus()) break;
 
+
+    control_info gamepad = view.getControlInfo();
+
+    if(gamepad.up_held) {
+      player.setYvel(-5.0);
+    }
+    else if(gamepad.down_held) {
+      player.setYvel(5.0);
+    }
+    else {
+      player.setYvel(0);
+    }
+
+    if(gamepad.left_held) {
+      player.setXvel(-5.0);
+    }
+    else if(gamepad.right_held) {
+      player.setXvel(5.0);
+    }
+    else {
+      player.setXvel(0);
+    }
+
+    self = &player;
+    player.update();
+
+    view.startFrame();
+    view.drawTexture(0,0,0, WHITE);
+
+    view.drawSprite(player.getX(), player.getY(), PLAYER_SPRITESHEET, player.getFrame(), WHITE);
+
+    view.endFrame();
+  }
 }

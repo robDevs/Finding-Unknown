@@ -87,7 +87,13 @@ void View::initView(int width, int height, float *xScale, float *yScale) {
   sprite_sheets[0].frameHeight = 400;
   sprite_sheets[0].setFrames("assets/BurstEffect/Burst_SpriteSheet.png", *xScale, *yScale);
 
+  sprite_sheets[1].frameWidth = 150;
+  sprite_sheets[1].frameHeight = 200;
+  sprite_sheets[1].setFrames("assets/Ships/Main/Main.png", *xScale, *yScale);
+
   SetTargetFPS(60);
+
+  SetConfigFlags(FLAG_VSYNC_HINT | FLAG_MSAA_4X_HINT);
 }
 
 void View::setScale(float width, float height,float *xScale, float *yScale) {
@@ -190,14 +196,14 @@ void View::freeTextures() {
     for(int i = 0; i < 15; i++) {
         UnloadTexture(textures[i]);
     }
-    for(int i = 0; i < 1; i++) {
+    for(int i = 0; i < 2; i++) {
       sprite_sheets[i].unloadTexture();
     }
 }
 
 void View::startFrame() {
   BeginDrawing();
-  ClearBackground(RAYWHITE);
+  ClearBackground(BLACK);
 }
 
 void View::endFrame() {

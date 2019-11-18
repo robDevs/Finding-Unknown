@@ -8,10 +8,6 @@ class Entity {
 private:
     int className;
     int textureName;
-    float xPos;
-    float yPos;
-    float xVel;
-    float yVel;
     float speed;
     bool solid;
     int moveType;
@@ -19,6 +15,11 @@ private:
     int health;
     Rectangle rect;
 public:
+    float xPos;
+    float yPos;
+    float xVel;
+    float yVel;
+    int frame;
     void (*hit)();
     void (*update)();
     void setName(int name);
@@ -36,6 +37,10 @@ public:
     int getMoveType();
     int getStatus();
     int getHealth();
+    int getFrame();
 };
+
+extern Entity *self;
+extern void player_update();
 
 #endif

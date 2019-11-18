@@ -49,6 +49,9 @@ int Entity::getStatus() {
 int Entity::getHealth() {
     return health;
 }
+int Entity::getFrame() {
+  return frame;
+}
 //---------------------------------------------
 // End Entity class functions.
 //---------------------------------------------
@@ -57,3 +60,14 @@ int Entity::getHealth() {
 //---------------------------------------------
 // Entity call back functions go here.
 //---------------------------------------------
+
+Entity *self;
+
+void player_update() {
+  self->xPos += self->xVel;
+  self->yPos += self->yVel;
+
+  if(self->xVel < 0) self->frame = 0;
+  if(self->xVel == 0) self->frame = 1;
+  if(self->xVel > 0) self->frame = 2;
+}

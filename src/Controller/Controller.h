@@ -18,6 +18,8 @@ private:
   View view;
   int gamestatus;
   float xScale, yScale;
+
+  Entity player;
 public:
   Controller();
   void entityLoop();
