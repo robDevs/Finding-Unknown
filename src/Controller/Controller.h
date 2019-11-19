@@ -16,9 +16,11 @@
 class Controller {
 private:
   std::vector<Entity> enemies;
+  std::vector<Entity> bullets;
   View view;
   int gamestatus;
   float xScale, yScale;
+  int points;
 
   Entity player;
 public:

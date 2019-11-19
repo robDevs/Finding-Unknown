@@ -10,6 +10,8 @@
 #define ENTITY_REMOVE     1  //Remove the ent
 #define ENTITY_DESTROY    2  //Spawn explosion at ent, give points from ent, remove ent. 
 
+#define BASIC_BULLET      0
+
 extern int screenWidth_model;
 extern int screenHeight_model;
 
@@ -26,6 +28,10 @@ public:
     int moveType;
     int status;
     int health;
+    float xScale; 
+    float yScale;
+    int points;
+    int timer;
 
     void (*hit)();
     void (*update)();
@@ -51,9 +57,17 @@ public:
 extern void finalize_entity(Entity target, std::vector<Entity> ent_list);
 
 extern Entity *self;
+extern Entity *other;
+extern Entity *player;
+
 extern void player_update();
 
+extern void bullet_basic_update();
+extern void basic_bullet_hit();
+extern void spawn_bullet(int x, int y, int type, std::vector<Entity> *ent_list);
+
 extern void test_enemy_update();
+extern void test_enemy_hit();
 extern void spawn_test_enemy(int x, int y, std::vector<Entity> *ent_list);
 
 #endif

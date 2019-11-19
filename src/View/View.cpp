@@ -91,6 +91,10 @@ void View::initView(int width, int height, float *xScale, float *yScale) {
   sprite_sheets[1].frameHeight = 200;
   sprite_sheets[1].setFrames("assets/Ships/Main/Main.png", *xScale, *yScale);
 
+  sprite_sheets[2].frameWidth = 8;
+  sprite_sheets[2].frameHeight = 22;
+  sprite_sheets[2].setFrames("assets/Ships/Beams/BasicBeam.png", *xScale, *yScale);
+
   SetTargetFPS(60);
 
   //SetConfigFlags(FLAG_VSYNC_HINT | FLAG_MSAA_4X_HINT);

@@ -4,6 +4,7 @@ Controller::Controller() {
   gamestatus = STATUS_START;
   xScale = 1;
   yScale = 1;
+  points = 0;
 
   view.initView(1280,720, &xScale, &yScale);
 
@@ -18,9 +19,31 @@ void Controller::entityLoop() {
     self = &enemies[i];
     enemies[i].update();
 
+    for(int x = 0; x < bullets.size(); x++) {
+      other = &bullets[i];
+      if(CheckCollisionRecs(enemies[i].rect, bullets[x].rect)) {
+        enemies[i].hit();
+        bullets.erase(bullets.begin() + x);
+      }
+    }
+
     if(enemies[i].status == ENTITY_REMOVE) {
       enemies.erase(enemies.begin() + i);
-      spawn_test_enemy(rand() % (int)view.getScreenWidth(), 0 - rand() % (int)view.getScreenHeight(), &enemies);
+      spawn_test_enemy(rand() % (int)view.getScreenWidth(), -50 - rand() % (int)view.getScreenHeight(), &enemies);
+    }
+    if(enemies[i].status == ENTITY_DESTROY) {
+      points += enemies[i].points;
+      enemies.erase(enemies.begin() + i);
+      spawn_test_enemy(rand() % (int)view.getScreenWidth(), -50 - rand() % (int)view.getScreenHeight(), &enemies);
+    }
+  }
+
+  for(int i = 0; i < (int) bullets.size(); i++) {
+    self = &bullets[i];
+    bullets[i].update();
+
+    if(bullets[i].status == ENTITY_REMOVE) {
+      bullets.erase(bullets.begin() + i);
     }
   }
 }
@@ -271,6 +294,10 @@ void Controller::doGame() {
       player.setXvel(0);
     }
 
+    if(gamepad.enter_released) {
+      spawn_bullet(player.rect.x + (player.rect.width / 2), player.rect.y, 0, &bullets);
+    }
+
     entityLoop();
 
     view.startFrame();
@@ -283,6 +310,16 @@ void Controller::doGame() {
     for(int i = 0; i < enemies.size(); i++) {
       DrawRectangleRec(enemies[i].getRect(), GREEN);
     }
+
+    for(int i = 0; i < bullets.size(); i++) {
+      //DrawRectangleRec(bullets[i].getRect(), GREEN);
+      view.drawSprite(bullets[i].getX(), bullets[i].getY(), bullets[i].textureName, bullets[i].getFrame(), WHITE);
+    }
+
+    std::string points_string = "Points: ";
+    points_string += std::to_string(points);
+
+    view.drawText(points_string, 20, 20, 40, WHITE);
 
     view.endFrame();
   }

@@ -57,8 +57,9 @@
 #define BEAM_A          14
 #define BEAM_B          15
 
-#define BURST_SPRITESHEET       0
-#define PLAYER_SPRITESHEET      1
+#define BURST_SPRITESHEET             0
+#define PLAYER_SPRITESHEET            1
+#define BASIC_BULLET_SPRITE_SHEET     2
 
 
 //-------------------------------------------------------------------------------------------
@@ -116,7 +117,7 @@ private:
   float screenWidth;
   float screenHeight;
   Texture2D textures[16];
-  sprite_sheet sprite_sheets[2];
+  sprite_sheet sprite_sheets[3];
 
 
 public:
