@@ -11,8 +11,17 @@ Controller::Controller() {
 }
 
 void Controller::entityLoop() {
-  for(int i = 0; i < (int) entities.size() - 1; i++) {
-    entities[i].move();
+  self = &player;
+  player.update();
+
+  for(int i = 0; i < (int) enemies.size(); i++) {
+    self = &enemies[i];
+    enemies[i].update();
+
+    if(enemies[i].status == ENTITY_REMOVE) {
+      enemies.erase(enemies.begin() + i);
+      spawn_test_enemy(rand() % (int)view.getScreenWidth(), 0 - rand() % (int)view.getScreenHeight(), &enemies);
+    }
   }
 }
 
@@ -156,6 +165,7 @@ void Controller::doSettings(){
   int frame = 0;
   int frameTicker = 0;
   int res = 0;
+
   while(gamestatus == STATUS_SETTINGS) {
 
     control_info gamepad = view.getControlInfo();
@@ -192,6 +202,7 @@ void Controller::doSettings(){
     if(cursor_pos < 0) {
         cursor_pos = 4;
     }
+
     view.startFrame();
 
     frameTicker++;
@@ -223,6 +234,14 @@ void Controller::doGame() {
   player.update = &player_update;
   player.setX(100);
   player.setY(100);
+
+  screenWidth_model = view.getScreenWidth();
+  screenHeight_model = view.getScreenHeight();
+
+  for(int i = 0; i < 20; i++) {
+    spawn_test_enemy(rand() % (int)view.getScreenWidth(), 0 - rand() % (int)view.getScreenHeight(), &enemies);
+  }
+
   while(gamestatus == STATUS_PLAYING) {
     if(view.getWindowStatus()) break;
 
@@ -249,13 +268,17 @@ void Controller::doGame() {
       player.setXvel(0);
     }
 
-    self = &player;
-    player.update();
+    entityLoop();
 
     view.startFrame();
     view.drawTexture(0,0,0, WHITE);
 
     view.drawSprite(player.getX(), player.getY(), PLAYER_SPRITESHEET, player.getFrame(), WHITE);
+
+    //enemies draw loop
+    for(int i = 0; i < enemies.size(); i++) {
+      DrawRectangleRec(enemies[i].getRect(), GREEN);
+    }
 
     view.endFrame();
   }

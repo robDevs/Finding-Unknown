@@ -384,7 +384,7 @@ control_info View::getControlInfo() {
 }
 
 float View::getScreenWidth() {
-    return screenWidth;
+    return GetScreenWidth();
 }
 
 float View::getScreenHeight() {

@@ -1,5 +1,8 @@
 #include "Model.h"
 
+int screenWidth_model = 0;
+int screenHeight_model = 0;
+
 //---------------------------------------------
 // Entity class functions.
 //---------------------------------------------
@@ -52,6 +55,11 @@ int Entity::getHealth() {
 int Entity::getFrame() {
   return frame;
 }
+
+void Entity::setRect(int w, int h) {
+  rect.width = w;
+  rect.height = h;
+}
 //---------------------------------------------
 // End Entity class functions.
 //---------------------------------------------
@@ -63,6 +71,10 @@ int Entity::getFrame() {
 
 Entity *self;
 
+void finalize_entity(Entity target, std::vector<Entity> *ent_list) {
+  ent_list->push_back(target);
+}
+
 void player_update() {
   self->xPos += self->xVel;
   self->yPos += self->yVel;
@@ -70,4 +82,37 @@ void player_update() {
   if(self->xVel < 0) self->frame = 0;
   if(self->xVel == 0) self->frame = 1;
   if(self->xVel > 0) self->frame = 2;
+}
+
+void test_enemy_update() {
+  self->xPos += self->xVel;
+  self->yPos += self->yVel;
+
+  self->rect.x = self->xPos;
+  self->rect.y = self->yPos;
+
+  if(self->rect.y + self->rect.height > screenHeight_model) {
+    self->status = ENTITY_REMOVE;
+  }
+
+  if(self->yPos < 0) {
+    self->yVel = 2;
+    self->xVel = 0;
+  }
+}
+void spawn_test_enemy(int x, int y, std::vector<Entity> *ent_list) {
+  Entity new_entity;
+
+  new_entity.update = &test_enemy_update;
+  new_entity.health = 1;
+  new_entity.xPos = x;
+  new_entity.yPos = y;
+  new_entity.rect.x = x;
+  new_entity.rect.y = y;
+  new_entity.yVel = 2;
+  new_entity.rect.width = 20;
+  new_entity.rect.height = 20;
+  new_entity.status = ENTITY_LIVING;
+
+  finalize_entity(new_entity, ent_list);
 }
