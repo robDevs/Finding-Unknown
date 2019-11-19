@@ -93,7 +93,7 @@ void View::initView(int width, int height, float *xScale, float *yScale) {
 
   SetTargetFPS(60);
 
-  SetConfigFlags(FLAG_VSYNC_HINT | FLAG_MSAA_4X_HINT);
+  //SetConfigFlags(FLAG_VSYNC_HINT | FLAG_MSAA_4X_HINT);
 }
 
 void View::setScale(float width, float height,float *xScale, float *yScale) {

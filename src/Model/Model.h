@@ -6,17 +6,15 @@
 #include <vector>
 #include <cstdlib>
 
-#define ENTITY_LIVING     0
-#define ENTITY_REMOVE     1
-#define ENTITY_DESTROY    2
+#define ENTITY_KEEP       0  //keep the ent
+#define ENTITY_REMOVE     1  //Remove the ent
+#define ENTITY_DESTROY    2  //Spawn explosion at ent, give points from ent, remove ent. 
 
 extern int screenWidth_model;
 extern int screenHeight_model;
 
 class Entity {
 public:
-    float xPos;
-    float yPos;
     float xVel;
     float yVel;
     int frame;

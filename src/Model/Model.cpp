@@ -13,10 +13,10 @@ void Entity::setTextureName(int name) {
     textureName = name;
 }
 void Entity::setX(float x) {
-    xPos = x;
+    rect.x = x;
 }
 void Entity::setY(float y) {
-    yPos = y;
+    rect.y = y;
 }
 void Entity::setXvel(float vel) {
     xVel = vel;
@@ -28,14 +28,14 @@ void Entity::setSpeed(float speed) {
     this->speed = speed;
 }
 void Entity::move() {
-  xPos += xVel;
-  yPos += yVel;
+  rect.x += xVel;
+  rect.y += yVel;
 }
 float Entity::getX() {
-    return xPos;
+    return rect.x;
 }
 float Entity::getY() {
-    return yPos;
+    return rect.y;
 }
 bool Entity::getSolid() {
     return solid;
@@ -76,8 +76,8 @@ void finalize_entity(Entity target, std::vector<Entity> *ent_list) {
 }
 
 void player_update() {
-  self->xPos += self->xVel;
-  self->yPos += self->yVel;
+  self->rect.x += self->xVel;
+  self->rect.y += self->yVel;
 
   if(self->xVel < 0) self->frame = 0;
   if(self->xVel == 0) self->frame = 1;
@@ -85,18 +85,15 @@ void player_update() {
 }
 
 void test_enemy_update() {
-  self->xPos += self->xVel;
-  self->yPos += self->yVel;
-
-  self->rect.x = self->xPos;
-  self->rect.y = self->yPos;
+  self->rect.x += self->xVel;
+  self->rect.y += self->yVel;
 
   if(self->rect.y + self->rect.height > screenHeight_model) {
     self->status = ENTITY_REMOVE;
   }
 
-  if(self->yPos < 0) {
-    self->yVel = 2;
+  if(self->rect.y < 0) {
+    self->yVel = 5;
     self->xVel = 0;
   }
 }
@@ -105,14 +102,12 @@ void spawn_test_enemy(int x, int y, std::vector<Entity> *ent_list) {
 
   new_entity.update = &test_enemy_update;
   new_entity.health = 1;
-  new_entity.xPos = x;
-  new_entity.yPos = y;
   new_entity.rect.x = x;
   new_entity.rect.y = y;
-  new_entity.yVel = 2;
-  new_entity.rect.width = 20;
-  new_entity.rect.height = 20;
-  new_entity.status = ENTITY_LIVING;
+  new_entity.yVel = 5;
+  new_entity.rect.width = 50;
+  new_entity.rect.height = 50;
+  new_entity.status = ENTITY_KEEP;
 
   finalize_entity(new_entity, ent_list);
 }

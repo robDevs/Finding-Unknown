@@ -5,6 +5,7 @@
 
 #include "../Model/Model.h"
 #include "../View/View.h"
+#include "raylib.h"
 
 #define STATUS_START        0
 #define STATUS_MENU         1

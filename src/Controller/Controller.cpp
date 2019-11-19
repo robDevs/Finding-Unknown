@@ -235,10 +235,13 @@ void Controller::doGame() {
   player.setX(100);
   player.setY(100);
 
+  player.rect.width = 150.0*xScale;
+  player.rect.height = 200*yScale;
+
   screenWidth_model = view.getScreenWidth();
   screenHeight_model = view.getScreenHeight();
 
-  for(int i = 0; i < 20; i++) {
+  for(int i = 0; i < 5; i++) {
     spawn_test_enemy(rand() % (int)view.getScreenWidth(), 0 - rand() % (int)view.getScreenHeight(), &enemies);
   }
 
@@ -273,6 +276,7 @@ void Controller::doGame() {
     view.startFrame();
     view.drawTexture(0,0,0, WHITE);
 
+    DrawRectangleRec(player.getRect(), GREEN);
     view.drawSprite(player.getX(), player.getY(), PLAYER_SPRITESHEET, player.getFrame(), WHITE);
 
     //enemies draw loop
