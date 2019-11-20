@@ -92,7 +92,7 @@ void bullet_basic_update() {
 
   self->timer++;
 
-  if(self->timer > 30) {
+  if(self->timer > 15) {
     self->timer = 0;
     self->frame++;
   }
@@ -170,10 +170,22 @@ void spawn_test_enemy(int x, int y, std::vector<Entity> *ent_list) {
   new_entity.rect.x = x;
   new_entity.rect.y = y;
   new_entity.yVel = 5;
+  new_entity.xVel = 0;
   new_entity.rect.width = 50;
   new_entity.rect.height = 50;
   new_entity.status = ENTITY_KEEP;
   new_entity.points = 26;
 
   finalize_entity(new_entity, ent_list);
+}
+
+void burner_update() {
+  self->timer++;
+  if(self->timer > 20) {
+    self->frame++;
+    self->timer = 0;
+  }
+  if(self->frame > 3) {
+    self->frame = 0;
+  }
 }

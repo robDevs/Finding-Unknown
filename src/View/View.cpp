@@ -95,6 +95,18 @@ void View::initView(int width, int height, float *xScale, float *yScale) {
   sprite_sheets[2].frameHeight = 22;
   sprite_sheets[2].setFrames("assets/Ships/Beams/BasicBeam.png", *xScale, *yScale);
 
+  sprite_sheets[3].frameWidth = 12;
+  sprite_sheets[3].frameHeight = 56;
+  sprite_sheets[3].setFrames("assets/Ships/Beams/BasicBeamCharge.png", *xScale, *yScale);
+
+  sprite_sheets[4].frameWidth = 22;
+  sprite_sheets[4].frameHeight = 74;
+  sprite_sheets[4].setFrames("assets/Ships/Beams/HelixBeam.png", *xScale, *yScale);
+
+  sprite_sheets[5].frameWidth = 22;
+  sprite_sheets[5].frameHeight = 11;
+  sprite_sheets[5].setFrames("assets/Ships/Burners/BurnerRepeat.png", *xScale, *yScale);
+
   SetTargetFPS(60);
 
   //SetConfigFlags(FLAG_VSYNC_HINT | FLAG_MSAA_4X_HINT);
@@ -200,7 +212,7 @@ void View::freeTextures() {
     for(int i = 0; i < 15; i++) {
         UnloadTexture(textures[i]);
     }
-    for(int i = 0; i < 2; i++) {
+    for(int i = 0; i < 5; i++) {
       sprite_sheets[i].unloadTexture();
     }
 }

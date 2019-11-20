@@ -8,7 +8,7 @@
 
 #define ENTITY_KEEP       0  //keep the ent
 #define ENTITY_REMOVE     1  //Remove the ent
-#define ENTITY_DESTROY    2  //Spawn explosion at ent, give points from ent, remove ent. 
+#define ENTITY_DESTROY    2  //Spawn explosion at ent, give points from ent, remove ent.
 
 #define BASIC_BULLET      0
 
@@ -28,7 +28,7 @@ public:
     int moveType;
     int status;
     int health;
-    float xScale; 
+    float xScale;
     float yScale;
     int points;
     int timer;
@@ -69,5 +69,7 @@ extern void spawn_bullet(int x, int y, int type, std::vector<Entity> *ent_list);
 extern void test_enemy_update();
 extern void test_enemy_hit();
 extern void spawn_test_enemy(int x, int y, std::vector<Entity> *ent_list);
+
+extern void burner_update();
 
 #endif

@@ -60,6 +60,10 @@
 #define BURST_SPRITESHEET             0
 #define PLAYER_SPRITESHEET            1
 #define BASIC_BULLET_SPRITE_SHEET     2
+#define BASIC_CHARGE_SPRITE_SHEET     3
+#define HELIX_BEAM_SPRITE_SHEET       4
+#define BURNER_SPRITE_SHEET           5
+
 
 
 //-------------------------------------------------------------------------------------------
@@ -117,7 +121,7 @@ private:
   float screenWidth;
   float screenHeight;
   Texture2D textures[16];
-  sprite_sheet sprite_sheets[3];
+  sprite_sheet sprite_sheets[6];
 
 
 public:

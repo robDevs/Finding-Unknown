@@ -6,6 +6,8 @@ Controller::Controller() {
   yScale = 1;
   points = 0;
 
+  srand (time(NULL));
+
   view.initView(1280,720, &xScale, &yScale);
 
   gameLoop();
@@ -20,7 +22,7 @@ void Controller::entityLoop() {
     enemies[i].update();
 
     for(int x = 0; x < bullets.size(); x++) {
-      other = &bullets[i];
+      other = &bullets[x];
       if(CheckCollisionRecs(enemies[i].rect, bullets[x].rect)) {
         enemies[i].hit();
       }
@@ -75,6 +77,12 @@ void Controller::doIntro() {
     int titlePos = view.getScreenHeight()/2 - view.getTextureHeight(TITLE_)/2;
     int titleFade = 0;
     while(1) {
+
+      control_info gamepad = view.getControlInfo();
+
+      if(gamepad.enter_released) {
+        break;
+      }
 
       //update things
       frameTicker++;
@@ -257,6 +265,14 @@ void Controller::doGame() {
   player.setX(100);
   player.setY(100);
 
+  int bulletCounter = 0;
+
+  Entity burner;
+  burner.timer = 0;
+  burner.frame = 0;
+  burner.textureName = BURNER_SPRITE_SHEET;
+  burner.update = &burner_update;
+
   player.rect.width = 150.0*xScale;
   player.rect.height = 200*yScale;
 
@@ -264,7 +280,7 @@ void Controller::doGame() {
   screenHeight_model = view.getScreenHeight();
 
   for(int i = 0; i < 5; i++) {
-    spawn_test_enemy(rand() % (int)view.getScreenWidth(), 0 - rand() % (int)view.getScreenHeight(), &enemies);
+    spawn_test_enemy(rand() % (int)view.getScreenWidth(), -50 - rand() % (int)view.getScreenHeight(), &enemies);
   }
 
   while(gamestatus == STATUS_PLAYING) {
@@ -293,17 +309,32 @@ void Controller::doGame() {
       player.setXvel(0);
     }
 
-    if(gamepad.enter_released) {
-      spawn_bullet(player.rect.x + (player.rect.width / 2) - 4*xScale, player.rect.y, 0, &bullets);
+    if(gamepad.enter_held) {
+      bulletCounter++;
+      if(bulletCounter > 5) {
+        spawn_bullet(player.rect.x + (player.rect.width / 2) - 4*xScale, player.rect.y, 0, &bullets);
+        bulletCounter = 0;
+      }
+    }
+    else {
+      bulletCounter = 0;
     }
 
     entityLoop();
 
+    burner.rect.x = player.rect.x + player.rect.width/2 - 22*xScale/2;
+
+    burner.rect.y = player.rect.y + 152*yScale;
+
     view.startFrame();
     view.drawTexture(0,0,0, WHITE);
 
-    DrawRectangleRec(player.getRect(), GREEN);
+    //DrawRectangleRec(player.getRect(), GREEN);
+    view.drawSprite(burner.getX(), burner.getY(), BURNER_SPRITE_SHEET, burner.frame, WHITE);
     view.drawSprite(player.getX(), player.getY(), PLAYER_SPRITESHEET, player.getFrame(), WHITE);
+
+    self = &burner;
+    burner.update();
 
     //enemies draw loop
     for(int i = 0; i < enemies.size(); i++) {
