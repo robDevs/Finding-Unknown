@@ -1,10 +1,14 @@
 #include "Model.h"
 
+//----------------------------------------------
+//See Model.h for basic documentation.
+//----------------------------------------------
+
 int screenWidth_model = 0;
 int screenHeight_model = 0;
 
 Entity::Entity() {
-    hit = NULL;
+    hit = NULL; //set the pointer functions to null at creation to avoid calling a function that hasn't been defined yet.
     update = NULL;
 }
 
@@ -29,9 +33,6 @@ void Entity::setXvel(float vel) {
 void Entity::setYvel(float vel) {
     yVel = vel;
 }
-void Entity::setSpeed(float speed) {
-    this->speed = speed;
-}
 void Entity::move() {
   rect.x += xVel;
   rect.y += yVel;
@@ -42,14 +43,8 @@ float Entity::getX() {
 float Entity::getY() {
     return rect.y;
 }
-bool Entity::getSolid() {
-    return solid;
-}
 Rectangle Entity::getRect() {
     return rect;
-}
-int Entity::getMoveType() {
-    return moveType;
 }
 int Entity::getStatus() {
     return status;
@@ -71,32 +66,42 @@ void Entity::setRect(int w, int h) {
 
 
 //---------------------------------------------
-// Entity call back functions go here.
+// Entity pointer functions go here.
 //---------------------------------------------
 
-Entity *self;
-Entity *other;
+Entity *self; //like this->
+Entity *other; //EG: bullet hits enemy. bullet == other. enemy = this.
 Entity *player;
 
+//vector is passed from controller.cpp to spawn function. spawn creates entity and passes to this with vec.
 void finalize_entity(Entity target, std::vector<Entity> *ent_list) {
   ent_list->push_back(target);
 }
 
+//Update function for the player.
+//Move the position(hitbox) by velocity * scale. (coming soon)
 void player_update() {
   self->rect.x += self->xVel;
   self->rect.y += self->yVel;
 
+  //Set the frame depending on direction of movement.
   if(self->xVel < 0) self->frame = 0;
   if(self->xVel == 0) self->frame = 1;
   if(self->xVel > 0) self->frame = 2;
 }
+//Only one player so manually created in controller.cpp. no spawn function.
 
+//Update the bullet.
 void bullet_basic_update() {
+  //Move the bullet.
   self->rect.x += self->xVel*self->yScale;
   self->rect.y += self->yVel*self->yScale;
 
+  //Increase timer.
   self->timer++;
 
+  //set frame depending on timer.
+  //reest timer.
   if(self->timer > 15) {
     self->timer = 0;
     self->frame++;
@@ -106,21 +111,23 @@ void bullet_basic_update() {
     self->frame = 0;
   }
 
-  if(self->rect.y + self->rect.height < 0 ||
-     self->rect.x + self->rect.width < 0 ||
-     self->rect.x > screenWidth_model ||
-     self->health <= 0)
+  //entity should be removed when off screen or when health is 0
+  //status is checked and handled each frame by controller.cpp
+  if(self->rect.y + self->rect.height < 0 || self->health <= 0)
      {
         self->status = ENTITY_REMOVE;
      }
 }
+//if bullet is hit, lower it's health.
+//Bullets should only have one health though.
 void basic_bullet_hit() {
   self->health -= 1;
 }
+//spawn a bullet at given (x,y)
 void spawn_bullet(int x, int y, int type, float xScale, float yScale, std::vector<Entity> *ent_list){
-  Entity new_entity;
+  Entity new_entity; //create a new ent.
 
-  if(type == BASIC_BULLET) {
+  if(type == BASIC_BULLET) { //check it's type and assign type specific vars.
     new_entity.update = &bullet_basic_update;
     new_entity.yVel = -7;
     new_entity.health = 1;
@@ -129,12 +136,13 @@ void spawn_bullet(int x, int y, int type, float xScale, float yScale, std::vecto
     new_entity.hit = &basic_bullet_hit;
     new_entity.timer = 0;
   }
+  //assign non type specific vars.
   new_entity.rect.x = x;
   new_entity.rect.y = y;
-  new_entity.xVel = 0;
-  new_entity.rect.width = 10*xScale;
+  new_entity.xVel = 0; //don't forget to set.
+  new_entity.rect.width = 10*xScale; //scale is passed from controller.cpp
   new_entity.rect.height = 10*yScale;
-  new_entity.status = ENTITY_KEEP;
+  new_entity.status = ENTITY_KEEP; //entities should start with this.
   new_entity.frame = 0;
   new_entity.xScale = xScale;
   new_entity.yScale = yScale;
@@ -213,6 +221,7 @@ void spawn_test_enemy(int x, int y, float xScale, float yScale, std::vector<Enti
 
   finalize_entity(new_entity, ent_list);
 }
+
 
 void burner_update() {
   self->timer++;
