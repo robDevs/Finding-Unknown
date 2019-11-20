@@ -23,7 +23,6 @@ void Controller::entityLoop() {
       other = &bullets[i];
       if(CheckCollisionRecs(enemies[i].rect, bullets[x].rect)) {
         enemies[i].hit();
-        bullets.erase(bullets.begin() + x);
       }
     }
 
@@ -295,7 +294,7 @@ void Controller::doGame() {
     }
 
     if(gamepad.enter_released) {
-      spawn_bullet(player.rect.x + (player.rect.width / 2), player.rect.y, 0, &bullets);
+      spawn_bullet(player.rect.x + (player.rect.width / 2) - 4*xScale, player.rect.y, 0, &bullets);
     }
 
     entityLoop();

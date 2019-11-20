@@ -93,7 +93,7 @@ void bullet_basic_update() {
   self->timer++;
 
   if(self->timer > 30) {
-    self->timer = 0; 
+    self->timer = 0;
     self->frame++;
   }
 
@@ -103,8 +103,8 @@ void bullet_basic_update() {
 
   if(self->rect.y + self->rect.height < 0 ||
      self->rect.x + self->rect.width < 0 ||
-     self->rect.x > screenWidth_model || 
-     self->health <= 0) 
+     self->rect.x > screenWidth_model ||
+     self->health <= 0)
      {
         self->status = ENTITY_REMOVE;
      }
@@ -140,12 +140,12 @@ void test_enemy_update() {
   self->rect.y += self->yVel;
 
   if(self->rect.y > screenHeight_model ||
-     self->rect.x + self->rect.width < 0 ||
-     self->rect.x > screenWidth_model) 
+     self->rect.x < 0 ||
+     self->rect.x + self->rect.width > screenWidth_model)
      {
         self->status = ENTITY_REMOVE;
      }
-  
+
   if(self->health <= 0) {
     self->status = ENTITY_DESTROY;
   }
@@ -158,6 +158,7 @@ void test_enemy_update() {
 void test_enemy_hit() {
   if(other->className == BASIC_BULLET) {
     self->health -= 1;
+    other->status = ENTITY_REMOVE;
   }
 }
 void spawn_test_enemy(int x, int y, std::vector<Entity> *ent_list) {
