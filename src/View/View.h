@@ -63,6 +63,7 @@
 #define BASIC_CHARGE_SPRITE_SHEET     3
 #define HELIX_BEAM_SPRITE_SHEET       4
 #define BURNER_SPRITE_SHEET           5
+#define BASIC_ENEMY_SPRITE_SHEET      6
 
 
 
@@ -121,7 +122,7 @@ private:
   float screenWidth;
   float screenHeight;
   Texture2D textures[16];
-  sprite_sheet sprite_sheets[6];
+  sprite_sheet sprite_sheets[7];
 
 
 public:

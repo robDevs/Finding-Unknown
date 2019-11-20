@@ -107,6 +107,11 @@ void View::initView(int width, int height, float *xScale, float *yScale) {
   sprite_sheets[5].frameHeight = 11;
   sprite_sheets[5].setFrames("assets/Ships/Burners/BurnerRepeat.png", *xScale, *yScale);
 
+  sprite_sheets[6].frameWidth = 150;
+  sprite_sheets[6].frameHeight = 150;
+  sprite_sheets[6].setFrames("assets/Ships/Enemy/Enemy_1_Spin.png", *xScale, *yScale);
+
+
   SetTargetFPS(60);
 
   //SetConfigFlags(FLAG_VSYNC_HINT | FLAG_MSAA_4X_HINT);
@@ -212,7 +217,7 @@ void View::freeTextures() {
     for(int i = 0; i < 15; i++) {
         UnloadTexture(textures[i]);
     }
-    for(int i = 0; i < 5; i++) {
+    for(int i = 0; i < 6; i++) {
       sprite_sheets[i].unloadTexture();
     }
 }

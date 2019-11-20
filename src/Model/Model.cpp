@@ -139,6 +139,29 @@ void test_enemy_update() {
   self->rect.x += self->xVel;
   self->rect.y += self->yVel;
 
+  self->timer++;
+
+  if(self->timer > 10) {
+    self->timer = 0;
+
+    if(self->xVel < 0) {
+      self->frame--;
+    }
+    else if(self->xVel > 0) {
+      self->frame++;
+    }
+    else {
+      self->frame++;
+    }
+
+    if(self->frame > 2) {
+      self->frame = 0;
+    }
+    if(self->frame < 0) {
+      self->frame = 0;
+    }
+  }
+
   if(self->rect.y > screenHeight_model ||
      self->rect.x < 0 ||
      self->rect.x + self->rect.width > screenWidth_model)
@@ -171,8 +194,11 @@ void spawn_test_enemy(int x, int y, std::vector<Entity> *ent_list) {
   new_entity.rect.y = y;
   new_entity.yVel = 5;
   new_entity.xVel = 0;
-  new_entity.rect.width = 50;
-  new_entity.rect.height = 50;
+  new_entity.rect.width = 150;
+  new_entity.frame = 0;
+  new_entity.timer = 0;
+  new_entity.textureName = 6;
+  new_entity.rect.height = 150;
   new_entity.status = ENTITY_KEEP;
   new_entity.points = 26;
 

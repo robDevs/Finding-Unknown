@@ -348,7 +348,8 @@ void Controller::doGame() {
 
     //enemies draw loop
     for(int i = 0; i < enemies.size(); i++) {
-      DrawRectangleRec(enemies[i].getRect(), GREEN);
+      //DrawRectangleRec(enemies[i].getRect(), GREEN);
+      view.drawSprite(enemies[i].getX(), enemies[i].getY(), enemies[i].textureName, enemies[i].getFrame(), WHITE);
     }
 
     for(int i = 0; i < bullets.size(); i++) {
