@@ -117,6 +117,12 @@ void View::initView(int width, int height, float *xScale, float *yScale) {
   //SetConfigFlags(FLAG_VSYNC_HINT | FLAG_MSAA_4X_HINT);
 }
 
+void View::setFullScreen(float *xScale, float *yScale) {
+    ToggleFullscreen();
+
+    initView(GetScreenWidth(), GetScreenHeight(), xScale, yScale);
+}
+
 void View::setScale(float width, float height,float *xScale, float *yScale) {
     screenWidth = width;
     screenHeight = height;

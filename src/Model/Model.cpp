@@ -3,6 +3,11 @@
 int screenWidth_model = 0;
 int screenHeight_model = 0;
 
+Entity::Entity() {
+    hit = NULL;
+    update = NULL;
+}
+
 //---------------------------------------------
 // Entity class functions.
 //---------------------------------------------
@@ -87,8 +92,8 @@ void player_update() {
 }
 
 void bullet_basic_update() {
-  self->rect.x += self->xVel;
-  self->rect.y += self->yVel;
+  self->rect.x += self->xVel*self->yScale;
+  self->rect.y += self->yVel*self->yScale;
 
   self->timer++;
 
@@ -112,7 +117,7 @@ void bullet_basic_update() {
 void basic_bullet_hit() {
   self->health -= 1;
 }
-void spawn_bullet(int x, int y, int type, std::vector<Entity> *ent_list){
+void spawn_bullet(int x, int y, int type, float xScale, float yScale, std::vector<Entity> *ent_list){
   Entity new_entity;
 
   if(type == BASIC_BULLET) {
@@ -127,17 +132,19 @@ void spawn_bullet(int x, int y, int type, std::vector<Entity> *ent_list){
   new_entity.rect.x = x;
   new_entity.rect.y = y;
   new_entity.xVel = 0;
-  new_entity.rect.width = 10;
-  new_entity.rect.height = 10;
+  new_entity.rect.width = 10*xScale;
+  new_entity.rect.height = 10*yScale;
   new_entity.status = ENTITY_KEEP;
   new_entity.frame = 0;
+  new_entity.xScale = xScale;
+  new_entity.yScale = yScale;
 
   finalize_entity(new_entity, ent_list);
 }
 
 void test_enemy_update() {
-  self->rect.x += self->xVel;
-  self->rect.y += self->yVel;
+  self->rect.x += self->xVel*self->xScale;
+  self->rect.y += self->yVel*self->yScale;
 
   self->timer++;
 
@@ -184,7 +191,7 @@ void test_enemy_hit() {
     other->status = ENTITY_REMOVE;
   }
 }
-void spawn_test_enemy(int x, int y, std::vector<Entity> *ent_list) {
+void spawn_test_enemy(int x, int y, float xScale, float yScale, std::vector<Entity> *ent_list) {
   Entity new_entity;
 
   new_entity.update = &test_enemy_update;
@@ -194,13 +201,15 @@ void spawn_test_enemy(int x, int y, std::vector<Entity> *ent_list) {
   new_entity.rect.y = y;
   new_entity.yVel = 5;
   new_entity.xVel = 0;
-  new_entity.rect.width = 150;
+  new_entity.rect.width = 150*xScale;
+  new_entity.rect.height = 150*yScale;
   new_entity.frame = 0;
   new_entity.timer = 0;
   new_entity.textureName = 6;
-  new_entity.rect.height = 150;
   new_entity.status = ENTITY_KEEP;
   new_entity.points = 26;
+  new_entity.xScale = xScale;
+  new_entity.yScale = yScale;
 
   finalize_entity(new_entity, ent_list);
 }

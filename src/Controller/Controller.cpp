@@ -15,34 +15,34 @@ Controller::Controller() {
 
 void Controller::entityLoop() {
   self = &player;
-  player.update();
+  if(player.update != NULL) player.update();
 
   for(int i = 0; i < (int) enemies.size(); i++) {
     self = &enemies[i];
-    enemies[i].update();
+    if(enemies[i].update != NULL) enemies[i].update();
 
     for(int x = 0; x < bullets.size(); x++) {
       other = &bullets[x];
       if(CheckCollisionRecs(enemies[i].rect, bullets[x].rect)) {
-        enemies[i].hit();
+        if(enemies[i].hit != NULL) enemies[i].hit();
       }
     }
 
     if(enemies[i].status == ENTITY_REMOVE) {
       enemies.erase(enemies.begin() + i);
-      spawn_test_enemy(rand() % (int)view.getScreenWidth(), -50 - rand() % (int)view.getScreenHeight(), &enemies);
+      spawn_test_enemy(rand() % (int)view.getScreenWidth(), -50 - rand() % (int)view.getScreenHeight(), xScale, yScale, &enemies);
     }
     if(enemies[i].status == ENTITY_DESTROY) {
       spawn_explosion(enemies[i].rect.x + enemies[i].rect.width/2 - 200*xScale, enemies[i].rect.y + enemies[i].rect.width/2 - 200*yScale, &explosions);
       points += enemies[i].points;
       enemies.erase(enemies.begin() + i);
-      spawn_test_enemy(rand() % (int)view.getScreenWidth(), -50 - rand() % (int)view.getScreenHeight(), &enemies);
+      spawn_test_enemy(rand() % (int)view.getScreenWidth(), -50 - rand() % (int)view.getScreenHeight(), xScale, yScale,  &enemies);
     }
   }
 
   for(int i = 0; i < (int) bullets.size(); i++) {
     self = &bullets[i];
-    bullets[i].update();
+    if(bullets[i].update != NULL) bullets[i].update();
 
     if(bullets[i].status == ENTITY_REMOVE) {
       bullets.erase(bullets.begin() + i);
@@ -51,7 +51,7 @@ void Controller::entityLoop() {
 
   for(int i = 0; i < (int) explosions.size(); i++) {
     self = &explosions[i];
-    explosions[i].update();
+    if(explosions[i].update != NULL) explosions[i].update();
 
     if(explosions[i].status == ENTITY_REMOVE) {
       explosions.erase(explosions.begin() + i);
@@ -224,6 +224,9 @@ void Controller::doSettings(){
                 view.initView(3840, 2160, &xScale, &yScale);
                 break;
             case 4:
+                view.setFullScreen(&xScale, &yScale);
+                break;
+            case 5:
                 gamestatus = STATUS_MENU;
                 break;
         }
@@ -236,11 +239,11 @@ void Controller::doSettings(){
         cursor_pos -= 1;
     }
 
-    if(cursor_pos > 4) {
+    if(cursor_pos > 5) {
         cursor_pos = 0;
     }
     if(cursor_pos < 0) {
-        cursor_pos = 4;
+        cursor_pos = 5;
     }
 
     view.startFrame();
@@ -262,7 +265,8 @@ void Controller::doSettings(){
     view.drawText("1920x1080", view.getScreenWidth()/2, view.getScreenHeight()/2 + 80*((xScale+yScale)/2), 40*((xScale+yScale)/2), (cursor_pos == 1) ? (Color) {0,0,255,255} : (Color) {255,255,255,255});
     view.drawText("2560x1440", view.getScreenWidth()/2, view.getScreenHeight()/2 + 120*((xScale+yScale)/2), 40*((xScale+yScale)/2), (cursor_pos == 2) ? (Color) {0,0,255,255} : (Color) {255,255,255,255});
     view.drawText("3840x2160", view.getScreenWidth()/2, view.getScreenHeight()/2 + 160*((xScale+yScale)/2), 40*((xScale+yScale)/2), (cursor_pos == 3) ? (Color) {0,0,255,255} : (Color) {255,255,255,255});
-    view.drawText("Back", view.getScreenWidth()/2, view.getScreenHeight()/2 + 200*((xScale+yScale)/2), 40*((xScale+yScale)/2), (cursor_pos == 4) ? (Color) {0,0,255,255} : (Color) {255,255,255,255});
+    view.drawText("FullScreen", view.getScreenWidth()/2, view.getScreenHeight()/2 + 200*((xScale+yScale)/2), 40*((xScale+yScale)/2), (cursor_pos == 4) ? (Color) {0,0,255,255} : (Color) {255,255,255,255});
+    view.drawText("Back", view.getScreenWidth()/2, view.getScreenHeight()/2 + 240*((xScale+yScale)/2), 40*((xScale+yScale)/2), (cursor_pos == 5) ? (Color) {0,0,255,255} : (Color) {255,255,255,255});
 
 
 
@@ -290,7 +294,7 @@ void Controller::doGame() {
   screenHeight_model = view.getScreenHeight();
 
   for(int i = 0; i < 15; i++) {
-    spawn_test_enemy(rand() % (int)view.getScreenWidth(), -50 - rand() % (int)view.getScreenHeight(), &enemies);
+    spawn_test_enemy(rand() % (int)view.getScreenWidth(), -50 - rand() % (int)view.getScreenHeight(), xScale, yScale, &enemies);
   }
 
   while(gamestatus == STATUS_PLAYING) {
@@ -300,20 +304,20 @@ void Controller::doGame() {
     control_info gamepad = view.getControlInfo();
 
     if(gamepad.up_held) {
-      player.setYvel(-5.0);
+      player.setYvel(-5.0*yScale);
     }
     else if(gamepad.down_held) {
-      player.setYvel(5.0);
+      player.setYvel(5.0*yScale);
     }
     else {
       player.setYvel(0);
     }
 
     if(gamepad.left_held) {
-      player.setXvel(-5.0);
+      player.setXvel(-5.0*xScale);
     }
     else if(gamepad.right_held) {
-      player.setXvel(5.0);
+      player.setXvel(5.0*xScale);
     }
     else {
       player.setXvel(0);
@@ -322,7 +326,7 @@ void Controller::doGame() {
     if(gamepad.enter_held) {
       bulletCounter++;
       if(bulletCounter > 5) {
-        spawn_bullet(player.rect.x + (player.rect.width / 2) - 4*xScale, player.rect.y, 0, &bullets);
+        spawn_bullet(player.rect.x + (player.rect.width / 2) - 4*xScale, player.rect.y, 0, xScale, yScale, &bullets);
         bulletCounter = 0;
       }
     }
@@ -344,7 +348,7 @@ void Controller::doGame() {
     view.drawSprite(player.getX(), player.getY(), PLAYER_SPRITESHEET, player.getFrame(), WHITE);
 
     self = &burner;
-    burner.update();
+    if(burner.update != NULL) burner.update();
 
     //enemies draw loop
     for(int i = 0; i < enemies.size(); i++) {

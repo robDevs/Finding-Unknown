@@ -17,6 +17,7 @@ extern int screenHeight_model;
 
 class Entity {
 public:
+    Entity();
     float xVel;
     float yVel;
     int frame;
@@ -64,11 +65,11 @@ extern void player_update();
 
 extern void bullet_basic_update();
 extern void basic_bullet_hit();
-extern void spawn_bullet(int x, int y, int type, std::vector<Entity> *ent_list);
+extern void spawn_bullet(int x, int y, int type, float xScale, float yScale, std::vector<Entity> *ent_list);
 
 extern void test_enemy_update();
 extern void test_enemy_hit();
-extern void spawn_test_enemy(int x, int y, std::vector<Entity> *ent_list);
+extern void spawn_test_enemy(int x, int y, float xScale, float yScale, std::vector<Entity> *ent_list);
 
 extern void burner_update();
 

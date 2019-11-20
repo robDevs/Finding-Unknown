@@ -127,6 +127,7 @@ private:
 
 public:
   void initView(int width, int height, float *xScale, float *yScale); // Create a window with the given attributes.
+  void setFullScreen(float *xScale, float *yScale);
   void setScale(float width, float height,float *xScale, float *yScale);
   void startFrame();
   void endFrame();
