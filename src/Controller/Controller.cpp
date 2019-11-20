@@ -33,6 +33,7 @@ void Controller::entityLoop() {
       spawn_test_enemy(rand() % (int)view.getScreenWidth(), -50 - rand() % (int)view.getScreenHeight(), &enemies);
     }
     if(enemies[i].status == ENTITY_DESTROY) {
+      spawn_explosion(enemies[i].rect.x + enemies[i].rect.width/2 - 200*xScale, enemies[i].rect.y + enemies[i].rect.width/2 - 200*yScale, &explosions);
       points += enemies[i].points;
       enemies.erase(enemies.begin() + i);
       spawn_test_enemy(rand() % (int)view.getScreenWidth(), -50 - rand() % (int)view.getScreenHeight(), &enemies);
@@ -45,6 +46,15 @@ void Controller::entityLoop() {
 
     if(bullets[i].status == ENTITY_REMOVE) {
       bullets.erase(bullets.begin() + i);
+    }
+  }
+
+  for(int i = 0; i < (int) explosions.size(); i++) {
+    self = &explosions[i];
+    explosions[i].update();
+
+    if(explosions[i].status == ENTITY_REMOVE) {
+      explosions.erase(explosions.begin() + i);
     }
   }
 }
@@ -279,7 +289,7 @@ void Controller::doGame() {
   screenWidth_model = view.getScreenWidth();
   screenHeight_model = view.getScreenHeight();
 
-  for(int i = 0; i < 5; i++) {
+  for(int i = 0; i < 15; i++) {
     spawn_test_enemy(rand() % (int)view.getScreenWidth(), -50 - rand() % (int)view.getScreenHeight(), &enemies);
   }
 
@@ -344,6 +354,11 @@ void Controller::doGame() {
     for(int i = 0; i < bullets.size(); i++) {
       //DrawRectangleRec(bullets[i].getRect(), GREEN);
       view.drawSprite(bullets[i].getX(), bullets[i].getY(), bullets[i].textureName, bullets[i].getFrame(), WHITE);
+    }
+
+    for(int i = 0; i < explosions.size(); i++) {
+      //DrawRectangleRec(bullets[i].getRect(), GREEN);
+      view.drawSprite(explosions[i].getX(), explosions[i].getY(), explosions[i].textureName, explosions[i].getFrame(), WHITE);
     }
 
     std::string points_string = "Points: ";

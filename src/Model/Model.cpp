@@ -189,3 +189,24 @@ void burner_update() {
     self->frame = 0;
   }
 }
+
+void explosion_update() {
+  self->timer++;
+  if(self->timer > 5) {
+    self->frame++;
+    self->timer = 0;
+  }
+  if(self->frame > 11) {
+    self->status = ENTITY_REMOVE;
+  }
+}
+void spawn_explosion(int x, int y, std::vector<Entity> *ent_list) {
+  Entity new_entity;
+  new_entity.rect.x = x;
+  new_entity.rect.y = y;
+  new_entity.frame = 0;
+  new_entity.textureName = 0;
+  new_entity.update = &explosion_update;
+
+  finalize_entity(new_entity, ent_list);
+}

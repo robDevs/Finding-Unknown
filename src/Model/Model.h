@@ -72,4 +72,7 @@ extern void spawn_test_enemy(int x, int y, std::vector<Entity> *ent_list);
 
 extern void burner_update();
 
+extern void explosion_update();
+extern void spawn_explosion(int x, int y, std::vector<Entity> *ent_list);
+
 #endif
