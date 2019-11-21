@@ -33,7 +33,8 @@ void Controller::entityLoop() {
       //spawn_test_enemy(rand() % (int)view.getScreenWidth(), -50 - rand() % (int)view.getScreenHeight(), xScale, yScale, &enemies);
     }
     if(enemies[i].status == ENTITY_DESTROY) {
-      spawn_explosion(enemies[i].rect.x + enemies[i].rect.width/2 - 200*xScale, enemies[i].rect.y + enemies[i].rect.width/2 - 200*yScale, &explosions);
+      spawn_explosion(enemies[i].rect.x + enemies[i].rect.width/2 - 200*xScale, enemies[i].rect.y + enemies[i].rect.width/2 - 200*yScale, 0, &explosions);
+
       points += enemies[i].points;
       enemies.erase(enemies.begin() + i);
       //spawn_test_enemy(rand() % (int)view.getScreenWidth(), -50 - rand() % (int)view.getScreenHeight(), xScale, yScale,  &enemies);
@@ -45,6 +46,10 @@ void Controller::entityLoop() {
     if(bullets[i].update != NULL) bullets[i].update();
 
     if(bullets[i].status == ENTITY_REMOVE) {
+      bullets.erase(bullets.begin() + i);
+    }
+    if(bullets[i].status == ENTITY_DESTROY) {
+      spawn_explosion(bullets[i].rect.x + bullets[i].rect.width/2 - 25*xScale, bullets[i].rect.y + bullets[i].rect.width/2 - 25*yScale, 1, &explosions);
       bullets.erase(bullets.begin() + i);
     }
   }
@@ -280,6 +285,7 @@ void Controller::doGame() {
   player.setY(100);
 
   int bulletCounter = 0;
+  bool bulletReset = false;
 
   Entity burner;
   burner.timer = 0;
@@ -327,12 +333,24 @@ void Controller::doGame() {
 
     if(gamepad.enter_held) {
       bulletCounter++;
-      if(bulletCounter > 5) {
+      if(bulletCounter > 5 && !bulletReset){
         spawn_bullet(player.rect.x + (player.rect.width / 2) - 4*xScale, player.rect.y, 0, xScale, yScale, &bullets);
         bulletCounter = 0;
       }
     }
     else {
+      bulletCounter = 0;
+    }
+
+    if(bullets.size() >= 3) {
+      bulletReset = true;
+      bulletCounter = 0;
+    }
+    if(bullets.size() == 0) {
+      bulletReset = false;
+    }
+
+    if(bulletReset) {
       bulletCounter = 0;
     }
 
@@ -380,10 +398,14 @@ void Controller::doGame() {
 void Controller::testLevel() {
   for(int i = 0; i < 10; i += 2) {
     //spawn_test_enemy(view.getScreenWidth() - 400*xScale, -200*yScale - view.getScreenHeight()*i, xScale, yScale, &enemies);
-    spawn_test_enemy(view.getScreenWidth() - 400*xScale, -200*yScale - (view.getScreenHeight()-200*yScale) - view.getScreenHeight()*i, xScale, yScale, &enemies);
+    spawn_test_enemy(view.getScreenWidth() - 400*xScale, -200*yScale - (view.getScreenHeight()-200*yScale) - view.getScreenHeight()*i, xScale, yScale, 0, &enemies);
   }
   for(int i = 1; i < 10; i += 2) {
     //spawn_test_enemy(view.getScreenWidth() - 400*xScale, -200*yScale - view.getScreenHeight()*i, xScale, yScale, &enemies);
-    spawn_test_enemy(400*xScale - enemies[0].rect.width, -200*yScale - (view.getScreenHeight()-200*yScale) - view.getScreenHeight()*i, xScale, yScale, &enemies);
+    spawn_test_enemy(400*xScale - enemies[0].rect.width, -200*yScale - (view.getScreenHeight()-200*yScale) - view.getScreenHeight()*i, xScale, yScale, 0, &enemies);
+  }
+
+  for(int i = 0; i < 12; i += 3) {
+    spawn_test_enemy(view.getScreenWidth()/2, -200*yScale - (view.getScreenHeight()-200*yScale) - view.getScreenHeight()*i, xScale, yScale, 1, &enemies);
   }
 }

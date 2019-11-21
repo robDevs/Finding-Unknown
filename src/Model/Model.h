@@ -30,6 +30,7 @@ public:
     float yScale;
     int points; //how many points this ent gives.
     int timer; //a timer. increase it every frame. Use it for things. 60 frames = 1 second.
+    int timer1;
 
     void (*hit)(); // A hit function. if defined and not bullet, called every frame upon certain collisions.
     void (*update)(); // Logic / update function. if defined called every frame. syntax is update = &func; where func is a defined function.
@@ -74,11 +75,13 @@ extern void spawn_bullet(int x, int y, int type, float xScale, float yScale, std
 
 extern void test_enemy_update();
 extern void test_enemy_hit();
-extern void spawn_test_enemy(int x, int y, float xScale, float yScale, std::vector<Entity> *ent_list);
+extern void adv_enemy_update();
+extern void spawn_test_enemy(int x, int y, float xScale, float yScale, int type, std::vector<Entity> *ent_list);
 
 extern void burner_update();
 
 extern void explosion_update();
-extern void spawn_explosion(int x, int y, std::vector<Entity> *ent_list);
+extern void beam_burst_update();
+extern void spawn_explosion(int x, int y, int type, std::vector<Entity> *ent_list);
 
 #endif

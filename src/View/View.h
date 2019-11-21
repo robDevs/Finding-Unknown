@@ -66,6 +66,7 @@
 #define BASIC_ENEMY_SPRITE_SHEET      6
 #define ADV_ENEMY_SPRITE_SHEET        7
 #define HARD_ENEMY_SPRITE_SHEET       8
+#define SHOT_HIT_SPRITE_SHEET         9
 
 
 
@@ -124,7 +125,7 @@ private:
   float screenWidth;
   float screenHeight;
   Texture2D textures[16];
-  sprite_sheet sprite_sheets[9];
+  sprite_sheet sprite_sheets[10];
 
 
 public:

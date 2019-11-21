@@ -119,6 +119,10 @@ void View::initView(int width, int height, float *xScale, float *yScale) {
   sprite_sheets[8].frameHeight = 150;
   sprite_sheets[8].setFrames("assets/Ships/Enemy/Enemy_3_Spin.png", *xScale, *yScale);
 
+  sprite_sheets[9].frameWidth = 50;
+  sprite_sheets[9].frameHeight = 50;
+  sprite_sheets[9].setFrames("assets/Ships/Beams/ShotHit.png", *xScale, *yScale);
+
 
   SetTargetFPS(60);
 
@@ -231,7 +235,7 @@ void View::freeTextures() {
     for(int i = 0; i < 15; i++) {
         UnloadTexture(textures[i]);
     }
-    for(int i = 0; i < 8; i++) {
+    for(int i = 0; i < 9; i++) {
       sprite_sheets[i].unloadTexture();
     }
 }

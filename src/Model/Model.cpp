@@ -113,10 +113,13 @@ void bullet_basic_update() {
 
   //entity should be removed when off screen or when health is 0
   //status is checked and handled each frame by controller.cpp
-  if(self->rect.y + self->rect.height < 0 || self->health <= 0)
+  if(self->rect.y + self->rect.height < 0)
      {
         self->status = ENTITY_REMOVE;
      }
+  if(self->health <= 0) {
+    self->status = ENTITY_DESTROY;
+  }
 }
 //if bullet is hit, lower it's health.
 //Bullets should only have one health though.
@@ -151,8 +154,13 @@ void spawn_bullet(int x, int y, int type, float xScale, float yScale, std::vecto
 }
 
 void test_enemy_update() {
-  self->rect.x += self->xVel*self->xScale;
-  self->rect.y += self->yVel*self->yScale;
+  if(self->rect.y + self->rect.height < 0) {
+    self->rect.y += 5*self->yScale;
+  }
+  else {
+    self->rect.x += self->xVel*self->xScale;
+    self->rect.y += self->yVel*self->yScale;
+  }
 
   self->timer++;
 
@@ -173,7 +181,7 @@ void test_enemy_update() {
       self->frame = 0;
     }
     if(self->frame < 0) {
-      self->frame = 0;
+      self->frame = 2;
     }
   }
 
@@ -187,35 +195,100 @@ void test_enemy_update() {
   if(self->health <= 0) {
     self->status = ENTITY_DESTROY;
   }
-
-  if(self->rect.y < 0) {
-    self->yVel = 5;
-    self->xVel = 0;
-  }
 }
 void test_enemy_hit() {
   if(other->className == BASIC_BULLET) {
     self->health -= 1;
-    other->status = ENTITY_REMOVE;
+    self = other;
+    other->hit();
   }
 }
-void spawn_test_enemy(int x, int y, float xScale, float yScale, std::vector<Entity> *ent_list) {
+void adv_enemy_update() {
+  if(self->rect.y + self->rect.height < 0) {
+    self->rect.y += 5*self->yScale;
+  }
+  else {
+    self->rect.x += self->xVel*self->xScale;
+    self->rect.y += self->yVel*self->yScale;
+  }
+  
+  self->timer++;
+  self->timer1++;
+
+  if(self->timer > 10) {
+    self->timer = 0;
+
+    if(self->xVel < 0) {
+      self->frame--;
+    }
+    else if(self->xVel > 0) {
+      self->frame++;
+    }
+    else {
+      self->frame++;
+    }
+
+    if(self->frame > 2) {
+      self->frame = 0;
+    }
+    if(self->frame < 0) {
+      self->frame = 2;
+    }
+  }
+
+  if(self->timer1 > 60) {
+    self->timer1 = 0;
+    if(self->xVel < 0) self->xVel = 5;
+    else if(self->xVel > 0) self->xVel = -5;
+  }
+
+  if(self->rect.y > screenHeight_model ||
+     self->rect.x < 0 ||
+     self->rect.x + self->rect.width > screenWidth_model)
+     {
+        self->status = ENTITY_REMOVE;
+     }
+
+  if(self->health <= 0) {
+    self->status = ENTITY_DESTROY;
+  }
+}
+void spawn_test_enemy(int x, int y, float xScale, float yScale, int type, std::vector<Entity> *ent_list) {
   Entity new_entity;
 
-  new_entity.update = &test_enemy_update;
+  if(type == 0) {
+    new_entity.update = &test_enemy_update;
+    new_entity.health = 1;
+    new_entity.xVel = 0;
+    new_entity.yVel = 2;
+    new_entity.rect.width = 150*xScale;
+    new_entity.rect.height = 150*yScale;
+    new_entity.textureName = 6;
+    new_entity.points = 26;
+  }
+
+  else if(type == 1) {
+    new_entity.update = &adv_enemy_update;
+    new_entity.health = 2;
+    if(x < screenWidth_model) {
+      new_entity.xVel = 5;
+    }
+    else new_entity.xVel = -5;
+
+    new_entity.yVel = 1;
+    new_entity.rect.width = 150*xScale;
+    new_entity.rect.height = 150*yScale;
+    new_entity.textureName = 7;
+    new_entity.points = 33;
+  }
+
   new_entity.hit = &test_enemy_hit;
-  new_entity.health = 1;
   new_entity.rect.x = x;
   new_entity.rect.y = y;
-  new_entity.yVel = 5;
-  new_entity.xVel = 0;
-  new_entity.rect.width = 150*xScale;
-  new_entity.rect.height = 150*yScale;
   new_entity.frame = 0;
   new_entity.timer = 0;
-  new_entity.textureName = 6;
+  new_entity.timer1 = 0;
   new_entity.status = ENTITY_KEEP;
-  new_entity.points = 26;
   new_entity.xScale = xScale;
   new_entity.yScale = yScale;
 
@@ -244,13 +317,30 @@ void explosion_update() {
     self->status = ENTITY_REMOVE;
   }
 }
-void spawn_explosion(int x, int y, std::vector<Entity> *ent_list) {
+void beam_burst_update() {
+  self->timer++;
+  if(self->timer > 5) {
+    self->frame++;
+    self->timer = 0;
+  }
+  if(self->frame > 3) {
+    self->status = ENTITY_REMOVE;
+  }
+}
+void spawn_explosion(int x, int y, int type, std::vector<Entity> *ent_list) {
   Entity new_entity;
   new_entity.rect.x = x;
   new_entity.rect.y = y;
   new_entity.frame = 0;
   new_entity.textureName = 0;
-  new_entity.update = &explosion_update;
+  if(type == 0) {
+    new_entity.update = &explosion_update;
+    new_entity.textureName = 0;
+  }
+  if(type == 1) {
+    new_entity.update = &beam_burst_update;
+    new_entity.textureName = 9;
+  }
   new_entity.status = ENTITY_KEEP;
 
   finalize_entity(new_entity, ent_list);
