@@ -32,6 +32,8 @@ public:
   void doMenu();
   void doSettings();
   void doGame();
+
+  void testLevel();
 };
 
 #endif

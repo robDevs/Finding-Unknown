@@ -30,13 +30,13 @@ void Controller::entityLoop() {
 
     if(enemies[i].status == ENTITY_REMOVE) {
       enemies.erase(enemies.begin() + i);
-      spawn_test_enemy(rand() % (int)view.getScreenWidth(), -50 - rand() % (int)view.getScreenHeight(), xScale, yScale, &enemies);
+      //spawn_test_enemy(rand() % (int)view.getScreenWidth(), -50 - rand() % (int)view.getScreenHeight(), xScale, yScale, &enemies);
     }
     if(enemies[i].status == ENTITY_DESTROY) {
       spawn_explosion(enemies[i].rect.x + enemies[i].rect.width/2 - 200*xScale, enemies[i].rect.y + enemies[i].rect.width/2 - 200*yScale, &explosions);
       points += enemies[i].points;
       enemies.erase(enemies.begin() + i);
-      spawn_test_enemy(rand() % (int)view.getScreenWidth(), -50 - rand() % (int)view.getScreenHeight(), xScale, yScale,  &enemies);
+      //spawn_test_enemy(rand() % (int)view.getScreenWidth(), -50 - rand() % (int)view.getScreenHeight(), xScale, yScale,  &enemies);
     }
   }
 
@@ -287,15 +287,17 @@ void Controller::doGame() {
   burner.textureName = BURNER_SPRITE_SHEET;
   burner.update = &burner_update;
 
-  player.rect.width = 150.0*xScale;
-  player.rect.height = 200*yScale;
+  player.rect.width = 132.0*xScale;
+  player.rect.height = 161.0*yScale;
 
   screenWidth_model = view.getScreenWidth();
   screenHeight_model = view.getScreenHeight();
 
   for(int i = 0; i < 15; i++) {
-    spawn_test_enemy(rand() % (int)view.getScreenWidth(), -50 - rand() % (int)view.getScreenHeight(), xScale, yScale, &enemies);
+    //spawn_test_enemy(rand() % (int)view.getScreenWidth(), -50 - rand() % (int)view.getScreenHeight(), xScale, yScale, &enemies);
   }
+
+  testLevel();
 
   while(gamestatus == STATUS_PLAYING) {
     if(view.getWindowStatus()) break;
@@ -338,7 +340,7 @@ void Controller::doGame() {
 
     burner.rect.x = player.rect.x + player.rect.width/2 - 22*xScale/2;
 
-    burner.rect.y = player.rect.y + 152*yScale;
+    burner.rect.y = player.rect.y + 130*yScale;
 
     view.startFrame();
     view.drawTexture(0,0,0, WHITE);
@@ -372,5 +374,16 @@ void Controller::doGame() {
     view.drawText(points_string, 20, 20, 40, WHITE);
 
     view.endFrame();
+  }
+}
+
+void Controller::testLevel() {
+  for(int i = 0; i < 10; i += 2) {
+    //spawn_test_enemy(view.getScreenWidth() - 400*xScale, -200*yScale - view.getScreenHeight()*i, xScale, yScale, &enemies);
+    spawn_test_enemy(view.getScreenWidth() - 400*xScale, -200*yScale - (view.getScreenHeight()-200*yScale) - view.getScreenHeight()*i, xScale, yScale, &enemies);
+  }
+  for(int i = 1; i < 10; i += 2) {
+    //spawn_test_enemy(view.getScreenWidth() - 400*xScale, -200*yScale - view.getScreenHeight()*i, xScale, yScale, &enemies);
+    spawn_test_enemy(400*xScale - enemies[0].rect.width, -200*yScale - (view.getScreenHeight()-200*yScale) - view.getScreenHeight()*i, xScale, yScale, &enemies);
   }
 }

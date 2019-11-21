@@ -87,8 +87,8 @@ void View::initView(int width, int height, float *xScale, float *yScale) {
   sprite_sheets[0].frameHeight = 400;
   sprite_sheets[0].setFrames("assets/BurstEffect/Burst_SpriteSheet.png", *xScale, *yScale);
 
-  sprite_sheets[1].frameWidth = 150;
-  sprite_sheets[1].frameHeight = 200;
+  sprite_sheets[1].frameWidth = 132;
+  sprite_sheets[1].frameHeight = 161;
   sprite_sheets[1].setFrames("assets/Ships/Main/Main.png", *xScale, *yScale);
 
   sprite_sheets[2].frameWidth = 8;
