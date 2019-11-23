@@ -93,18 +93,18 @@ void finalize_entity(Entity target, std::vector<Entity> *ent_list) {
 //Update function for the player.
 //Move the position(hitbox) by velocity * scale. (coming soon)
 void player_update() {
-    
+
   player_pointer->rect.x += player_pointer->xVel;
   if(player_pointer->rect.x + player_pointer->rect.width > screenWidth_model || player_pointer->rect.x < 0) {
       player_pointer->rect.x -= player_pointer->xVel;
   }
-  
+
   player_pointer->rect.y += player_pointer->yVel;
   if(player_pointer->rect.y + player_pointer->rect.height > screenHeight_model || player_pointer->rect.y < 0) {
       player_pointer->rect.y -= player_pointer->yVel;
   }
- 
-  
+
+
   //Set the frame depending on direction of movement.
   if(player_pointer->xVel < 0) player_pointer->frame = 0;
   if(player_pointer->xVel == 0) player_pointer->frame = 1;
@@ -187,24 +187,28 @@ void test_enemy_update() {
 
   self->timer++;
 
-  if(self->timer > 10) {
-    self->timer = 0;
+  //----------------------------------------------
+  //goal is to achieve a rotating effect with the sprite sheet.
+  //frames go up when moving right, down when left. 
+  //----------------------------------------------
+  if(self->timer > 10) { //every tenth of a second adjust the frame.
+    self->timer = 0; //reset timer.
 
-    if(self->xVel < 0) {
-      self->frame--;
+    if(self->xVel < 0) { //check wich direction the entity is moving.
+      self->frame--; //if moving left frames go down.
     }
-    else if(self->xVel > 0) {
+    else if(self->xVel > 0) { //check direction.
+      self->frame++; //if moving right frames go up.
+    }
+    else { //eh, not thinking i guess. could have just done if, else on the first to not if, else if.
       self->frame++;
     }
-    else {
-      self->frame++;
-    }
 
-    if(self->frame > 2) {
-      self->frame = 0;
+    if(self->frame > 2) { //sprite sheet only has three frames, 0,1,2
+      self->frame = 0; //if greater than 2 reset to zero.
     }
-    if(self->frame < 0) {
-      self->frame = 2;
+    if(self->frame < 0) { //
+      self->frame = 2;// if less than 0 reset to 2.
     }
   }
 
@@ -280,8 +284,11 @@ void adv_enemy_update() {
 }
 
 void spawn_test_enemy(int x, int y, float xScale, float yScale, int type, std::vector<Entity> *ent_list) {
-  Entity new_entity;
+  Entity new_entity; //create a new entity.
 
+  //----------------------------------------------
+  //check the type and assign entity specific
+  //----------------------------------------------
   if(type == 0) {
     new_entity.update = &test_enemy_update;
     new_entity.health = 1;
