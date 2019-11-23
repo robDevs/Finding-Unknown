@@ -14,7 +14,7 @@ Controller::Controller() {
 }
 
 void Controller::entityLoop() {
-  self = &player;
+  player_pointer = &player;
   if(player.update != NULL) player.update();
 
   for(int i = 0; i < (int) enemies.size(); i++) {
