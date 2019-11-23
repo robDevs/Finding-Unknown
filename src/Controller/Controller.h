@@ -2,6 +2,9 @@
 #define _CONTROLLER_
 
 #include <vector>
+#include <iostream>
+#include <fstream>
+#include <string>
 
 #include "../Model/Model.h"
 #include "../View/View.h"
@@ -38,6 +41,7 @@ public:
   void doPauseMenu(control_info gamepad);
 
   void testLevel();
+  void generate_Level(int);
 };
 
 #endif

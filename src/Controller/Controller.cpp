@@ -460,6 +460,18 @@ void Controller::testLevel() {
   }
 }
 
+void Controller::generate_Level(int num){
+  std::string str = "assets/levels/level_" + std::to_string(num) + ".txt"; //level_1
+  std::ifstream myfile (str);
+  std::string line;
+  if (myfile.is_open()){
+    while(getline(myfile,line)){
+      //add what to do with each line
+    }
+    myfile.close();
+  }
+}
+
 void Controller::doPauseMenu(control_info gamepad) {
   //check buttons
   if(gamepad.enter_released) {
