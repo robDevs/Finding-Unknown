@@ -273,6 +273,7 @@ void View::drawSprite(int x, int y, int spriteSheet, int frame, Color color) {
 void View::drawText(std::string text, int x, int y, int size, Color color) {
   DrawText(text.c_str(), x, y, size, color);
 }
+
 control_info View::getControlInfo() {
   control_info gamepad;
   gamepad.init();

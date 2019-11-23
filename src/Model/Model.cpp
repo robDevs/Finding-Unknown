@@ -18,40 +18,52 @@ Entity::Entity() {
 void Entity::setName(int name) {
     className = name;
 }
+
 void Entity::setTextureName(int name) {
     textureName = name;
 }
+
 void Entity::setX(float x) {
     rect.x = x;
 }
+
 void Entity::setY(float y) {
     rect.y = y;
 }
+
 void Entity::setXvel(float vel) {
     xVel = vel;
 }
+
 void Entity::setYvel(float vel) {
     yVel = vel;
 }
+
 void Entity::move() {
   rect.x += xVel;
   rect.y += yVel;
 }
+
 float Entity::getX() {
     return rect.x;
 }
+
 float Entity::getY() {
     return rect.y;
 }
+
 Rectangle Entity::getRect() {
     return rect;
 }
+
 int Entity::getStatus() {
     return status;
 }
+
 int Entity::getHealth() {
     return health;
 }
+
 int Entity::getFrame() {
   return frame;
 }
@@ -83,6 +95,7 @@ void finalize_entity(Entity target, std::vector<Entity> *ent_list) {
 void player_update() {
   self->rect.x += self->xVel;
   self->rect.y += self->yVel;
+  
 
   //Set the frame depending on direction of movement.
   if(self->xVel < 0) self->frame = 0;
@@ -121,11 +134,13 @@ void bullet_basic_update() {
     self->status = ENTITY_DESTROY;
   }
 }
+
 //if bullet is hit, lower it's health.
 //Bullets should only have one health though.
 void basic_bullet_hit() {
   self->health -= 1;
 }
+
 //spawn a bullet at given (x,y)
 void spawn_bullet(int x, int y, int type, float xScale, float yScale, std::vector<Entity> *ent_list){
   Entity new_entity; //create a new ent.
@@ -196,6 +211,7 @@ void test_enemy_update() {
     self->status = ENTITY_DESTROY;
   }
 }
+
 void test_enemy_hit() {
   if(other->className == BASIC_BULLET) {
     self->health -= 1;
@@ -203,6 +219,7 @@ void test_enemy_hit() {
     other->hit();
   }
 }
+
 void adv_enemy_update() {
   if(self->rect.y + self->rect.height < 0) {
     self->rect.y += 5*self->yScale;
@@ -253,6 +270,7 @@ void adv_enemy_update() {
     self->status = ENTITY_DESTROY;
   }
 }
+
 void spawn_test_enemy(int x, int y, float xScale, float yScale, int type, std::vector<Entity> *ent_list) {
   Entity new_entity;
 
@@ -295,7 +313,6 @@ void spawn_test_enemy(int x, int y, float xScale, float yScale, int type, std::v
   finalize_entity(new_entity, ent_list);
 }
 
-
 void burner_update() {
   self->timer++;
   if(self->timer > 20) {
@@ -317,6 +334,7 @@ void explosion_update() {
     self->status = ENTITY_REMOVE;
   }
 }
+
 void beam_burst_update() {
   self->timer++;
   if(self->timer > 5) {
@@ -327,6 +345,7 @@ void beam_burst_update() {
     self->status = ENTITY_REMOVE;
   }
 }
+
 void spawn_explosion(int x, int y, int type, std::vector<Entity> *ent_list) {
   Entity new_entity;
   new_entity.rect.x = x;
