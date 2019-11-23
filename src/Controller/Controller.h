@@ -22,6 +22,8 @@ private:
   int gamestatus;
   float xScale, yScale;
   int points;
+  bool pause;
+  int pause_menu_pos;
 
   Entity player;
 public:
@@ -32,6 +34,7 @@ public:
   void doMenu();
   void doSettings();
   void doGame();
+  void doPauseMenu(control_info gamepad);
 
   void testLevel();
 };

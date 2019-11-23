@@ -99,6 +99,10 @@ struct control_info {
   bool back_pressed;
   bool back_held;
   bool back_released;
+
+  bool pause_pressed;
+  bool pause_held;
+  bool pause_released;
 };
 
 struct frame {
@@ -148,6 +152,8 @@ public:
 
   int getTextureWidth(int i);
   int getTextureHeight(int i);
+
+  void drawRectBorders(int x, int y, int h, int w, Color color_outline, Color color_fill);
 };
 
 #endif

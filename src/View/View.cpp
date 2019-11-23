@@ -24,6 +24,10 @@ void control_info::init() {
   back_pressed = false;
   back_held = false;
   back_released = false;
+
+  pause_pressed = false;
+  pause_held = false;
+  pause_released = false;
 }
 
 void sprite_sheet::setFrames(std::string path, float xScale, float yScale) {
@@ -419,6 +423,18 @@ control_info View::getControlInfo() {
     gamepad.back_released = true;
   }
 
+  if(IsKeyPressed(KEY_P)) {
+    gamepad.pause_pressed = true;
+  }
+
+  if(IsKeyDown(KEY_P)) {
+    gamepad.pause_held = true;
+  }
+
+  if(IsKeyReleased(KEY_P)) {
+    gamepad.pause_released = true;
+  }
+
   return gamepad;
 }
 
@@ -436,4 +452,10 @@ int View::getTextureWidth(int i) {
 
 int View::getTextureHeight(int i) {
     return textures[i].height;
+}
+
+void View::drawRectBorders(int x, int y, int w, int h, Color color_outline, Color color_fill) {
+  DrawRectangle(x,y,w,h,color_fill);
+  DrawRectangleLines(x,y,w,h,color_outline);
+  DrawRectangleLines(x+1,y+1,w-2,h-2,color_outline);
 }

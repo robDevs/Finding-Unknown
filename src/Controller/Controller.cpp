@@ -5,6 +5,8 @@ Controller::Controller() {
   xScale = 1;
   yScale = 1;
   points = 0;
+  pause = false;
+  pause_menu_pos = 0;
 
   srand (time(NULL));
 
@@ -280,6 +282,8 @@ void Controller::doSettings(){
 }
 
 void Controller::doGame() {
+  pause = false;
+
   player.update = &player_update;
   player.setX(100);
   player.setY(100);
@@ -311,35 +315,41 @@ void Controller::doGame() {
 
     control_info gamepad = view.getControlInfo();
 
-    if(gamepad.up_held) {
-      player.setYvel(-5.0*yScale);
-    }
-    else if(gamepad.down_held) {
-      player.setYvel(5.0*yScale);
-    }
-    else {
-      player.setYvel(0);
-    }
+    if(!pause) {
+      if(gamepad.up_held) {
+        player.setYvel(-5.0*yScale);
+      }
+      else if(gamepad.down_held) {
+        player.setYvel(5.0*yScale);
+      }
+      else {
+        player.setYvel(0);
+      }
 
-    if(gamepad.left_held) {
-      player.setXvel(-5.0*xScale);
-    }
-    else if(gamepad.right_held) {
-      player.setXvel(5.0*xScale);
-    }
-    else {
-      player.setXvel(0);
-    }
+      if(gamepad.left_held) {
+        player.setXvel(-5.0*xScale);
+      }
+      else if(gamepad.right_held) {
+        player.setXvel(5.0*xScale);
+      }
+      else {
+        player.setXvel(0);
+      }
 
-    if(gamepad.enter_held) {
-      bulletCounter++;
-      if(bulletCounter > 5 && !bulletReset){
-        spawn_bullet(player.rect.x + (player.rect.width / 2) - 4*xScale, player.rect.y, 0, xScale, yScale, &bullets);
+      if(gamepad.enter_held) {
+        bulletCounter++;
+        if(bulletCounter > 5 && !bulletReset){
+          spawn_bullet(player.rect.x + (player.rect.width / 2) - 4*xScale, player.rect.y, 0, xScale, yScale, &bullets);
+          bulletCounter = 0;
+        }
+      }
+      else {
         bulletCounter = 0;
       }
-    }
-    else {
-      bulletCounter = 0;
+      if(gamepad.pause_pressed) {
+        pause = true;
+        pause_menu_pos = 0;
+      }
     }
 
     if(bullets.size() >= 3) {
@@ -354,7 +364,9 @@ void Controller::doGame() {
       bulletCounter = 0;
     }
 
-    entityLoop();
+    if(!pause) {
+      entityLoop();
+    }
 
     burner.rect.x = player.rect.x + player.rect.width/2 - 22*xScale/2;
 
@@ -391,7 +403,23 @@ void Controller::doGame() {
 
     view.drawText(points_string, 20, 20, 40, WHITE);
 
+    if(pause) {
+      doPauseMenu(gamepad);
+    }
+
     view.endFrame();
+  }
+
+  while(!enemies.empty()) {
+    enemies.pop_back();
+  }
+
+  while(!bullets.empty()) {
+    bullets.pop_back();
+  }
+
+  while(!explosions.empty()) {
+    explosions.pop_back();
   }
 }
 
@@ -408,4 +436,43 @@ void Controller::testLevel() {
   for(int i = 0; i < 12; i += 3) {
     spawn_test_enemy(view.getScreenWidth()/2, -200*yScale - (view.getScreenHeight()-200*yScale) - view.getScreenHeight()*i, xScale, yScale, 1, &enemies);
   }
+}
+
+void Controller::doPauseMenu(control_info gamepad) {
+  //check buttons
+  if(gamepad.enter_released) {
+      switch (pause_menu_pos) {
+          case 0:
+              pause = false;
+              break;
+          case 1: //temp change res. Coming soon: settingsMenu();
+              pause = false;
+              gamestatus = STATUS_MENU;
+              break;
+      }
+  }
+
+  if(gamepad.up_pressed) {
+    pause_menu_pos--;
+  }
+  if(gamepad.down_pressed) {
+    pause_menu_pos++;
+  }
+
+  if(pause_menu_pos < 0) {
+    pause_menu_pos = 1;
+  }
+  if(pause_menu_pos > 1) {
+    pause_menu_pos = 0;
+  }
+
+  view.drawRectBorders(view.getScreenWidth()/2 - view.getScreenWidth()/4, view.getScreenHeight()/2-view.getScreenHeight()/4, view.getScreenWidth()/2, view.getScreenHeight()/2, (Color) {58,50,168,255}, (Color) {0,0,0,255});
+
+  int textWidth = MeasureText("Finding Unknown", 60*((xScale+yScale)/2));
+  view.drawText("Finding Unknown", view.getScreenWidth()/2 - textWidth/2, view.getScreenHeight()/4 + 20*yScale, 60*((xScale+yScale)/2), (Color) {255,0,0,255});
+
+  textWidth = MeasureText("Return", 40*((xScale+yScale)/2));
+  view.drawText("Return", view.getScreenWidth()/2 - textWidth/2, view.getScreenHeight()/2, 40*((xScale+yScale)/2), (pause_menu_pos == 0) ? (Color) {0,0,255,255} : (Color) {255,255,255,255});
+  textWidth = MeasureText("Quit", 40*((xScale+yScale)/2));
+  view.drawText("Quit", view.getScreenWidth()/2  - textWidth/2, view.getScreenHeight()/2 + 40*((xScale+yScale)/2), 40*((xScale+yScale)/2), (pause_menu_pos == 1) ? (Color) {0,0,255,255} : (Color) {255,255,255,255});
 }
