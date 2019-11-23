@@ -10,6 +10,9 @@ int screenHeight_model = 0;
 Entity::Entity() {
     hit = NULL; //set the pointer functions to null at creation to avoid calling a function that hasn't been defined yet.
     update = NULL;
+    shoot = NULL;
+
+    timer = timer1 = timer2 = 0;
 }
 
 //---------------------------------------------
@@ -134,7 +137,7 @@ void bullet_basic_update() {
 
   //entity should be removed when off screen or when health is 0
   //status is checked and handled each frame by controller.cpp
-  if(self->rect.y + self->rect.height < 0)
+  if(self->rect.y + self->rect.height < 0 || self->rect.y > screenHeight_model)
      {
         self->status = ENTITY_REMOVE;
      }
@@ -184,6 +187,31 @@ void enemy_hit() {
   }
 }
 
+void enemy_shoot(std::vector<Entity> *ent_list) {
+  Entity new_entity;
+
+  //assign non type specific vars.
+  new_entity.update = &bullet_basic_update;
+  new_entity.yVel = 7;
+  new_entity.health = 1;
+  new_entity.className = 0;
+  new_entity.textureName = 2;
+  new_entity.hit = &basic_bullet_hit;
+  new_entity.timer = 0;
+  new_entity.timer1 = 0;
+  new_entity.rect.width = 10*self->xScale; //scale is passed from controller.cpp
+  new_entity.rect.height = 10*self->yScale;
+  new_entity.rect.x = self->rect.x + self->rect.width / 2 - new_entity.rect.width/2;
+  new_entity.rect.y = self->rect.y + self->rect.height;
+  new_entity.xVel = 0; //don't forget to set.
+  new_entity.status = ENTITY_KEEP; //entities should start with this.
+  new_entity.frame = 0;
+  new_entity.xScale = self->xScale;
+  new_entity.yScale = self->yScale;
+
+  finalize_entity(new_entity, ent_list);
+}
+
 void basic_enemy_update() {
   if(self->rect.y + self->rect.height < 0) {
     self->rect.y += 5*self->yScale;
@@ -197,7 +225,7 @@ void basic_enemy_update() {
 
   //----------------------------------------------
   //goal is to achieve a rotating effect with the sprite sheet.
-  //frames go up when moving right, down when left. 
+  //frames go up when moving right, down when left.
   //----------------------------------------------
   if(self->timer > 10) { //every tenth of a second adjust the frame.
     self->timer = 0; //reset timer.
@@ -284,6 +312,10 @@ void adv_enemy_update() {
 }
 
 void tracker_enemy_update() {
+  if(self->health > 0) {
+    self->status = ENTITY_KEEP;
+  }
+
   if(self->rect.y + self->rect.height < 0) {
     self->rect.y += 5*self->yScale;
   }
@@ -292,8 +324,15 @@ void tracker_enemy_update() {
     self->rect.y += self->yVel*self->yScale;
   }
 
+  if(self->rect.x + self->rect.width / 2 < player_pointer->rect.x + player_pointer->rect.width && self->rect.x + self->rect.width/2 > player_pointer->rect.x && self->timer2 >= 60) {
+    self->status = ENTITY_SHOOT;
+  }
+
   self->timer++;
   self->timer1++;
+  self->timer2++;
+
+  if(self->timer2 > 60) self->timer2 = 0;
 
   if(self->timer > 10) {
     self->timer = 0;
@@ -365,6 +404,7 @@ void spawn_enemy(int x, int y, float xScale, float yScale, int type, std::vector
   }
   else if(type == 2) {
     new_entity.update = &tracker_enemy_update;
+    new_entity.shoot = &enemy_shoot;
     new_entity.health = 4;
     new_entity.xVel = 0;
     new_entity.yVel = 1;

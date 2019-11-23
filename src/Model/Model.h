@@ -9,6 +9,7 @@
 #define ENTITY_KEEP       0  //keep the ent
 #define ENTITY_REMOVE     1  //Remove the ent
 #define ENTITY_DESTROY    2  //Spawn explosion at ent, give points from ent, remove ent.
+#define ENTITY_SHOOT      3
 
 #define BASIC_BULLET      0
 
@@ -31,9 +32,11 @@ public:
     int points; //how many points this ent gives.
     int timer; //a timer. increase it every frame. Use it for things. 60 frames = 1 second.
     int timer1;
+    int timer2;
 
     void (*hit)(); // A hit function. if defined and not bullet, called every frame upon certain collisions.
     void (*update)(); // Logic / update function. if defined called every frame. syntax is update = &func; where func is a defined function.
+    void (*shoot)(std::vector<Entity> *ent_list);
     void setName(int name);
     void setTextureName(int name);
     void setX(float x);
@@ -72,6 +75,7 @@ extern void player_update();
 extern void bullet_basic_update();
 extern void basic_bullet_hit();
 extern void spawn_bullet(int x, int y, int type, float xScale, float yScale, std::vector<Entity> *ent_list);
+extern void enemy_shoot(std::vector<Entity> *ent_list);
 
 extern void enemy_hit();
 extern void basic_enemy_update();

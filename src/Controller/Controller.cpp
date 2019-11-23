@@ -20,6 +20,9 @@ void Controller::entityLoop() {
   for(int i = 0; i < (int) enemies.size(); i++) {
     self = &enemies[i];
     if(enemies[i].update != NULL) enemies[i].update();
+    if(enemies[i].shoot != NULL && enemies[i].status == ENTITY_SHOOT) {
+      enemies[i].shoot(&enemy_bullets);
+    }
 
     for(int x = 0; x < bullets.size(); x++) {
       other = &bullets[x];
@@ -51,6 +54,19 @@ void Controller::entityLoop() {
     if(bullets[i].status == ENTITY_DESTROY) {
       spawn_explosion(bullets[i].rect.x + bullets[i].rect.width/2 - 25*xScale, bullets[i].rect.y + bullets[i].rect.width/2 - 25*yScale, 1, &explosions);
       bullets.erase(bullets.begin() + i);
+    }
+  }
+
+  for(int i = 0; i < (int) enemy_bullets.size(); i++) {
+    self = &enemy_bullets[i];
+    if(enemy_bullets[i].update != NULL) enemy_bullets[i].update();
+
+    if(enemy_bullets[i].status == ENTITY_REMOVE) {
+      enemy_bullets.erase(enemy_bullets.begin() + i);
+    }
+    if(enemy_bullets[i].status == ENTITY_DESTROY) {
+      spawn_explosion(enemy_bullets[i].rect.x + enemy_bullets[i].rect.width/2 - 25*xScale, enemy_bullets[i].rect.y + enemy_bullets[i].rect.width/2 - 25*yScale, 1, &explosions);
+      enemy_bullets.erase(enemy_bullets.begin() + i);
     }
   }
 
@@ -389,6 +405,11 @@ void Controller::doGame() {
     for(int i = 0; i < bullets.size(); i++) {
       //DrawRectangleRec(bullets[i].getRect(), GREEN);
       view.drawSprite(bullets[i].getX(), bullets[i].getY(), bullets[i].textureName, bullets[i].getFrame(), WHITE);
+    }
+
+    for(int i = 0; i < enemy_bullets.size(); i++) {
+      //DrawRectangleRec(bullets[i].getRect(), GREEN);
+      view.drawSprite(enemy_bullets[i].getX(), enemy_bullets[i].getY(), enemy_bullets[i].textureName, enemy_bullets[i].getFrame(), WHITE);
     }
 
     for(int i = 0; i < explosions.size(); i++) {

@@ -17,6 +17,7 @@ class Controller {
 private:
   std::vector<Entity> enemies;
   std::vector<Entity> bullets;
+  std::vector<Entity> enemy_bullets;
   std::vector<Entity> explosions;
   View view;
   int gamestatus;
