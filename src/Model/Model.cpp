@@ -361,6 +361,8 @@ void spawn_explosion(int x, int y, int type, std::vector<Entity> *ent_list) {
     new_entity.textureName = 9;
   }
   new_entity.status = ENTITY_KEEP;
+  new_entity.timer = 0;
+  new_entity.timer1 = 0;
 
   finalize_entity(new_entity, ent_list);
 }
