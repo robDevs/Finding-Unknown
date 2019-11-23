@@ -93,10 +93,18 @@ void finalize_entity(Entity target, std::vector<Entity> *ent_list) {
 //Update function for the player.
 //Move the position(hitbox) by velocity * scale. (coming soon)
 void player_update() {
-
+    
   player_pointer->rect.x += player_pointer->xVel;
+  if(player_pointer->rect.x + player_pointer->rect.width > screenWidth_model || player_pointer->rect.x < 0) {
+      player_pointer->rect.x -= player_pointer->xVel;
+  }
+  
   player_pointer->rect.y += player_pointer->yVel;
-
+  if(player_pointer->rect.y + player_pointer->rect.height > screenHeight_model || player_pointer->rect.y < 0) {
+      player_pointer->rect.y -= player_pointer->yVel;
+  }
+ 
+  
   //Set the frame depending on direction of movement.
   if(player_pointer->xVel < 0) player_pointer->frame = 0;
   if(player_pointer->xVel == 0) player_pointer->frame = 1;
