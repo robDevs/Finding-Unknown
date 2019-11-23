@@ -61,7 +61,7 @@ extern void finalize_entity(Entity target, std::vector<Entity> ent_list);
 
 extern Entity *self; //Before an entities update or hit function is called self is assigned to that entity.
 extern Entity *other;
-extern Entity *player; //special pointer for the player entity.
+extern Entity *player_pointer; //special pointer for the player entity.
 
 //Update, hit, and spawn functions.
 //First create The update and hit functions. Then a spawn function.

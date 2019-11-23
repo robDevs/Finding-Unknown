@@ -83,7 +83,7 @@ void Entity::setRect(int w, int h) {
 
 Entity *self; //like this->
 Entity *other; //EG: bullet hits enemy. bullet == other. enemy = this.
-Entity *player;
+Entity *player_pointer;
 
 //vector is passed from controller.cpp to spawn function. spawn creates entity and passes to this with vec.
 void finalize_entity(Entity target, std::vector<Entity> *ent_list) {
@@ -93,14 +93,14 @@ void finalize_entity(Entity target, std::vector<Entity> *ent_list) {
 //Update function for the player.
 //Move the position(hitbox) by velocity * scale. (coming soon)
 void player_update() {
-  self->rect.x += self->xVel;
-  self->rect.y += self->yVel;
-  
+
+  player_pointer->rect.x += player_pointer->xVel;
+  player_pointer->rect.y += player_pointer->yVel;
 
   //Set the frame depending on direction of movement.
-  if(self->xVel < 0) self->frame = 0;
-  if(self->xVel == 0) self->frame = 1;
-  if(self->xVel > 0) self->frame = 2;
+  if(player_pointer->xVel < 0) player_pointer->frame = 0;
+  if(player_pointer->xVel == 0) player_pointer->frame = 1;
+  if(player_pointer->xVel > 0) player_pointer->frame = 2;
 }
 //Only one player so manually created in controller.cpp. no spawn function.
 
@@ -228,7 +228,7 @@ void adv_enemy_update() {
     self->rect.x += self->xVel*self->xScale;
     self->rect.y += self->yVel*self->yScale;
   }
-  
+
   self->timer++;
   self->timer1++;
 
