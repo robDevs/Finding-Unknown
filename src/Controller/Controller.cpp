@@ -8,8 +8,6 @@ Controller::Controller() {
   pause = false;
   pause_menu_pos = 0;
 
-  srand (time(NULL));
-
   view.initView(1280,720, &xScale, &yScale);
 
   gameLoop();
