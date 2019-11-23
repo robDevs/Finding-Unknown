@@ -176,7 +176,15 @@ void spawn_bullet(int x, int y, int type, float xScale, float yScale, std::vecto
   finalize_entity(new_entity, ent_list);
 }
 
-void test_enemy_update() {
+void enemy_hit() {
+  if(other->className == BASIC_BULLET) {
+    self->health -= 1;
+    self = other;
+    other->hit();
+  }
+}
+
+void basic_enemy_update() {
   if(self->rect.y + self->rect.height < 0) {
     self->rect.y += 5*self->yScale;
   }
@@ -221,14 +229,6 @@ void test_enemy_update() {
 
   if(self->health <= 0) {
     self->status = ENTITY_DESTROY;
-  }
-}
-
-void test_enemy_hit() {
-  if(other->className == BASIC_BULLET) {
-    self->health -= 1;
-    self = other;
-    other->hit();
   }
 }
 
@@ -283,14 +283,63 @@ void adv_enemy_update() {
   }
 }
 
-void spawn_test_enemy(int x, int y, float xScale, float yScale, int type, std::vector<Entity> *ent_list) {
+void tracker_enemy_update() {
+  if(self->rect.y + self->rect.height < 0) {
+    self->rect.y += 5*self->yScale;
+  }
+  else {
+    self->rect.x += self->xVel*self->xScale;
+    self->rect.y += self->yVel*self->yScale;
+  }
+
+  self->timer++;
+  self->timer1++;
+
+  if(self->timer > 10) {
+    self->timer = 0;
+
+    if(self->xVel < 0) {
+      self->frame--;
+    }
+    else if(self->xVel > 0) {
+      self->frame++;
+    }
+    else {
+      self->frame++;
+    }
+
+    if(self->frame > 2) {
+      self->frame = 0;
+    }
+    if(self->frame < 0) {
+      self->frame = 2;
+    }
+  }
+
+  if(self->rect.x + (self->rect.width/2) > player_pointer->rect.x + (player_pointer->rect.width/2)) self->xVel = -2;
+  else if(self->rect.x + (self->rect.width/2) < player_pointer->rect.x + (player_pointer->rect.width/2)) self->xVel = 2;
+  else self->xVel = 0;
+
+  if(self->rect.y > screenHeight_model ||
+     self->rect.x < 0 ||
+     self->rect.x + self->rect.width > screenWidth_model)
+     {
+        self->status = ENTITY_REMOVE;
+     }
+
+  if(self->health <= 0) {
+    self->status = ENTITY_DESTROY;
+  }
+}
+
+void spawn_enemy(int x, int y, float xScale, float yScale, int type, std::vector<Entity> *ent_list) {
   Entity new_entity; //create a new entity.
 
   //----------------------------------------------
   //check the type and assign entity specific
   //----------------------------------------------
   if(type == 0) {
-    new_entity.update = &test_enemy_update;
+    new_entity.update = &basic_enemy_update;
     new_entity.health = 1;
     new_entity.xVel = 0;
     new_entity.yVel = 2;
@@ -314,8 +363,18 @@ void spawn_test_enemy(int x, int y, float xScale, float yScale, int type, std::v
     new_entity.textureName = 7;
     new_entity.points = 33;
   }
+  else if(type == 2) {
+    new_entity.update = &tracker_enemy_update;
+    new_entity.health = 4;
+    new_entity.xVel = 0;
+    new_entity.yVel = 1;
+    new_entity.rect.width = 150*xScale;
+    new_entity.rect.height = 150*yScale;
+    new_entity.textureName = 8;
+    new_entity.points = 40;
+  }
 
-  new_entity.hit = &test_enemy_hit;
+  new_entity.hit = &enemy_hit;
   new_entity.rect.x = x;
   new_entity.rect.y = y;
   new_entity.frame = 0;
