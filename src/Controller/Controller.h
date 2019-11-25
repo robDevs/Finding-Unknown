@@ -15,6 +15,7 @@
 #define STATUS_PLAYING      2
 #define STATUS_QUIT         3
 #define STATUS_SETTINGS     4
+#define STATUS_EDIT         5
 
 class Controller {
 private:
@@ -41,7 +42,10 @@ public:
   void doPauseMenu(control_info gamepad);
 
   void testLevel();
-  void generate_Level(int);
+  void generate_Level(std::string level);
+
+  void createLevel();//experimental for now.
+  void levelToTxt(std::vector<Entity> ent_list, int level_start, std::string file_path);
 };
 
 #endif
