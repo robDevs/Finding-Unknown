@@ -214,7 +214,7 @@ void enemy_shoot(std::vector<Entity> *ent_list) {
 
 void basic_enemy_update() {
   if(self->rect.y + self->rect.height < 0) {
-    self->rect.y += 5*self->yScale;
+    self->rect.y += 2*self->yScale;
   }
   else {
     self->rect.x += self->xVel*self->xScale;
@@ -249,8 +249,8 @@ void basic_enemy_update() {
   }
 
   if(self->rect.y > screenHeight_model ||
-     self->rect.x < 0 ||
-     self->rect.x + self->rect.width > screenWidth_model)
+     self->rect.x + self->rect.width < 0 ||
+     self->rect.x > screenWidth_model)
      {
         self->status = ENTITY_REMOVE;
      }
@@ -262,7 +262,7 @@ void basic_enemy_update() {
 
 void adv_enemy_update() {
   if(self->rect.y + self->rect.height < 0) {
-    self->rect.y += 5*self->yScale;
+    self->rect.y += 2*self->yScale;
   }
   else {
     self->rect.x += self->xVel*self->xScale;
@@ -300,8 +300,8 @@ void adv_enemy_update() {
   }
 
   if(self->rect.y > screenHeight_model ||
-     self->rect.x < 0 ||
-     self->rect.x + self->rect.width > screenWidth_model)
+     self->rect.x + self->rect.width < 0 ||
+     self->rect.x > screenWidth_model)
      {
         self->status = ENTITY_REMOVE;
      }
@@ -317,7 +317,7 @@ void tracker_enemy_update() {
   }
 
   if(self->rect.y + self->rect.height < 0) {
-    self->rect.y += 5*self->yScale;
+    self->rect.y += 2*self->yScale;
   }
   else {
     self->rect.x += self->xVel*self->xScale;
@@ -360,8 +360,8 @@ void tracker_enemy_update() {
   else self->xVel = 0;
 
   if(self->rect.y > screenHeight_model ||
-     self->rect.x < 0 ||
-     self->rect.x + self->rect.width > screenWidth_model)
+     self->rect.x + self->rect.width < 0 ||
+     self->rect.x > screenWidth_model)
      {
         self->status = ENTITY_REMOVE;
      }
@@ -423,6 +423,7 @@ void spawn_enemy(int x, int y, float xScale, float yScale, int type, std::vector
   new_entity.status = ENTITY_KEEP;
   new_entity.xScale = xScale;
   new_entity.yScale = yScale;
+  new_entity.className = type;
 
   finalize_entity(new_entity, ent_list);
 }
