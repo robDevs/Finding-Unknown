@@ -69,6 +69,7 @@
 #define SHOT_HIT_SPRITE_SHEET         9
 
 
+#define MAX_INPUT_CHARS     30
 
 //-------------------------------------------------------------------------------------------
 // Control info struct.
@@ -123,6 +124,18 @@ struct sprite_sheet {
     std::vector<frame> frames;
     void setFrames(std::string path, float xScale, float yScale);
     void unloadTexture();
+};
+
+struct textBox{
+    char message[MAX_INPUT_CHARS + 1];
+    Rectangle rect;
+    int max;
+    bool mouseOnText;
+    int letterCount;
+    int framesCounter;
+    textBox(int x, int y, int w, int h, int max);
+    void update();
+    void draw();
 };
 
 //------------------------------------------------------------------------------------------

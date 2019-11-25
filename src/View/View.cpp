@@ -137,6 +137,68 @@ void View::initView(int width, int height, float *xScale, float *yScale) {
   //SetConfigFlags(FLAG_VSYNC_HINT | FLAG_MSAA_4X_HINT);
 }
 
+textBox::textBox(int x, int y, int w, int h, int max) {
+    for(int i = 0; i < MAX_INPUT_CHARS + 1; i++) {
+        message[i] = '\0';
+    }
+    this->rect.x = x;
+    this->rect.y = y;
+    this->rect.width = w;
+    this->rect.height = h;
+    this->max = max;
+    this->mouseOnText = false;
+    this->letterCount = 0;
+    this->framesCounter = 0;
+}
+
+void textBox::update() {
+
+    if (CheckCollisionPointRec(GetMousePosition(), rect)) mouseOnText = true;
+    else mouseOnText = false;
+
+    if (mouseOnText)
+    {
+        int key = GetKeyPressed();
+
+        // NOTE: Only allow keys in range [32..125]
+        if ((key >= 32) && (key <= 125) && (letterCount < max))
+        {
+            message[letterCount] = (char)key;
+            letterCount++;
+        }
+
+        if (IsKeyPressed(KEY_BACKSPACE) && letterCount > 0)
+        {
+            letterCount--;
+            message[letterCount] = '\0';
+
+            if (letterCount < 0) letterCount = 0;
+        }
+    }
+
+    if (mouseOnText) framesCounter++;
+    else framesCounter = 0;
+}
+
+void textBox::draw() {
+    DrawRectangleRec(rect, LIGHTGRAY);
+
+    if (mouseOnText) DrawRectangleLines(rect.x, rect.y, rect.width, rect.height, RED);
+    else DrawRectangleLines(rect.x, rect.y, rect.width, rect.height, DARKGRAY);
+
+    DrawText(message, rect.x + 5, rect.y + 8, 20, RED);
+
+    if (mouseOnText)
+    {
+        if (letterCount < MAX_INPUT_CHARS)
+        {
+            // Draw blinking underscore char
+            if (((framesCounter/20)%2) == 0) DrawText("_", rect.x + 8 + MeasureText(message, 20), rect.y + 12, 20, VIOLET);
+        }
+    }
+}
+
+
 void View::setFullScreen(float *xScale, float *yScale) {
     ToggleFullscreen();
 

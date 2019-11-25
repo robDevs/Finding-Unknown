@@ -531,6 +531,51 @@ void Controller::doPauseMenu(control_info gamepad) {
   view.drawText("Quit", view.getScreenWidth()/2  - textWidth/2, view.getScreenHeight()/2 + 40*((xScale+yScale)/2), 40*((xScale+yScale)/2), (pause_menu_pos == 1) ? (Color) {0,0,255,255} : (Color) {255,255,255,255});
 }
 
+void Controller::doEditMenu(control_info gamepad, int level_start, std::string path) {
+  //check buttons
+  if(gamepad.enter_released) {
+      switch (pause_menu_pos) {
+          case 0:
+              levelToTxt(enemies, level_start, path);
+              pause = false;
+              break;
+          case 1:
+              pause = false;
+              break;
+          case 2: //temp change res. Coming soon: settingsMenu();
+              pause = false;
+              gamestatus = STATUS_MENU;
+              break;
+      }
+  }
+
+  if(gamepad.up_pressed) {
+    pause_menu_pos--;
+  }
+  if(gamepad.down_pressed) {
+    pause_menu_pos++;
+  }
+
+  if(pause_menu_pos < 0) {
+    pause_menu_pos = 2;
+  }
+  if(pause_menu_pos > 2) {
+    pause_menu_pos = 0;
+  }
+
+  view.drawRectBorders(view.getScreenWidth()/2 - view.getScreenWidth()/4, view.getScreenHeight()/2-view.getScreenHeight()/4, view.getScreenWidth()/2, view.getScreenHeight()/2, (Color) {58,50,168,255}, (Color) {0,0,0,255});
+
+  int textWidth = MeasureText("Finding Unknown", 60*((xScale+yScale)/2));
+  view.drawText("Finding Unknown", view.getScreenWidth()/2 - textWidth/2, view.getScreenHeight()/4 + 20*yScale, 60*((xScale+yScale)/2), (Color) {255,0,0,255});
+
+  textWidth = MeasureText("Save", 40*((xScale+yScale)/2));
+  view.drawText("Save", view.getScreenWidth()/2 - textWidth/2, view.getScreenHeight()/2, 40*((xScale+yScale)/2), (pause_menu_pos == 0) ? (Color) {0,0,255,255} : (Color) {255,255,255,255});
+  textWidth = MeasureText("Return", 40*((xScale+yScale)/2));
+  view.drawText("Return", view.getScreenWidth()/2 - textWidth/2, view.getScreenHeight()/2 + 40*((xScale+yScale)/2), 40*((xScale+yScale)/2), (pause_menu_pos == 1) ? (Color) {0,0,255,255} : (Color) {255,255,255,255});
+  textWidth = MeasureText("Quit", 40*((xScale+yScale)/2));
+  view.drawText("Quit", view.getScreenWidth()/2  - textWidth/2, view.getScreenHeight()/2 + 80*((xScale+yScale)/2), 40*((xScale+yScale)/2), (pause_menu_pos == 2) ? (Color) {0,0,255,255} : (Color) {255,255,255,255});
+}
+
 void Controller::createLevel() {
   int level_start = view.getScreenHeight(); //the start of the level. things are reletive to this on output.
   int level_end = level_start - view.getScreenHeight() * 20;
@@ -538,71 +583,80 @@ void Controller::createLevel() {
   int cursor_y = 0;
   int cur_type = 0;
 
+  textBox name_box(view.getScreenWidth() - 300*xScale, 40*xScale, 290*xScale, 35*xScale, 30);
+
+  pause = false;
+
   while(gamestatus == STATUS_EDIT) {
     if(view.getWindowStatus()) break;
 
     level_end = level_start - view.getScreenHeight() * 20; //always reletive to level_start;
 
+    name_box.update();
+
     control_info gamepad = view.getControlInfo();
 
-    if(gamepad.up_held) {
-      cursor_y -= 5;
-    }
-    if(cursor_y <= 0) {
-      cursor_y += 5;
-      if(level_end < 0) {
-        level_start += 5;
-        for(int i = 0; i < enemies.size(); i++) {
-          //DrawRectangleRec(enemies[i].getRect(), GREEN);
-          enemies[i].rect.y += 5;
+    if(!name_box.mouseOnText && !pause) {
+      if(gamepad.up_held) {
+        cursor_y -= 5;
+      }
+      if(cursor_y <= 0) {
+        cursor_y += 5;
+        if(level_end < 0) {
+          level_start += 5;
+          for(int i = 0; i < enemies.size(); i++) {
+            //DrawRectangleRec(enemies[i].getRect(), GREEN);
+            enemies[i].rect.y += 5;
+          }
         }
+      }
+
+      if(gamepad.down_held) {
+        cursor_y += 5;
+      }
+      if(cursor_y >= view.getScreenHeight()) {
+        cursor_y -= 5;
+        if(level_start > view.getScreenHeight()) {
+          level_start -= 5;
+
+          for(int i = 0; i < enemies.size(); i++) {
+            //DrawRectangleRec(enemies[i].getRect(), GREEN);
+            enemies[i].rect.y -= 5;
+          }
+        }
+      }
+      if(gamepad.left_held) {
+        cursor_x -= 5;
+      }
+      if(cursor_x <= 0) {
+        cursor_x += 5;
+      }
+      else if(gamepad.right_held) {
+        cursor_x += 5;
+      }
+      if(cursor_x >= view.getScreenWidth()) {
+        cursor_x -= 5;
+      }
+
+      if(gamepad.enter_released) {
+        spawn_enemy(cursor_x, cursor_y, xScale, yScale, cur_type, &enemies);
+      }
+
+      if(gamepad.pause_pressed) {
+        pause = true;
+        pause_menu_pos = 0;
+      }
+
+      if(gamepad.space_released) {
+        cur_type += 1;
       }
     }
 
-    if(gamepad.down_held) {
-      cursor_y += 5;
-    }
-    if(cursor_y >= view.getScreenHeight()) {
-      cursor_y -= 5;
-      if(level_start > view.getScreenHeight()) {
-        level_start -= 5;
-
-        for(int i = 0; i < enemies.size(); i++) {
-          //DrawRectangleRec(enemies[i].getRect(), GREEN);
-          enemies[i].rect.y -= 5;
-        }
-      }
-    }
-    if(gamepad.left_held) {
-      cursor_x -= 5;
-    }
-    if(cursor_x <= 0) {
-      cursor_x += 5;
-    }
-    else if(gamepad.right_held) {
-      cursor_x += 5;
-    }
-    if(cursor_x >= view.getScreenWidth()) {
-      cursor_x -= 5;
-    }
-
-    if(gamepad.enter_released) {
-      spawn_enemy(cursor_x, cursor_y, xScale, yScale, cur_type, &enemies);
-    }
-
-    if(gamepad.pause_released) {
-      levelToTxt(enemies, level_start, "assets/levels/level_test.txt");
-    }
-
-    if(gamepad.space_released) {
-      cur_type += 1;
-    }
     if(cur_type > 2) {
       cur_type = 0;
     }
 
     view.startFrame();
-
 
     for(int i = level_start; i > level_end; i -= view.getScreenHeight()) {
       view.drawRectBorders(0,i,view.getScreenWidth(), 10, WHITE, WHITE);
@@ -628,8 +682,17 @@ void Controller::createLevel() {
     view.drawText("level start", 0,level_start - 50*yScale, 50*yScale, WHITE);
     view.drawText("level end", 0,level_end + 20, 50*yScale, WHITE);
 
+    name_box.draw();
+
 
     view.drawText("edit level", 20, 20, 40, WHITE);
+
+    if(pause) {
+      std::string path = "assets/levels/";
+      path += name_box.message;
+      path += ".txt";
+      doEditMenu(gamepad, level_start, path);
+    }
 
     view.endFrame();
   }
