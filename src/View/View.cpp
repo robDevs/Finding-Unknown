@@ -28,6 +28,10 @@ void control_info::init() {
   pause_pressed = false;
   pause_held = false;
   pause_released = false;
+
+  space_pressed = false;
+  space_held = false;
+  space_released = false;
 }
 
 void sprite_sheet::setFrames(std::string path, float xScale, float yScale) {
@@ -434,6 +438,18 @@ control_info View::getControlInfo() {
 
   if(IsKeyReleased(KEY_P)) {
     gamepad.pause_released = true;
+  }
+
+  if(IsKeyPressed(KEY_SPACE)) {
+    gamepad.space_pressed = true;
+  }
+
+  if(IsKeyDown(KEY_SPACE)) {
+    gamepad.space_held = true;
+  }
+
+  if(IsKeyReleased(KEY_SPACE)) {
+    gamepad.space_released = true;
   }
 
   return gamepad;

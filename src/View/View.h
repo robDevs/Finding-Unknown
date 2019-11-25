@@ -103,6 +103,10 @@ struct control_info {
   bool pause_pressed;
   bool pause_held;
   bool pause_released;
+
+  bool space_pressed;
+  bool space_held;
+  bool space_released;
 };
 
 struct frame {
