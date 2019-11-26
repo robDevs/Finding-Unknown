@@ -81,6 +81,7 @@ extern void enemy_hit();
 extern void basic_enemy_update();
 extern void adv_enemy_update();
 extern void tracker_enemy_update();
+extern void bomber_enemy_update();
 extern void spawn_enemy(int x, int y, float xScale, float yScale, int type, std::vector<Entity> *ent_list);
 
 extern void burner_update();

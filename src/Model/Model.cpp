@@ -371,6 +371,59 @@ void tracker_enemy_update() {
   }
 }
 
+void bomber_enemy_update() {
+  if(self->rect.y + self->rect.height < 0) {
+    self->rect.y += 2*self->yScale;
+  }
+  else {
+    self->rect.x += self->xVel*self->xScale;
+    self->rect.y += self->yVel*self->yScale;
+  }
+
+  self->timer++;
+
+  //----------------------------------------------
+  //goal is to achieve a rotating effect with the sprite sheet.
+  //frames go up when moving right, down when left.
+  //----------------------------------------------
+  if(self->timer > 10) { //every tenth of a second adjust the frame.
+    self->timer = 0; //reset timer.
+
+    if(self->xVel < 0) { //check wich direction the entity is moving.
+      self->frame--; //if moving left frames go down.
+    }
+    else if(self->xVel > 0) { //check direction.
+      self->frame++; //if moving right frames go up.
+    }
+    else { //eh, not thinking i guess. could have just done if, else on the first to not if, else if.
+      self->frame++;
+    }
+
+    if(self->frame > 2) { //sprite sheet only has three frames, 0,1,2
+      self->frame = 0; //if greater than 2 reset to zero.
+    }
+    if(self->frame < 0) { //
+      self->frame = 2;// if less than 0 reset to 2.
+    }
+  }
+  if(self->rect.y + (self->rect.height/2) >= player_pointer->rect.y + (player_pointer->rect.height/2) && self->yVel != 0){
+      self->yVel = 0;
+      if (self->rect.x > player_pointer->rect.x) self->xVel = -6;
+      else self->xVel = 6;
+  }
+  
+  if(self->rect.y > screenHeight_model ||
+     self->rect.x + self->rect.width < 0 ||
+     self->rect.x > screenWidth_model)
+     {
+        self->status = ENTITY_REMOVE;
+     }
+
+  if(self->health <= 0) {
+    self->status = ENTITY_DESTROY;
+  }
+}
+
 void spawn_enemy(int x, int y, float xScale, float yScale, int type, std::vector<Entity> *ent_list) {
   Entity new_entity; //create a new entity.
 
@@ -412,6 +465,17 @@ void spawn_enemy(int x, int y, float xScale, float yScale, int type, std::vector
     new_entity.rect.height = 150*yScale;
     new_entity.textureName = 8;
     new_entity.points = 40;
+  }
+  else if(type == 3) {
+    new_entity.update = &bomber_enemy_update;
+    new_entity.shoot = &enemy_shoot;
+    new_entity.health = 2;
+    new_entity.xVel = 0;
+    new_entity.yVel = 2;
+    new_entity.rect.width = 150*xScale;
+    new_entity.rect.height = 150*yScale;
+    new_entity.textureName = 6;
+    new_entity.points = 29;
   }
 
   new_entity.hit = &enemy_hit;

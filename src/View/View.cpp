@@ -198,7 +198,6 @@ void textBox::draw() {
     }
 }
 
-
 void View::setFullScreen(float *xScale, float *yScale) {
     ToggleFullscreen();
 
