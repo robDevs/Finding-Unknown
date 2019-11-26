@@ -670,15 +670,19 @@ void Controller::createLevel() {
     switch (cur_type) {
       case 0:
         view.drawSprite(cursor_x, cursor_y, BASIC_ENEMY_SPRITE_SHEET, 0, WHITE);
+        view.drawText("Basic", cursor_x,cursor_y - 50*yScale, 50*yScale, WHITE);
         break;
       case 1:
         view.drawSprite(cursor_x, cursor_y, ADV_ENEMY_SPRITE_SHEET, 0, WHITE);
+        view.drawText("Advanced", cursor_x,cursor_y - 50*yScale, 50*yScale, WHITE);
         break;
       case 2:
         view.drawSprite(cursor_x, cursor_y, HARD_ENEMY_SPRITE_SHEET, 0, WHITE);
+        view.drawText("Tracker", cursor_x,cursor_y - 50*yScale, 50*yScale, WHITE);
         break;
       case 3:
         view.drawSprite(cursor_x, cursor_y, BASIC_ENEMY_SPRITE_SHEET, 0, WHITE);
+        view.drawText("Bomber", cursor_x,cursor_y - 50*yScale, 50*yScale, WHITE);
         break;
     }
 
