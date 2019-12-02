@@ -299,6 +299,10 @@ void adv_enemy_update() {
     else if(self->xVel > 0) self->xVel = -5;
   }
 
+  if(self->rect.y < 0) {
+    self->xVel = 0;
+  }
+
   if(self->rect.y > screenHeight_model ||
      self->rect.x + self->rect.width < 0 ||
      self->rect.x > screenWidth_model)
@@ -358,6 +362,10 @@ void tracker_enemy_update() {
   if(self->rect.x + (self->rect.width/2) > player_pointer->rect.x + (player_pointer->rect.width/2)) self->xVel = -2;
   else if(self->rect.x + (self->rect.width/2) < player_pointer->rect.x + (player_pointer->rect.width/2)) self->xVel = 2;
   else self->xVel = 0;
+
+  if(self->rect.y < 0) {
+    self->xVel = 0;
+  }
 
   if(self->rect.y > screenHeight_model ||
      self->rect.x + self->rect.width < 0 ||
@@ -469,7 +477,7 @@ void spawn_enemy(int x, int y, float xScale, float yScale, int type, std::vector
   else if(type == 3) {
     new_entity.update = &bomber_enemy_update;
     new_entity.shoot = &enemy_shoot;
-    new_entity.health = 2;
+    new_entity.health = 1;
     new_entity.xVel = 0;
     new_entity.yVel = 2;
     new_entity.rect.width = 150*xScale;
