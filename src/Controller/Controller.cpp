@@ -722,17 +722,16 @@ void Controller::levelToTxt(std::vector<Entity> ent_list, int level_start, std::
 }
 
 void Controller::levelSelect() {
-  std::vector<std::string> level_list;
+  std::vector<std::string> level_list; //to hold the list of level names.
 
-  int cursor_pos = 0;
-  int y_offset = 20;
+  int cursor_pos = 0; //cursor position.
+  int y_offset = 20; //for scrolling list. 
 
   DIR *dir;
   struct dirent *ent;
   if ((dir = opendir ("assets/levels/")) != NULL) {
-    /* print all the files and directories within directory */
+    //read filenames and add files > 2 chars to level_list.
     while ((ent = readdir (dir)) != NULL) {
-      //printf ("%s\n", ent->d_name);
       std::string filename = ent->d_name;
       if(filename.length() > 2) {
         level_list.push_back(ent->d_name);
@@ -757,7 +756,7 @@ void Controller::levelSelect() {
       else if(gamepad.down_released) {
         cursor_pos += 1;
       }
-      if(gamepad.enter_released) {
+      if(gamepad.enter_released) { //load level and start playing.
         std::string finalPath = "assets/levels/";
         finalPath += level_list[cursor_pos];
         generate_Level(finalPath);
@@ -771,10 +770,12 @@ void Controller::levelSelect() {
       cursor_pos = list_size - 1;
     }
 
+    //correct for scrolling to low.
     while(y_offset + (cursor_pos*50*yScale) > view.getScreenHeight() - 50*yScale) {
       y_offset -= 50*yScale;
     }
 
+    //correct for scrolling to high.
     while(y_offset + (cursor_pos*50*yScale) < 20) {
       y_offset += 50*yScale;
     }
