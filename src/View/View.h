@@ -136,6 +136,7 @@ struct textBox{
     textBox(int x, int y, int w, int h, int max);
     void update();
     void draw();
+    void setMessage(const char newMessage[MAX_INPUT_CHARS + 1]);
 };
 
 //------------------------------------------------------------------------------------------

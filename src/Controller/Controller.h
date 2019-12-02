@@ -25,6 +25,7 @@ private:
   std::vector<Entity> bullets;
   std::vector<Entity> enemy_bullets;
   std::vector<Entity> explosions;
+  std::string current_level;
   View view;
   int gamestatus;
   float xScale, yScale;
@@ -43,13 +44,14 @@ public:
   void doGame();
   void doPauseMenu(control_info gamepad);
   void doEditMenu(control_info gamepad, int level_start, std::string path);
-  void levelSelect();
 
   void testLevel();
   void generate_Level(std::string level);
 
   void createLevel();//experimental for now.
   void levelToTxt(std::vector<Entity> ent_list, int level_start, std::string file_path);
+
+  void levelSelect(bool edit);
 };
 
 #endif

@@ -8,6 +8,8 @@ Controller::Controller() {
   pause = false;
   pause_menu_pos = 0;
 
+  current_level = "";
+
   view.initView(1280,720, &xScale, &yScale);
 
   gameLoop();
@@ -90,16 +92,17 @@ void Controller::gameLoop() {
       doMenu();
     }
     if(gamestatus == STATUS_PLAYING) {
+      gamestatus = STATUS_LEVEL_SEL;
+      levelSelect(false);
       doGame();
     }
     if(gamestatus == STATUS_SETTINGS) {
       doSettings();
     }
     if(gamestatus == STATUS_EDIT) {
+      gamestatus = STATUS_LEVEL_SEL;
+      levelSelect(true);
       createLevel();
-    }
-    if(gamestatus == STATUS_LEVEL_SEL) {
-      levelSelect();
     }
   }
   view.freeTextures();
@@ -180,7 +183,7 @@ void Controller::doMenu() {
     if(gamepad.enter_released) {
         switch (cursor_pos) {
             case 0:
-                gamestatus = STATUS_LEVEL_SEL;
+                gamestatus = STATUS_PLAYING;
                 break;
             case 1:
                 gamestatus = STATUS_SETTINGS;
@@ -587,6 +590,8 @@ void Controller::createLevel() {
   int cur_type = 0;
 
   textBox name_box(view.getScreenWidth() - 300*xScale, 40*xScale, 290*xScale, 35*xScale, 30);
+  const char *temp = current_level.c_str();
+  name_box.setMessage(temp);
 
   pause = false;
 
@@ -653,6 +658,13 @@ void Controller::createLevel() {
       if(gamepad.space_released) {
         cur_type += 1;
       }
+      if(gamepad.back_released) {
+        for(int i = 0; i < enemies.size(); i++) {
+          if(CheckCollisionPointRec((Vector2){cursor_x, cursor_y}, enemies[i].rect)) {
+            enemies.erase(enemies.begin() + i);
+          }
+        }
+      }
     }
 
     if(cur_type > 3) {
@@ -663,6 +675,12 @@ void Controller::createLevel() {
 
     for(int i = level_start; i > level_end; i -= view.getScreenHeight()) {
       view.drawRectBorders(0,i,view.getScreenWidth(), 10, WHITE, WHITE);
+    }
+
+    for(int i = 0; i < enemies.size(); i++) {
+      if(CheckCollisionPointRec((Vector2){cursor_x, cursor_y}, enemies[i].rect)) {
+        view.drawRectBorders(enemies[i].rect.x, enemies[i].rect.y,enemies[i].rect.width,enemies[i].rect.height, RED, BLACK);
+      }
     }
 
     for(int i = 0; i < enemies.size(); i++) {
@@ -706,10 +724,19 @@ void Controller::createLevel() {
 
     view.endFrame();
   }
+
+  while(!enemies.empty()) {
+    enemies.pop_back();
+  }
 }
 
 void Controller::levelToTxt(std::vector<Entity> ent_list, int level_start, std::string file_path) {
   std::ofstream file;
+  for(int i = 0; i < file_path.length(); i++) {
+    if(file_path[i] == ' ') {
+      file_path[i] = '_';
+    }
+  }
   file.open (file_path.c_str());
   for(int i = 0; i < ent_list.size(); i++) {
     int x = (enemies[i].rect.x/xScale);
@@ -721,7 +748,7 @@ void Controller::levelToTxt(std::vector<Entity> ent_list, int level_start, std::
   file.close();
 }
 
-void Controller::levelSelect() {
+void Controller::levelSelect(bool edit) {
   std::vector<std::string> level_list; //to hold the list of level names.
 
   int cursor_pos = 0; //cursor position.
@@ -734,7 +761,9 @@ void Controller::levelSelect() {
     while ((ent = readdir (dir)) != NULL) {
       std::string filename = ent->d_name;
       if(filename.length() > 2) {
-        level_list.push_back(ent->d_name);
+        filename.erase(filename.begin() + filename.find(".txt"), filename.end());
+        level_list.push_back(filename);
+        current_level = filename;
       }
     }
     closedir (dir);
@@ -759,8 +788,12 @@ void Controller::levelSelect() {
       if(gamepad.enter_released) { //load level and start playing.
         std::string finalPath = "assets/levels/";
         finalPath += level_list[cursor_pos];
+        finalPath += ".txt";
         generate_Level(finalPath);
-        gamestatus = STATUS_PLAYING;
+        if(edit) 
+          gamestatus = STATUS_EDIT;
+        else 
+          gamestatus = STATUS_PLAYING;
       }
     }
     if(cursor_pos > list_size - 1) {
@@ -789,5 +822,11 @@ void Controller::levelSelect() {
     //view.drawText(points_string, 20, 20, 40, WHITE);
 
     view.endFrame();
+  }
+
+  if(edit) {
+    for(int i = 0; i < enemies.size(); i++) {
+      enemies[i].rect.y += view.getScreenHeight();
+    }
   }
 }

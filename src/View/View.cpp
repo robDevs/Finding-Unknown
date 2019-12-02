@@ -198,6 +198,15 @@ void textBox::draw() {
     }
 }
 
+void textBox::setMessage(const char newMessage[MAX_INPUT_CHARS + 1]) {
+  for(int i = 0; i < MAX_INPUT_CHARS + 1; i++) {
+    if(newMessage[i] == ' ' || newMessage[i] == NULL || !newMessage[i])
+      break;
+    message[i] = newMessage[i];
+    letterCount++;
+  }
+}
+
 void View::setFullScreen(float *xScale, float *yScale) {
     ToggleFullscreen();
 
