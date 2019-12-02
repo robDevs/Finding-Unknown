@@ -297,10 +297,16 @@ void adv_enemy_update() {
     self->timer1 = 0;
     if(self->xVel < 0) self->xVel = 5;
     else if(self->xVel > 0) self->xVel = -5;
+    else if(self->xVel == 0) {
+      if(self->rect.x + self->rect.width/2 < screenWidth_model/2) 
+        self->xVel = 5;
+      else self->xVel = -5;
+    }
   }
 
-  if(self->rect.y < 0) {
+  if(self->rect.y + self->rect.height < 0) {
     self->xVel = 0;
+    self->timer1 = 60;
   }
 
   if(self->rect.y > screenHeight_model ||
