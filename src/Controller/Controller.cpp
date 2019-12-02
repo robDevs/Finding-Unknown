@@ -98,6 +98,9 @@ void Controller::gameLoop() {
     if(gamestatus == STATUS_EDIT) {
       createLevel();
     }
+    if(gamestatus == STATUS_LEVEL_SEL) {
+      levelSelect();
+    }
   }
   view.freeTextures();
 }
@@ -177,7 +180,7 @@ void Controller::doMenu() {
     if(gamepad.enter_released) {
         switch (cursor_pos) {
             case 0:
-                gamestatus = STATUS_PLAYING;
+                gamestatus = STATUS_LEVEL_SEL;
                 break;
             case 1:
                 gamestatus = STATUS_SETTINGS;
@@ -329,7 +332,7 @@ void Controller::doGame() {
   }
 
   //testLevel();
-  generate_Level("assets/levels/level_test.txt");
+  //generate_Level("assets/levels/level_test.txt");
 
   while(gamestatus == STATUS_PLAYING) {
     if(view.getWindowStatus()) break;
@@ -716,4 +719,74 @@ void Controller::levelToTxt(std::vector<Entity> ent_list, int level_start, std::
   }
 
   file.close();
+}
+
+void Controller::levelSelect() {
+  std::vector<std::string> level_list;
+
+  int cursor_pos = 0;
+  int y_offset = 20;
+
+  DIR *dir;
+  struct dirent *ent;
+  if ((dir = opendir ("assets/levels/")) != NULL) {
+    /* print all the files and directories within directory */
+    while ((ent = readdir (dir)) != NULL) {
+      //printf ("%s\n", ent->d_name);
+      std::string filename = ent->d_name;
+      if(filename.length() > 2) {
+        level_list.push_back(ent->d_name);
+      }
+    }
+    closedir (dir);
+  }
+
+  int list_size = static_cast<int>(level_list.size());
+
+  while(gamestatus == STATUS_LEVEL_SEL) {
+    if(view.getWindowStatus()) break;
+
+
+    control_info gamepad = view.getControlInfo();
+
+    if(!pause) {
+      if(gamepad.up_released) {
+        player.setYvel(-5.0*yScale);
+        cursor_pos -= 1;
+      }
+      else if(gamepad.down_released) {
+        cursor_pos += 1;
+      }
+      if(gamepad.enter_released) {
+        std::string finalPath = "assets/levels/";
+        finalPath += level_list[cursor_pos];
+        generate_Level(finalPath);
+        gamestatus = STATUS_PLAYING;
+      }
+    }
+    if(cursor_pos > list_size - 1) {
+      cursor_pos = 0;
+    }
+    if(cursor_pos < 0) {
+      cursor_pos = list_size - 1;
+    }
+
+    while(y_offset + (cursor_pos*50*yScale) > view.getScreenHeight() - 50*yScale) {
+      y_offset -= 50*yScale;
+    }
+
+    while(y_offset + (cursor_pos*50*yScale) < 20) {
+      y_offset += 50*yScale;
+    }
+
+    view.startFrame();
+
+    for(int i = 0; i < list_size; i++) {
+      view.drawText(level_list[i], 20, y_offset + i*50*yScale, 50*yScale, (cursor_pos == i) ? (Color) {0,0,255,255} : (Color) {255,255,255,255});
+    }
+
+    //view.drawText(points_string, 20, 20, 40, WHITE);
+
+    view.endFrame();
+  }
 }

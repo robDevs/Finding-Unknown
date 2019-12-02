@@ -5,6 +5,7 @@
 #include <iostream>
 #include <fstream>
 #include <string>
+#include <dirent.h>
 
 #include "../Model/Model.h"
 #include "../View/View.h"
@@ -16,6 +17,7 @@
 #define STATUS_QUIT         3
 #define STATUS_SETTINGS     4
 #define STATUS_EDIT         5
+#define STATUS_LEVEL_SEL    6
 
 class Controller {
 private:
@@ -41,6 +43,7 @@ public:
   void doGame();
   void doPauseMenu(control_info gamepad);
   void doEditMenu(control_info gamepad, int level_start, std::string path);
+  void levelSelect();
 
   void testLevel();
   void generate_Level(std::string level);
