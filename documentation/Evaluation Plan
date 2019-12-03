@@ -1,13 +1,16 @@
 Evaluating the program that my group has created it is clear to see that we have been able to implement almost everything we have set out 
-to create.  The programmers have created a game using C++ and the Raylib graphics library. The group has also been able to implement a home
-screen with graphics, spaceships using graphics and enemy space ships with homemade graphics.  This game also allows users to use the space
-bar to shoot their enemies and arrow keys to move their space ship. The user can get to the game screen by going through the home screen. 
-This has the graphics we created as well as a settings menu which allows the user ot change the screen size.   We have not been able to 
-implement a device to control movement but that is something that will be added later on in the development.  All together we have 
-implemented all the functional and non functional requirements that we set out to create.  This is a secure game as it is a functioning desk
-top application. Since it is not being moved into an internet application it is very secure.  All of the characters we wanted to create are
-functional and have been implemented in the game.  This game meets the criteria we set forth to create and evaluates to be a solid program 
-with not only skilled programming but unique design. 
+to create.  
++ The programmers have created a game using C++ and the Raylib graphics library. 
++ The group has also been able to implement a home screen with graphics, spaceships using graphics and enemy space ships with homemade 
+graphics.  
++ This game also allows users to use enter to shoot their enemies and WASD keys to move their space ship. 
++The user can get to the game screen by going through the home screen. This has the graphics we created as well as a settings menu which 
+allows the user to change the screen size.   
++ We have not been able to implement a device to control movement but that is something that will be added later on in the development.  
+All together we have implemented all the functional and non functional requirements that we set out to create.  This is a secure game as it
+is a functioning desktop application. Since it is not being moved into an internet application it is very secure.  All of the characters we
+wanted to create are functional and have been implemented in the game.  This game meets the criteria we set forth to create and evaluates 
+to be a solid program with not only skilled programming but unique design. 
 
-JSON file?
-Arcade mode?
+JSON file? - text files
+Arcade mode? - nope
