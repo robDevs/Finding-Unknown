@@ -33,6 +33,7 @@ private:
   bool pause;
   int pause_menu_pos;
   int respawn_timer;
+  int flashing;
 
   Entity player;
 public:

@@ -5,6 +5,8 @@ Controller::Controller() {
   xScale = 1;
   yScale = 1;
   points = 0;
+  flashing = 0;
+  respawn_timer = 181;
   pause = false;
   pause_menu_pos = 0;
 
@@ -19,19 +21,18 @@ void Controller::entityLoop() {
   player_pointer = &player;
   if(player.update != NULL) player.update();
   
-  
   if(player.status == ENTITY_DESTROY){
       spawn_explosion(player.rect.x + player.rect.width/2 - 200*xScale, player.rect.y + player.rect.width/2 - 200*yScale, 0, &explosions);
       player.hit = NULL;
       respawn_timer = 0;
+      flashing = 0;
+      player.health = 1;
       player.status = ENTITY_KEEP;
   }
-  if(player.health <= 0 && respawn_timer < 181){
+  if(respawn_timer < 181){
+      player.status = ENTITY_KEEP;
       respawn_timer++;
-      if(respawn_timer > 55){
-          player.health = 1;
-      }
-      if(respawn_timer >= 180){
+      if(respawn_timer == 180){
           player.hit = &player_hit;
       }
   }  
@@ -50,7 +51,7 @@ void Controller::entityLoop() {
       }
     }
     
-    if(CheckCollisionRecs(player.rect, enemies[i].rect)) {
+    if(CheckCollisionRecs(player.rect, enemies[i].rect) && respawn_timer > 180) {
         other = &player;
         if(enemies[i].hit != NULL) enemies[i].hit();
     }
@@ -372,8 +373,11 @@ void Controller::doGame() {
     if(view.getWindowStatus()) break;
 
     control_info gamepad = view.getControlInfo();
-
-    if(!pause && player.health > 0) {
+    if(respawn_timer<55){
+        player.setXvel(0);
+        player.setYvel(0);
+    }
+    if(!pause && respawn_timer > 55) {
       if(gamepad.up_held) {
         player.setYvel(-5.0*yScale);
       }
@@ -434,7 +438,8 @@ void Controller::doGame() {
     view.drawTexture(0,0,0, WHITE);
 
     //DrawRectangleRec(player.getRect(), GREEN);
-    if(player.health > 0){
+    if(respawn_timer % 10 == 0) flashing++;
+    if(respawn_timer > 55 && flashing % 2 == 0){
         view.drawSprite(burner.getX(), burner.getY(), BURNER_SPRITE_SHEET, burner.frame, WHITE);
         view.drawSprite(player.getX(), player.getY(), PLAYER_SPRITESHEET, player.getFrame(), WHITE);
     }
