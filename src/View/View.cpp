@@ -546,3 +546,16 @@ void View::drawRectBorders(int x, int y, int w, int h, Color color_outline, Colo
   DrawRectangleLines(x,y,w,h,color_outline);
   DrawRectangleLines(x+1,y+1,w-2,h-2,color_outline);
 }
+
+void View::readFolder(std::string path, std::vector<std::string> *list) {
+  int fileCount = 0;
+  char **files = GetDirectoryFiles(path.c_str(), &fileCount);
+
+  for(int i = 0; i < fileCount; i++) {
+      std::string fileName = GetFileNameWithoutExt(files[i]);
+      if(fileName.length() > 2)
+        list->push_back(fileName);
+  }
+
+  ClearDirectoryFiles();
+}

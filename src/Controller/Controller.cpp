@@ -752,22 +752,9 @@ void Controller::levelSelect(bool edit) {
   std::vector<std::string> level_list; //to hold the list of level names.
 
   int cursor_pos = 0; //cursor position.
-  int y_offset = 20; //for scrolling list. 
+  int y_offset = 20; //for scrolling list.
 
-  DIR *dir;
-  struct dirent *ent;
-  if ((dir = opendir ("assets/levels/")) != NULL) {
-    //read filenames and add files > 2 chars to level_list.
-    while ((ent = readdir (dir)) != NULL) {
-      std::string filename = ent->d_name;
-      if(filename.length() > 2) {
-        filename.erase(filename.begin() + filename.find(".txt"), filename.end());
-        level_list.push_back(filename);
-        current_level = filename;
-      }
-    }
-    closedir (dir);
-  }
+  view.readFolder("assets/levels/", &level_list);
 
   int list_size = static_cast<int>(level_list.size());
 
@@ -789,10 +776,11 @@ void Controller::levelSelect(bool edit) {
         std::string finalPath = "assets/levels/";
         finalPath += level_list[cursor_pos];
         finalPath += ".txt";
+        current_level = level_list[cursor_pos];
         generate_Level(finalPath);
-        if(edit) 
+        if(edit)
           gamestatus = STATUS_EDIT;
-        else 
+        else
           gamestatus = STATUS_PLAYING;
       }
     }

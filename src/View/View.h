@@ -172,6 +172,8 @@ public:
   int getTextureHeight(int i);
 
   void drawRectBorders(int x, int y, int h, int w, Color color_outline, Color color_fill);
+
+  void readFolder(std::string path, std::vector<std::string> *list);
 };
 
 #endif
