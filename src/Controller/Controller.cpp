@@ -21,7 +21,7 @@ void Controller::entityLoop() {
   
   
   if(player.status == ENTITY_DESTROY){
-      spawn_explosion(enemies[i].rect.x + enemies[i].rect.width/2 - 200*xScale, enemies[i].rect.y + enemies[i].rect.width/2 - 200*yScale, 0, &explosions);
+      spawn_explosion(player.rect.x + player.rect.width/2 - 200*xScale, player.rect.y + player.rect.width/2 - 200*yScale, 0, &explosions);
       player.hit = NULL;
       respawn_timer = 0;
       player.status = ENTITY_KEEP;
