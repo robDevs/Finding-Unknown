@@ -18,6 +18,23 @@ Controller::Controller() {
 void Controller::entityLoop() {
   player_pointer = &player;
   if(player.update != NULL) player.update();
+  
+  
+  if(player.status == ENTITY_DESTROY){
+      spawn_explosion(enemies[i].rect.x + enemies[i].rect.width/2 - 200*xScale, enemies[i].rect.y + enemies[i].rect.width/2 - 200*yScale, 0, &explosions);
+      player.hit = NULL;
+      respawn_timer = 0;
+      player.status = ENTITY_KEEP;
+  }
+  if(player.health <= 0 && respawn_timer < 181){
+      respawn_timer++;
+      if(respawn_timer > 55){
+          player.health = 1;
+      }
+      if(respawn_timer >= 180){
+          player.hit = &player_hit;
+      }
+  }  
 
   for(int i = 0; i < (int) enemies.size(); i++) {
     self = &enemies[i];
@@ -31,6 +48,11 @@ void Controller::entityLoop() {
       if(CheckCollisionRecs(enemies[i].rect, bullets[x].rect)) {
         if(enemies[i].hit != NULL) enemies[i].hit();
       }
+    }
+    
+    if(CheckCollisionRecs(player.rect, enemies[i].rect)) {
+        other = &player;
+        if(enemies[i].hit != NULL) enemies[i].hit();
     }
 
     if(enemies[i].status == ENTITY_REMOVE) {
@@ -62,7 +84,12 @@ void Controller::entityLoop() {
   for(int i = 0; i < (int) enemy_bullets.size(); i++) {
     self = &enemy_bullets[i];
     if(enemy_bullets[i].update != NULL) enemy_bullets[i].update();
-
+    
+    if(CheckCollisionRecs(player.rect, enemy_bullets[i].rect)) {
+        other = &player;
+        if(enemy_bullets[i].hit != NULL) enemy_bullets[i].hit();
+    }
+    
     if(enemy_bullets[i].status == ENTITY_REMOVE) {
       enemy_bullets.erase(enemy_bullets.begin() + i);
     }
@@ -312,8 +339,12 @@ void Controller::doGame() {
   pause = false;
 
   player.update = &player_update;
+  player.hit = &player_hit;
+  player.lives = 3;
   player.setX(100);
   player.setY(100);
+  player.health = 1;
+  player.className = PLAYER_PLAYER;
 
   int bulletCounter = 0;
   bool bulletReset = false;
@@ -340,10 +371,9 @@ void Controller::doGame() {
   while(gamestatus == STATUS_PLAYING) {
     if(view.getWindowStatus()) break;
 
-
     control_info gamepad = view.getControlInfo();
 
-    if(!pause) {
+    if(!pause && player.health > 0) {
       if(gamepad.up_held) {
         player.setYvel(-5.0*yScale);
       }
@@ -404,9 +434,11 @@ void Controller::doGame() {
     view.drawTexture(0,0,0, WHITE);
 
     //DrawRectangleRec(player.getRect(), GREEN);
-    view.drawSprite(burner.getX(), burner.getY(), BURNER_SPRITE_SHEET, burner.frame, WHITE);
-    view.drawSprite(player.getX(), player.getY(), PLAYER_SPRITESHEET, player.getFrame(), WHITE);
-
+    if(player.health > 0){
+        view.drawSprite(burner.getX(), burner.getY(), BURNER_SPRITE_SHEET, burner.frame, WHITE);
+        view.drawSprite(player.getX(), player.getY(), PLAYER_SPRITESHEET, player.getFrame(), WHITE);
+    }
+    
     self = &burner;
     if(burner.update != NULL) burner.update();
 

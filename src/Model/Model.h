@@ -12,6 +12,8 @@
 #define ENTITY_SHOOT      3
 
 #define BASIC_BULLET      0
+#define ENEMY_BULLET      1
+#define PLAYER_PLAYER     2
 
 extern int screenWidth_model; //assigned by controller.cpp
 extern int screenHeight_model;
@@ -33,6 +35,7 @@ public:
     int timer; //a timer. increase it every frame. Use it for things. 60 frames = 1 second.
     int timer1;
     int timer2;
+    int lives;
 
     void (*hit)(); // A hit function. if defined and not bullet, called every frame upon certain collisions.
     void (*update)(); // Logic / update function. if defined called every frame. syntax is update = &func; where func is a defined function.
@@ -70,22 +73,25 @@ extern Entity *player_pointer; //special pointer for the player entity.
 //First create The update and hit functions. Then a spawn function.
 //Spawn function should always take scales and vector<Entity> arguments.
 //If you don't define a hit a update func for an ent it simply wont be called by controller.cpp
+
 extern void player_update();
-
 extern void bullet_basic_update();
-extern void basic_bullet_hit();
-extern void spawn_bullet(int x, int y, int type, float xScale, float yScale, std::vector<Entity> *ent_list);
-extern void enemy_shoot(std::vector<Entity> *ent_list);
-
-extern void enemy_hit();
 extern void basic_enemy_update();
 extern void adv_enemy_update();
 extern void tracker_enemy_update();
 extern void bomber_enemy_update();
+
+extern void basic_bullet_hit();
+extern void player_hit();
+extern void enemy_bullet_hit();
+extern void enemy_hit();
+
 extern void spawn_enemy(int x, int y, float xScale, float yScale, int type, std::vector<Entity> *ent_list);
+extern void spawn_bullet(int x, int y, int type, float xScale, float yScale, std::vector<Entity> *ent_list);
+
+extern void enemy_shoot(std::vector<Entity> *ent_list);
 
 extern void burner_update();
-
 extern void explosion_update();
 extern void beam_burst_update();
 extern void spawn_explosion(int x, int y, int type, std::vector<Entity> *ent_list);

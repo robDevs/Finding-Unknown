@@ -32,6 +32,7 @@ private:
   int points;
   bool pause;
   int pause_menu_pos;
+  int respawn_timer;
 
   Entity player;
 public:

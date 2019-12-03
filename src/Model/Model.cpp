@@ -11,8 +11,8 @@ Entity::Entity() {
     hit = NULL; //set the pointer functions to null at creation to avoid calling a function that hasn't been defined yet.
     update = NULL;
     shoot = NULL;
-
-    timer = timer1 = timer2 = 0;
+    
+    timer = timer1 = timer2 = lives = 0;
 }
 
 //---------------------------------------------
@@ -96,7 +96,7 @@ void finalize_entity(Entity target, std::vector<Entity> *ent_list) {
 //Update function for the player.
 //Move the position(hitbox) by velocity * scale. (coming soon)
 void player_update() {
-
+  
   player_pointer->rect.x += player_pointer->xVel;
   if(player_pointer->rect.x + player_pointer->rect.width > screenWidth_model || player_pointer->rect.x < 0) {
       player_pointer->rect.x -= player_pointer->xVel;
@@ -107,7 +107,8 @@ void player_update() {
       player_pointer->rect.y -= player_pointer->yVel;
   }
 
-
+  if(player_pointer->health<=0) player_pointer->status = ENTITY_DESTROY;
+  
   //Set the frame depending on direction of movement.
   if(player_pointer->xVel < 0) player_pointer->frame = 0;
   if(player_pointer->xVel == 0) player_pointer->frame = 1;
@@ -179,9 +180,25 @@ void spawn_bullet(int x, int y, int type, float xScale, float yScale, std::vecto
   finalize_entity(new_entity, ent_list);
 }
 
+void player_hit(){
+    self->health -= 1;
+}
+
+void enemy_bullet_hit() {
+  self->health -= 1;
+  self = other;
+  other->hit();
+}
+
 void enemy_hit() {
   if(other->className == BASIC_BULLET) {
     self->health -= 1;
+    self = other;
+    other->hit();
+  }
+  if(other->className == PLAYER_PLAYER) {
+    self->points = 0;
+    self->health = 0;
     self = other;
     other->hit();
   }
@@ -196,7 +213,7 @@ void enemy_shoot(std::vector<Entity> *ent_list) {
   new_entity.health = 1;
   new_entity.className = 0;
   new_entity.textureName = 2;
-  new_entity.hit = &basic_bullet_hit;
+  new_entity.hit = &enemy_bullet_hit;
   new_entity.timer = 0;
   new_entity.timer1 = 0;
   new_entity.rect.width = 10*self->xScale; //scale is passed from controller.cpp
