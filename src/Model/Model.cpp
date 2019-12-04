@@ -11,7 +11,7 @@ Entity::Entity() {
     hit = NULL; //set the pointer functions to null at creation to avoid calling a function that hasn't been defined yet.
     update = NULL;
     shoot = NULL;
-    
+
     timer = timer1 = timer2 = lives = 0;
 }
 
@@ -96,7 +96,7 @@ void finalize_entity(Entity target, std::vector<Entity> *ent_list) {
 //Update function for the player.
 //Move the position(hitbox) by velocity * scale. (coming soon)
 void player_update() {
-  
+
   player_pointer->rect.x += player_pointer->xVel;
   if(player_pointer->rect.x + player_pointer->rect.width > screenWidth_model || player_pointer->rect.x < 0) {
       player_pointer->rect.x -= player_pointer->xVel;
@@ -108,7 +108,7 @@ void player_update() {
   }
 
   if(player_pointer->health<=0) player_pointer->status = ENTITY_DESTROY;
-  
+
   //Set the frame depending on direction of movement.
   if(player_pointer->xVel < 0) player_pointer->frame = 0;
   if(player_pointer->xVel == 0) player_pointer->frame = 1;
@@ -187,7 +187,7 @@ void player_hit(){
 void enemy_bullet_hit() {
   self->health -= 1;
   self = other;
-  other->hit();
+  if(other->hit != NULL) other->hit();
 }
 
 void enemy_hit() {
@@ -315,7 +315,7 @@ void adv_enemy_update() {
     if(self->xVel < 0) self->xVel = 5;
     else if(self->xVel > 0) self->xVel = -5;
     else if(self->xVel == 0) {
-      if(self->rect.x + self->rect.width/2 < screenWidth_model/2) 
+      if(self->rect.x + self->rect.width/2 < screenWidth_model/2)
         self->xVel = 5;
       else self->xVel = -5;
     }
@@ -442,7 +442,7 @@ void bomber_enemy_update() {
       if (self->rect.x > player_pointer->rect.x) self->xVel = -6;
       else self->xVel = 6;
   }
-  
+
   if(self->rect.y > screenHeight_model ||
      self->rect.x + self->rect.width < 0 ||
      self->rect.x > screenWidth_model)
