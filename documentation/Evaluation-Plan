@@ -1,0 +1,35 @@
+Evaluation plan. 
+Does the game have key controls and gamepad controls? 
+
+Did raylib work well for the project? (Graphics library)
+
+Is the collision detection accurate? 
+
+Are files saved as json? 
+
+Did the project change from the original plan? 
+
+Does the game have a story? 
+
+Does the player recieve upgrades upon level completion? 
+
+Multiple levels and an arcade mode? 
+
+Is the game secure? 
+
+Are the planned enemies in the game? 
+
+# Testing
+- Do we check entity function pointers before calling? 
+- Do entities draw the correct frame of the spritesheet? 
+- Are enemies removed when destroyed or are off screen? 
+- Do all the controlls work as intended? 
+- Do real world testing for bugs. 
+- Get person not in group to test while group watches. 
+
+# Was anything planned but not added to the project? 
+
+# Was anything not planned but added to the game? 
+
+# Was anything really cool done in the code? 
+
