@@ -20,7 +20,7 @@ Controller::Controller() {
 void Controller::entityLoop() {
   player_pointer = &player;
   if(player.update != NULL) player.update();
-  
+
   if(player.status == ENTITY_DESTROY){
       spawn_explosion(player.rect.x + player.rect.width/2 - 200*xScale, player.rect.y + player.rect.width/2 - 200*yScale, 0, &explosions);
       player.hit = NULL;
@@ -35,7 +35,7 @@ void Controller::entityLoop() {
       if(respawn_timer == 180){
           player.hit = &player_hit;
       }
-  }  
+  }
 
   for(int i = 0; i < (int) enemies.size(); i++) {
     self = &enemies[i];
@@ -50,7 +50,7 @@ void Controller::entityLoop() {
         if(enemies[i].hit != NULL) enemies[i].hit();
       }
     }
-    
+
     if(CheckCollisionRecs(player.rect, enemies[i].rect) && respawn_timer > 180) {
         other = &player;
         if(enemies[i].hit != NULL) enemies[i].hit();
@@ -85,12 +85,12 @@ void Controller::entityLoop() {
   for(int i = 0; i < (int) enemy_bullets.size(); i++) {
     self = &enemy_bullets[i];
     if(enemy_bullets[i].update != NULL) enemy_bullets[i].update();
-    
-    if(CheckCollisionRecs(player.rect, enemy_bullets[i].rect)) {
+
+    if(CheckCollisionRecs(player.rect, enemy_bullets[i].rect)  && respawn_timer > 180) {
         other = &player;
         if(enemy_bullets[i].hit != NULL) enemy_bullets[i].hit();
     }
-    
+
     if(enemy_bullets[i].status == ENTITY_REMOVE) {
       enemy_bullets.erase(enemy_bullets.begin() + i);
     }
@@ -443,7 +443,7 @@ void Controller::doGame() {
         view.drawSprite(burner.getX(), burner.getY(), BURNER_SPRITE_SHEET, burner.frame, WHITE);
         view.drawSprite(player.getX(), player.getY(), PLAYER_SPRITESHEET, player.getFrame(), WHITE);
     }
-    
+
     self = &burner;
     if(burner.update != NULL) burner.update();
 
