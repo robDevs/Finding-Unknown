@@ -56,6 +56,12 @@
 #define TITLE_          13
 #define BEAM_A          14
 #define BEAM_B          15
+#define BG_SCROLL_01    16
+#define BG_SCROLL_02    17
+#define BG_SCROLL_03    18
+#define BG_SCROLL_04    19
+#define BG_SCROLL_05    20
+#define BG_SCROLL_06    21
 
 #define BURST_SPRITESHEET             0
 #define PLAYER_SPRITESHEET            1
@@ -146,9 +152,10 @@ class View {
 private:
   float screenWidth;
   float screenHeight;
-  Texture2D textures[16];
+  Texture2D textures[22];
   sprite_sheet sprite_sheets[10];
 
+  Sound sounds[6];
 
 public:
   void initView(int width, int height, float *xScale, float *yScale); // Create a window with the given attributes.
@@ -174,6 +181,11 @@ public:
   void drawRectBorders(int x, int y, int h, int w, Color color_outline, Color color_fill);
 
   void readFolder(std::string path, std::vector<std::string> *list);
+  void freeSounds();
+
+  void playSound(int Sound);
+  void stodSound(int Sound);
+  void loopSound(int Sound);
 };
 
 #endif

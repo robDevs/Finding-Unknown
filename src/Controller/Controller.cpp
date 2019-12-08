@@ -14,6 +14,8 @@ Controller::Controller() {
 
   view.initView(1280,720, &xScale, &yScale);
 
+  view.playSound(5);
+
   gameLoop();
 }
 
@@ -134,6 +136,7 @@ void Controller::gameLoop() {
     }
   }
   view.freeTextures();
+  view.freeSounds();
 }
 
 void Controller::doIntro() {
@@ -362,6 +365,12 @@ void Controller::doGame() {
   screenWidth_model = view.getScreenWidth();
   screenHeight_model = view.getScreenHeight();
 
+  int bg_pos = 0;
+  int bg_pos1 = -1440;
+
+  int bg_frame = 0;
+  int bg_frame_time = 0;
+
   for(int i = 0; i < 15; i++) {
     //spawn_enemy(rand() % (int)view.getScreenWidth(), -50 - rand() % (int)view.getScreenHeight(), xScale, yScale, &enemies);
   }
@@ -371,6 +380,25 @@ void Controller::doGame() {
 
   while(gamestatus == STATUS_PLAYING) {
     if(view.getWindowStatus()) break;
+
+    bg_pos += 2;
+    bg_pos1 += 2;
+
+    bg_frame_time++;
+    if(bg_frame_time >= 5) {
+      bg_frame += 1;
+      bg_frame_time = 0;
+    }
+    if(bg_frame > 5) {
+      bg_frame = 0;
+    }
+
+    if(bg_pos >= view.getScreenHeight()) {
+      bg_pos = -1440;
+    }
+    if(bg_pos1 >= view.getScreenHeight()) {
+      bg_pos1 = -1440;
+    }
 
     control_info gamepad = view.getControlInfo();
     if(respawn_timer<55){
@@ -435,7 +463,37 @@ void Controller::doGame() {
     burner.rect.y = player.rect.y + 130*yScale;
 
     view.startFrame();
-    view.drawTexture(0,0,0, WHITE);
+
+    switch (bg_frame) {
+      case 0:
+        view.drawTexture(0,bg_pos, BG_SCROLL_01, WHITE);
+        view.drawTexture(0,bg_pos1, BG_SCROLL_01, WHITE);
+        break;
+      case 1:
+        view.drawTexture(0,bg_pos, BG_SCROLL_02, WHITE);
+        view.drawTexture(0,bg_pos1, BG_SCROLL_02, WHITE);
+        break;
+      case 2:
+        view.drawTexture(0,bg_pos, BG_SCROLL_03, WHITE);
+        view.drawTexture(0,bg_pos1, BG_SCROLL_03, WHITE);
+        break;
+      case 3:
+        view.drawTexture(0,bg_pos, BG_SCROLL_03, WHITE);
+        view.drawTexture(0,bg_pos1, BG_SCROLL_03, WHITE);
+        break;
+      case 4:
+        view.drawTexture(0,bg_pos, BG_SCROLL_04, WHITE);
+        view.drawTexture(0,bg_pos1, BG_SCROLL_04, WHITE);
+        break;
+      case 5:
+        view.drawTexture(0,bg_pos, BG_SCROLL_05, WHITE);
+        view.drawTexture(0,bg_pos1, BG_SCROLL_05, WHITE);
+        break;
+      case 6:
+        view.drawTexture(0,bg_pos, BG_SCROLL_06, WHITE);
+        view.drawTexture(0,bg_pos1, BG_SCROLL_06, WHITE);
+        break;
+    }
 
     //DrawRectangleRec(player.getRect(), GREEN);
     if(respawn_timer % 10 == 0) flashing++;

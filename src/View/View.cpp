@@ -81,6 +81,8 @@ void View::initView(int width, int height, float *xScale, float *yScale) {
   *xScale = screenWidth/1280.00;
   *yScale = screenHeight/720.00;
 
+  if(!IsAudioDeviceReady()) InitAudioDevice();
+
 
   if(!IsWindowReady()) InitWindow(screenWidth, screenHeight, "Finding Unknown");
   else SetWindowSize(width, height);
@@ -130,6 +132,13 @@ void View::initView(int width, int height, float *xScale, float *yScale) {
   sprite_sheets[9].frameWidth = 50;
   sprite_sheets[9].frameHeight = 50;
   sprite_sheets[9].setFrames("assets/Ships/Beams/ShotHit.png", *xScale, *yScale);
+
+  sounds[0] = LoadSound("assets/Audio/Music/Alert\ Bagel\ Danger\ BulletDarkness.mp3");
+  sounds[1] = LoadSound("assets/Audio/Music/Arcade\ Geometry\ VEUSKEMINI.mp3");
+  sounds[2] = LoadSound("assets/Audio/Music/Asteroid\ Panic\ Burn7.mp3");
+  sounds[3] = LoadSound("assets/Audio/Music/Evil\ Intent\ IViqrr.mp3");
+  sounds[4] = LoadSound("assets/Audio/Music/NUKE\ VEUSKEMINI.mp3");
+  sounds[5] = LoadSound("assets/Audio/Music/Red\ Soil\ Greyvoice.mp3");
 
 
   SetTargetFPS(60);
@@ -307,10 +316,40 @@ bool View::loadTextures(float xScale, float yScale) {
     ImageResizeNN(&tempImage, tempImage.width * xScale, tempImage.height * yScale);
     textures[15] = LoadTextureFromImage(tempImage);
     UnloadImage(tempImage);
+
+    tempImage = LoadImage("assets/BG/BG_01.png");
+    ImageResizeNN(&tempImage, tempImage.width * xScale, tempImage.height * yScale);
+    textures[16] = LoadTextureFromImage(tempImage);
+    UnloadImage(tempImage);
+
+    tempImage = LoadImage("assets/BG/BG_02.png");
+    ImageResizeNN(&tempImage, tempImage.width * xScale, tempImage.height * yScale);
+    textures[17] = LoadTextureFromImage(tempImage);
+    UnloadImage(tempImage);
+
+    tempImage = LoadImage("assets/BG/BG_03.png");
+    ImageResizeNN(&tempImage, tempImage.width * xScale, tempImage.height * yScale);
+    textures[18] = LoadTextureFromImage(tempImage);
+    UnloadImage(tempImage);
+
+    tempImage = LoadImage("assets/BG/BG_04.png");
+    ImageResizeNN(&tempImage, tempImage.width * xScale, tempImage.height * yScale);
+    textures[19] = LoadTextureFromImage(tempImage);
+    UnloadImage(tempImage);
+
+    tempImage = LoadImage("assets/BG/BG_05.png");
+    ImageResizeNN(&tempImage, tempImage.width * xScale, tempImage.height * yScale);
+    textures[20] = LoadTextureFromImage(tempImage);
+    UnloadImage(tempImage);
+
+    tempImage = LoadImage("assets/BG/BG_06.png");
+    ImageResizeNN(&tempImage, tempImage.width * xScale, tempImage.height * yScale);
+    textures[21] = LoadTextureFromImage(tempImage);
+    UnloadImage(tempImage);
 }
 
 void View::freeTextures() {
-    for(int i = 0; i < 15; i++) {
+    for(int i = 0; i < 21; i++) {
         UnloadTexture(textures[i]);
     }
     for(int i = 0; i < 9; i++) {
@@ -318,6 +357,12 @@ void View::freeTextures() {
     }
 }
 
+void View::freeSounds() {
+  for(int i = 0; i < 5; i++) {
+    UnloadSound(sounds[i]);
+  }
+  CloseAudioDevice();
+}
 void View::startFrame() {
   BeginDrawing();
   ClearBackground(BLACK);
@@ -558,4 +603,14 @@ void View::readFolder(std::string path, std::vector<std::string> *list) {
   }
 
   ClearDirectoryFiles();
+}
+
+void View::playSound(int sound) {
+  PlaySound(sounds[sound]);
+}
+void View::stodSound(int sound) {
+  StopSound(sounds[sound]);
+}
+void View::loopSound(int sound) {
+
 }

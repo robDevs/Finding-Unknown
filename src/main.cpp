@@ -4,7 +4,6 @@
 int main(void)
 {
     Controller controller;
-
     CloseWindow();
 
     return 0;
