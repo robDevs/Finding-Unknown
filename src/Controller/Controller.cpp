@@ -218,6 +218,8 @@ void Controller::doMenu() {
   int res = 0;
   while(gamestatus == STATUS_MENU) {
 
+    view.loopSound(SONG_RED);
+
     control_info gamepad = view.getControlInfo();
     if(gamepad.enter_released) {
         switch (cursor_pos) {
@@ -280,6 +282,8 @@ void Controller::doSettings(){
   int res = 0;
 
   while(gamestatus == STATUS_SETTINGS) {
+
+    view.loopSound(SONG_RED);
 
     control_info gamepad = view.getControlInfo();
     if(gamepad.enter_released) {
@@ -396,6 +400,8 @@ void Controller::doGame() {
 
   while(gamestatus == STATUS_PLAYING) {
     if(view.getWindowStatus()) break;
+
+    view.loopSound(SONG_RED);
 
     bg_pos += 2;
     bg_pos1 += 2;
@@ -592,7 +598,7 @@ void Controller::doGame() {
     explosions.pop_back();
   }
 
-  if(gameOver) gamestatus = STATUS_START;
+  if(gameOver) gamestatus = STATUS_MENU;
   if(levelComplete) gamestatus = STATUS_PLAYING;
 }
 
@@ -770,6 +776,8 @@ void Controller::createLevel() {
 
   while(gamestatus == STATUS_EDIT) {
     if(view.getWindowStatus()) break;
+
+    view.loopSound(SONG_RED);
 
     level_end = level_start - view.getScreenHeight() * 20; //always reletive to level_start;
 

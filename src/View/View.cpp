@@ -649,5 +649,5 @@ void View::stodSound(int sound) {
   StopSound(sounds[sound]);
 }
 void View::loopSound(int sound) {
-
+    if(!IsSoundPlaying(sounds[sound])) PlaySound(sounds[sound]);
 }
