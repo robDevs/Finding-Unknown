@@ -554,21 +554,16 @@ void Controller::doGame() {
 }
 
 void Controller::testLevel() {
-  for(int i = 0; i < 10; i += 2) {
-    //spawn_enemy(view.getScreenWidth() - 400*xScale, -200*yScale - view.getScreenHeight()*i, xScale, yScale, &enemies);
-    spawn_enemy(view.getScreenWidth() - 400*xScale, -200*yScale - (view.getScreenHeight()-200*yScale) - view.getScreenHeight()*i, xScale, yScale, 0, &enemies);
-  }
-  for(int i = 1; i < 10; i += 2) {
-    //spawn_enemy(view.getScreenWidth() - 400*xScale, -200*yScale - view.getScreenHeight()*i, xScale, yScale, &enemies);
-    spawn_enemy(400*xScale - enemies[0].rect.width, -200*yScale - (view.getScreenHeight()-200*yScale) - view.getScreenHeight()*i, xScale, yScale, 0, &enemies);
-  }
-
-  for(int i = 0; i < 12; i += 3) {
-    spawn_enemy(view.getScreenWidth()/2, -200*yScale - (view.getScreenHeight()-200*yScale) - view.getScreenHeight()*i, xScale, yScale, 1, &enemies);
-  }
-  for(int i = 0; i < 12; i += 3) {
-    spawn_enemy(view.getScreenWidth()/2, -200*yScale - (view.getScreenHeight()-200*yScale) - view.getScreenHeight()*i, xScale, yScale, 2, &enemies);
-  }
+  spawn_enemy((float)810*xScale, (float)-510*yScale, xScale, yScale, 0, &enemies);
+  spawn_enemy((float)305*xScale, (float)-510*yScale, xScale, yScale, 0, &enemies);
+  spawn_enemy((float)310*xScale, (float)-1000*yScale, xScale, yScale, 0, &enemies);
+  spawn_enemy((float)820*xScale, (float)-1000*yScale, xScale, yScale, 0, &enemies);
+  spawn_enemy((float)545*xScale, (float)-1250*yScale, xScale, yScale, 1, &enemies);
+  spawn_enemy((float)250*xScale, (float)-1855*yScale, xScale, yScale, 2, &enemies);
+  spawn_enemy((float)540*xScale, (float)-3040*yScale, xScale, yScale, 4, &enemies);
+  spawn_enemy((float)330*xScale, (float)-2400*yScale, xScale, yScale, 3, &enemies);
+  spawn_enemy((float)810*xScale, (float)-2390*yScale, xScale, yScale, 3, &enemies);
+  spawn_enemy((float)590*xScale, (float)-2640*yScale, xScale, yScale, 2, &enemies);
 }
 
 void Controller::generate_Level(std::string level){
@@ -639,7 +634,7 @@ void Controller::doEditMenu(control_info gamepad, int level_start, std::string p
   if(gamepad.enter_released) {
       switch (pause_menu_pos) {
           case 0:
-              levelToTxt(enemies, level_start, path);
+              levelToTxt(enemies, level_start, path, false);
               pause = false;
               break;
           case 1:
@@ -648,6 +643,14 @@ void Controller::doEditMenu(control_info gamepad, int level_start, std::string p
           case 2: //temp change res. Coming soon: settingsMenu();
               pause = false;
               gamestatus = STATUS_MENU;
+              break;
+      }
+  }
+  if(gamepad.space_released) {
+      switch (pause_menu_pos) {
+          case 0:
+              levelToTxt(enemies, level_start, "assets/level_code/output.txt", true);
+              pause = false;
               break;
       }
   }
@@ -831,7 +834,7 @@ void Controller::createLevel() {
   }
 }
 
-void Controller::levelToTxt(std::vector<Entity> ent_list, int level_start, std::string file_path) {
+void Controller::levelToTxt(std::vector<Entity> ent_list, int level_start, std::string file_path, bool code) {
   std::ofstream file;
   for(int i = 0; i < file_path.length(); i++) {
     if(file_path[i] == ' ') {
@@ -843,7 +846,12 @@ void Controller::levelToTxt(std::vector<Entity> ent_list, int level_start, std::
     int x = (enemies[i].rect.x/xScale);
     int y = (0 - (level_start -  enemies[i].rect.y)/yScale);
 
-    file << x << "," << y << "," << enemies[i].className << "," << std::endl;
+    if(!code){
+        file << x << "," << y << "," << enemies[i].className << "," << std::endl;
+    }
+    else {
+        file << "spawn_enemy((float)" << x << "*xScale, (float)" << y << "*yScale, xScale, yScale, " << enemies[i].className << ", &enemies);" << std::endl;
+    }
   }
 
   file.close();
@@ -852,15 +860,29 @@ void Controller::levelToTxt(std::vector<Entity> ent_list, int level_start, std::
 void Controller::levelSelect(bool edit) {
   std::vector<std::string> level_list; //to hold the list of level names.
 
+  level_list.push_back("level_01");
+
   int cursor_pos = 0; //cursor position.
-  int y_offset = 20; //for scrolling list.
+  int y_offset = 100*yScale; //for scrolling list.
 
   view.readFolder("assets/levels/", &level_list);
 
   int list_size = static_cast<int>(level_list.size());
 
+  int frame = 0;
+  int frameTicker = 0;
+
   while(gamestatus == STATUS_LEVEL_SEL) {
+    frameTicker++;
+    if(frameTicker > 5) {
+        frameTicker = 0;
+        frame += 1;
+        if(frame > 11) frame = 0;
+    }
+
     if(view.getWindowStatus()) break;
+
+    view.drawTexture(0,0,frame, WHITE);
 
 
     control_info gamepad = view.getControlInfo();
@@ -878,11 +900,15 @@ void Controller::levelSelect(bool edit) {
         finalPath += level_list[cursor_pos];
         finalPath += ".txt";
         current_level = level_list[cursor_pos];
-        generate_Level(finalPath);
+        if(cursor_pos > 0) generate_Level(finalPath);
+        else testLevel();
         if(edit)
           gamestatus = STATUS_EDIT;
         else
           gamestatus = STATUS_PLAYING;
+      }
+      if(gamepad.back_released) {
+          gamestatus = STATUS_MENU;
       }
     }
     if(cursor_pos > list_size - 1) {
@@ -898,14 +924,18 @@ void Controller::levelSelect(bool edit) {
     }
 
     //correct for scrolling to high.
-    while(y_offset + (cursor_pos*50*yScale) < 20) {
+    while(y_offset + (cursor_pos*50*yScale) < 100*yScale) {
       y_offset += 50*yScale;
     }
 
     view.startFrame();
 
+    view.drawText("Select Level", (view.getScreenWidth() / 2) - (MeasureText("Select Level", 70*yScale) / 2), 20*yScale, 70*yScale, RED);
+
     for(int i = 0; i < list_size; i++) {
-      view.drawText(level_list[i], 20, y_offset + i*50*yScale, 50*yScale, (cursor_pos == i) ? (Color) {0,0,255,255} : (Color) {255,255,255,255});
+      if(y_offset + i*50*yScale > 20*yScale + 70*yScale) {
+          view.drawText(level_list[i], (view.getScreenWidth() / 2) - (MeasureText(level_list[i].c_str(), 50*yScale) / 2) , y_offset + i*50*yScale, 50*yScale, (cursor_pos == i) ? (Color) {0,0,255,255} : (Color) {255,255,255,255});
+      }
     }
 
     //view.drawText(points_string, 20, 20, 40, WHITE);

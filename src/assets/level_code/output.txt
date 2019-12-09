@@ -1,0 +1,10 @@
+spawn_enemy((float)810*xScale, (float)-510*yScale, xScale, yScale, 0, &enemies);
+spawn_enemy((float)305*xScale, (float)-510*yScale, xScale, yScale, 0, &enemies);
+spawn_enemy((float)310*xScale, (float)-1000*yScale, xScale, yScale, 0, &enemies);
+spawn_enemy((float)820*xScale, (float)-1000*yScale, xScale, yScale, 0, &enemies);
+spawn_enemy((float)545*xScale, (float)-1250*yScale, xScale, yScale, 1, &enemies);
+spawn_enemy((float)250*xScale, (float)-1855*yScale, xScale, yScale, 2, &enemies);
+spawn_enemy((float)540*xScale, (float)-3040*yScale, xScale, yScale, 4, &enemies);
+spawn_enemy((float)330*xScale, (float)-2400*yScale, xScale, yScale, 3, &enemies);
+spawn_enemy((float)810*xScale, (float)-2390*yScale, xScale, yScale, 3, &enemies);
+spawn_enemy((float)590*xScale, (float)-2640*yScale, xScale, yScale, 2, &enemies);

@@ -51,7 +51,7 @@ public:
   void generate_Level(std::string level);
 
   void createLevel();//experimental for now.
-  void levelToTxt(std::vector<Entity> ent_list, int level_start, std::string file_path);
+  void levelToTxt(std::vector<Entity> ent_list, int level_start, std::string file_path, bool code);
 
   void levelSelect(bool edit);
 };
