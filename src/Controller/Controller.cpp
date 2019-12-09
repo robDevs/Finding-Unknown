@@ -553,7 +553,7 @@ void Controller::doGame() {
   }
 }
 
-void Controller::testLevel() {
+void Controller::level_one() {
   spawn_enemy((float)810*xScale, (float)-510*yScale, xScale, yScale, 0, &enemies);
   spawn_enemy((float)305*xScale, (float)-510*yScale, xScale, yScale, 0, &enemies);
   spawn_enemy((float)310*xScale, (float)-1000*yScale, xScale, yScale, 0, &enemies);
@@ -564,6 +564,36 @@ void Controller::testLevel() {
   spawn_enemy((float)330*xScale, (float)-2400*yScale, xScale, yScale, 3, &enemies);
   spawn_enemy((float)810*xScale, (float)-2390*yScale, xScale, yScale, 3, &enemies);
   spawn_enemy((float)590*xScale, (float)-2640*yScale, xScale, yScale, 2, &enemies);
+}
+void Controller::level_two() {
+  spawn_enemy((float)140*xScale, (float)-270*yScale, xScale, yScale, 0, &enemies);
+  spawn_enemy((float)315*xScale, (float)-415*yScale, xScale, yScale, 0, &enemies);
+  spawn_enemy((float)465*xScale, (float)-555*yScale, xScale, yScale, 0, &enemies);
+  spawn_enemy((float)625*xScale, (float)-710*yScale, xScale, yScale, 0, &enemies);
+  spawn_enemy((float)780*xScale, (float)-870*yScale, xScale, yScale, 0, &enemies);
+  spawn_enemy((float)515*xScale, (float)-1150*yScale, xScale, yScale, 1, &enemies);
+  spawn_enemy((float)750*xScale, (float)-1490*yScale, xScale, yScale, 3, &enemies);
+  spawn_enemy((float)535*xScale, (float)-1635*yScale, xScale, yScale, 3, &enemies);
+  spawn_enemy((float)310*xScale, (float)-1805*yScale, xScale, yScale, 3, &enemies);
+  spawn_enemy((float)140*xScale, (float)-1975*yScale, xScale, yScale, 3, &enemies);
+  spawn_enemy((float)305*xScale, (float)-2315*yScale, xScale, yScale, 2, &enemies);
+  spawn_enemy((float)810*xScale, (float)-2565*yScale, xScale, yScale, 2, &enemies);
+  spawn_enemy((float)225*xScale, (float)-2870*yScale, xScale, yScale, 0, &enemies);
+  spawn_enemy((float)425*xScale, (float)-3025*yScale, xScale, yScale, 0, &enemies);
+  spawn_enemy((float)625*xScale, (float)-3195*yScale, xScale, yScale, 0, &enemies);
+  spawn_enemy((float)790*xScale, (float)-3335*yScale, xScale, yScale, 0, &enemies);
+  spawn_enemy((float)940*xScale, (float)-3485*yScale, xScale, yScale, 0, &enemies);
+  spawn_enemy((float)720*xScale, (float)-3785*yScale, xScale, yScale, 1, &enemies);
+  spawn_enemy((float)180*xScale, (float)-4080*yScale, xScale, yScale, 3, &enemies);
+  spawn_enemy((float)385*xScale, (float)-4315*yScale, xScale, yScale, 0, &enemies);
+  spawn_enemy((float)630*xScale, (float)-4500*yScale, xScale, yScale, 0, &enemies);
+  spawn_enemy((float)385*xScale, (float)-4705*yScale, xScale, yScale, 0, &enemies);
+  spawn_enemy((float)620*xScale, (float)-4900*yScale, xScale, yScale, 0, &enemies);
+  spawn_enemy((float)385*xScale, (float)-5085*yScale, xScale, yScale, 0, &enemies);
+  spawn_enemy((float)510*xScale, (float)-5490*yScale, xScale, yScale, 1, &enemies);
+  spawn_enemy((float)515*xScale, (float)-6100*yScale, xScale, yScale, 4, &enemies);
+  spawn_enemy((float)870*xScale, (float)-6730*yScale, xScale, yScale, 2, &enemies);
+  spawn_enemy((float)205*xScale, (float)-6490*yScale, xScale, yScale, 2, &enemies);
 }
 
 void Controller::generate_Level(std::string level){
@@ -861,6 +891,7 @@ void Controller::levelSelect(bool edit) {
   std::vector<std::string> level_list; //to hold the list of level names.
 
   level_list.push_back("level_01");
+  level_list.push_back("level_02");
 
   int cursor_pos = 0; //cursor position.
   int y_offset = 100*yScale; //for scrolling list.
@@ -900,8 +931,9 @@ void Controller::levelSelect(bool edit) {
         finalPath += level_list[cursor_pos];
         finalPath += ".txt";
         current_level = level_list[cursor_pos];
-        if(cursor_pos > 0) generate_Level(finalPath);
-        else testLevel();
+        if(cursor_pos == 0) level_one();
+        else if(cursor_pos == 1) level_two();
+        else generate_Level(finalPath);
         if(edit)
           gamestatus = STATUS_EDIT;
         else

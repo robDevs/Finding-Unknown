@@ -47,7 +47,8 @@ public:
   void doPauseMenu(control_info gamepad);
   void doEditMenu(control_info gamepad, int level_start, std::string path);
 
-  void testLevel();
+  void level_one();
+  void level_two();
   void generate_Level(std::string level);
 
   void createLevel();//experimental for now.
