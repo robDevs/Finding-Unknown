@@ -30,6 +30,13 @@ void Controller::entityLoop() {
       flashing = 0;
       player.health = 1;
       player.status = ENTITY_KEEP;
+
+      if(extraLives == 0) {
+          gameOver = true;
+      }
+      else {
+          extraLives -= 1;
+      }
   }
   if(respawn_timer < 181){
       player.status = ENTITY_KEEP;
@@ -351,6 +358,14 @@ void Controller::doGame() {
   player.health = 1;
   player.className = PLAYER_PLAYER;
 
+  extraLives = 3;
+  gameOver = false;
+  levelComplete = false;
+
+  points = 0;
+
+  int endTimer = 0;
+
   int bulletCounter = 0;
   bool bulletReset = false;
 
@@ -406,7 +421,7 @@ void Controller::doGame() {
         player.setXvel(0);
         player.setYvel(0);
     }
-    if(!pause && respawn_timer > 55) {
+    if(!pause && respawn_timer > 55 && !gameOver && !levelComplete) {
       if(gamepad.up_held) {
         player.setYvel(-5.0*yScale);
       }
@@ -460,9 +475,20 @@ void Controller::doGame() {
       entityLoop();
     }
 
+    if(enemies.empty() && explosions.empty()) {
+        levelComplete = true;
+    }
+
     burner.rect.x = player.rect.x + player.rect.width/2 - 22*xScale/2;
 
     burner.rect.y = player.rect.y + 130*yScale;
+
+    if(levelComplete || gameOver) {
+        endTimer++;
+    }
+    if(endTimer > 60*5) {
+        gamestatus = STATUS_START;
+    }
 
     view.startFrame();
 
@@ -531,10 +557,22 @@ void Controller::doGame() {
     std::string points_string = "Points: ";
     points_string += std::to_string(points);
 
-    view.drawText(points_string, 20, 20, 40, WHITE);
+    view.drawText(points_string, 20, 20*yScale, 40, WHITE);
+
+    std::string lives_string = "Extra Ships: ";
+    lives_string += std::to_string(extraLives);
+    view.drawText(lives_string, view.getScreenWidth() - MeasureText(lives_string.c_str(), 40*yScale) - 20, 20*yScale, 40, WHITE);
 
     if(pause) {
       doPauseMenu(gamepad);
+    }
+
+    if(levelComplete) {
+        view.drawText("Level Complete!", (view.getScreenWidth() / 2) - (MeasureText("Level Complete!", 70*yScale) / 2), 20*yScale, 70*yScale, BLUE);
+    }
+
+    if(gameOver) {
+        view.drawText("Game Over!", (view.getScreenWidth() / 2) - (MeasureText("Game Over!", 70*yScale) / 2), 20*yScale, 70*yScale, RED);
     }
 
     view.endFrame();
@@ -551,6 +589,9 @@ void Controller::doGame() {
   while(!explosions.empty()) {
     explosions.pop_back();
   }
+
+  if(gameOver) gamestatus = STATUS_START;
+  if(levelComplete) gamestatus = STATUS_PLAYING;
 }
 
 void Controller::level_one() {

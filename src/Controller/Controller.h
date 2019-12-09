@@ -34,6 +34,9 @@ private:
   int pause_menu_pos;
   int respawn_timer;
   int flashing;
+  int extraLives;
+  bool gameOver;
+  bool levelComplete;
 
   Entity player;
 public:
