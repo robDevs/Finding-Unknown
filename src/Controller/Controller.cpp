@@ -50,6 +50,7 @@ void Controller::entityLoop() {
       other = &bullets[x];
       if(CheckCollisionRecs(enemies[i].rect, bullets[x].rect)) {
         if(enemies[i].hit != NULL) enemies[i].hit();
+        view.playSound(SFX_HIT);
       }
     }
 
@@ -64,7 +65,7 @@ void Controller::entityLoop() {
     }
     if(enemies[i].status == ENTITY_DESTROY) {
       spawn_explosion(enemies[i].rect.x + enemies[i].rect.width/2 - 200*xScale, enemies[i].rect.y + enemies[i].rect.width/2 - 200*yScale, 0, &explosions);
-
+      view.playSound(SFX_EXP);
       points += enemies[i].points;
       enemies.erase(enemies.begin() + i);
       //spawn_enemy(rand() % (int)view.getScreenWidth(), -50 - rand() % (int)view.getScreenHeight(), xScale, yScale,  &enemies);
@@ -430,6 +431,7 @@ void Controller::doGame() {
         bulletCounter++;
         if(bulletCounter > 5 && !bulletReset){
           spawn_bullet(player.rect.x + (player.rect.width / 2) - 4*xScale, player.rect.y, 0, xScale, yScale, &bullets);
+          view.playSound(SFX_SHOOT);
           bulletCounter = 0;
         }
       }
@@ -762,7 +764,7 @@ void Controller::createLevel() {
       }
     }
 
-    if(cur_type > 3) {
+    if(cur_type > 4) {
       cur_type = 0;
     }
 
@@ -799,6 +801,10 @@ void Controller::createLevel() {
       case 3:
         view.drawSprite(cursor_x, cursor_y, BASIC_ENEMY_SPRITE_SHEET, 0, WHITE);
         view.drawText("Bomber", cursor_x,cursor_y - 50*yScale, 50*yScale, WHITE);
+        break;
+      case 4:
+        view.drawSprite(cursor_x, cursor_y, FIGHTER_SPRITESHEET, 1, WHITE);
+        view.drawText("Fighter", cursor_x,cursor_y - 50*yScale, 50*yScale, WHITE);
         break;
     }
 

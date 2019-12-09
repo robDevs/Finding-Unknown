@@ -159,7 +159,7 @@ void spawn_bullet(int x, int y, int type, float xScale, float yScale, std::vecto
 
   if(type == BASIC_BULLET) { //check it's type and assign type specific vars.
     new_entity.update = &bullet_basic_update;
-    new_entity.yVel = -7;
+    new_entity.yVel = -10;
     new_entity.health = 1;
     new_entity.className = type;
     new_entity.textureName = 2;
@@ -454,6 +454,49 @@ void bomber_enemy_update() {
     self->status = ENTITY_DESTROY;
   }
 }
+void fighter_update() {
+  if(self->health > 0) {
+    self->status = ENTITY_KEEP;
+  }
+
+  if(self->rect.y + self->rect.height < 0) {
+    self->rect.y += 2*self->yScale;
+  }
+  else {
+    self->rect.x += self->xVel*self->xScale;
+    self->rect.y += self->yVel*self->yScale;
+  }
+
+  if(self->rect.y > 0 + 100*self->yScale) {
+      self->yVel = 0;
+  }
+
+  self->timer++;
+  if(self->timer > 30) {
+      self->timer1++;
+      self->timer = 0;
+      self->status = ENTITY_SHOOT;
+      if(self->timer1 >= 3) {
+          self->timer1 = 0;
+          self->timer = -60;
+      }
+  }
+
+  if(self->xVel < 0) self->frame = 0;
+  else if(self->xVel > 0) self->frame = 2;
+  else self->frame = 1;
+
+  if(self->rect.x <= 0 + 200*self->xScale) {
+      self->xVel = 5;
+  }
+  if(self->rect.x + self->rect.width >= screenWidth_model - 200*self->xScale) {
+      self->xVel = -5;
+  }
+
+  if(self->health <= 0) {
+    self->status = ENTITY_DESTROY;
+  }
+}
 
 void spawn_enemy(int x, int y, float xScale, float yScale, int type, std::vector<Entity> *ent_list) {
   Entity new_entity; //create a new entity.
@@ -499,7 +542,6 @@ void spawn_enemy(int x, int y, float xScale, float yScale, int type, std::vector
   }
   else if(type == 3) {
     new_entity.update = &bomber_enemy_update;
-    new_entity.shoot = &enemy_shoot;
     new_entity.health = 1;
     new_entity.xVel = 0;
     new_entity.yVel = 2;
@@ -508,8 +550,19 @@ void spawn_enemy(int x, int y, float xScale, float yScale, int type, std::vector
     new_entity.textureName = 6;
     new_entity.points = 29;
   }
+  else if(type == 4) {
+    new_entity.update = &fighter_update;
+    new_entity.health = 20;
+    new_entity.xVel = -5;
+    new_entity.yVel = 2;
+    new_entity.rect.width = 146*xScale;
+    new_entity.rect.height = 140*yScale;
+    new_entity.textureName = 10;
+    new_entity.points = 1500;
+  }
 
   new_entity.hit = &enemy_hit;
+  new_entity.shoot = &enemy_shoot;
   new_entity.rect.x = x;
   new_entity.rect.y = y;
   new_entity.frame = 0;

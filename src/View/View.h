@@ -73,6 +73,17 @@
 #define ADV_ENEMY_SPRITE_SHEET        7
 #define HARD_ENEMY_SPRITE_SHEET       8
 #define SHOT_HIT_SPRITE_SHEET         9
+#define FIGHTER_SPRITESHEET           10
+
+#define SONG_ALERT                    0
+#define SONG_ARCADE                   1
+#define SONG_ASTEROID                 2
+#define SONG_EVIL                     3
+#define SONG_NUKE                     4
+#define SONG_RED                      5
+#define SFX_EXP                       6
+#define SFX_SHOOT                     7
+#define SFX_HIT                       8
 
 
 #define MAX_INPUT_CHARS     30
@@ -153,9 +164,9 @@ private:
   float screenWidth;
   float screenHeight;
   Texture2D textures[22];
-  sprite_sheet sprite_sheets[10];
+  sprite_sheet sprite_sheets[11];
 
-  Sound sounds[6];
+  Sound sounds[9];
 
 public:
   void initView(int width, int height, float *xScale, float *yScale); // Create a window with the given attributes.

@@ -74,78 +74,6 @@ void sprite_sheet::unloadTexture() {
   UnloadTexture(texture);
 }
 
-void View::initView(int width, int height, float *xScale, float *yScale) {
-  screenWidth = width;
-  screenHeight = height;
-
-  *xScale = screenWidth/1280.00;
-  *yScale = screenHeight/720.00;
-
-  if(!IsAudioDeviceReady()) InitAudioDevice();
-
-
-  if(!IsWindowReady()) InitWindow(screenWidth, screenHeight, "Finding Unknown");
-  else SetWindowSize(width, height);
-
-  SetWindowPosition(0, 0);
-
-  freeTextures();
-
-  loadTextures(*xScale, *yScale);
-
-  sprite_sheets[0].frameWidth = 400;
-  sprite_sheets[0].frameHeight = 400;
-  sprite_sheets[0].setFrames("assets/BurstEffect/Burst_SpriteSheet.png", *xScale, *yScale);
-
-  sprite_sheets[1].frameWidth = 132;
-  sprite_sheets[1].frameHeight = 161;
-  sprite_sheets[1].setFrames("assets/Ships/Main/Main.png", *xScale, *yScale);
-
-  sprite_sheets[2].frameWidth = 8;
-  sprite_sheets[2].frameHeight = 22;
-  sprite_sheets[2].setFrames("assets/Ships/Beams/BasicBeam.png", *xScale, *yScale);
-
-  sprite_sheets[3].frameWidth = 12;
-  sprite_sheets[3].frameHeight = 56;
-  sprite_sheets[3].setFrames("assets/Ships/Beams/BasicBeamCharge.png", *xScale, *yScale);
-
-  sprite_sheets[4].frameWidth = 22;
-  sprite_sheets[4].frameHeight = 74;
-  sprite_sheets[4].setFrames("assets/Ships/Beams/HelixBeam.png", *xScale, *yScale);
-
-  sprite_sheets[5].frameWidth = 22;
-  sprite_sheets[5].frameHeight = 11;
-  sprite_sheets[5].setFrames("assets/Ships/Burners/BurnerRepeat.png", *xScale, *yScale);
-
-  sprite_sheets[6].frameWidth = 150;
-  sprite_sheets[6].frameHeight = 150;
-  sprite_sheets[6].setFrames("assets/Ships/Enemy/Enemy_1_Spin.png", *xScale, *yScale);
-
-  sprite_sheets[7].frameWidth = 150;
-  sprite_sheets[7].frameHeight = 150;
-  sprite_sheets[7].setFrames("assets/Ships/Enemy/Enemy_2_Spin.png", *xScale, *yScale);
-
-  sprite_sheets[8].frameWidth = 150;
-  sprite_sheets[8].frameHeight = 150;
-  sprite_sheets[8].setFrames("assets/Ships/Enemy/Enemy_3_Spin.png", *xScale, *yScale);
-
-  sprite_sheets[9].frameWidth = 50;
-  sprite_sheets[9].frameHeight = 50;
-  sprite_sheets[9].setFrames("assets/Ships/Beams/ShotHit.png", *xScale, *yScale);
-
-  sounds[0] = LoadSound("assets/Audio/Music/Alert\ Bagel\ Danger\ BulletDarkness.mp3");
-  sounds[1] = LoadSound("assets/Audio/Music/Arcade\ Geometry\ VEUSKEMINI.mp3");
-  sounds[2] = LoadSound("assets/Audio/Music/Asteroid\ Panic\ Burn7.mp3");
-  sounds[3] = LoadSound("assets/Audio/Music/Evil\ Intent\ IViqrr.mp3");
-  sounds[4] = LoadSound("assets/Audio/Music/NUKE\ VEUSKEMINI.mp3");
-  sounds[5] = LoadSound("assets/Audio/Music/Red\ Soil\ Greyvoice.mp3");
-
-
-  SetTargetFPS(60);
-
-  //SetConfigFlags(FLAG_VSYNC_HINT | FLAG_MSAA_4X_HINT);
-}
-
 textBox::textBox(int x, int y, int w, int h, int max) {
     for(int i = 0; i < MAX_INPUT_CHARS + 1; i++) {
         message[i] = '\0';
@@ -214,6 +142,91 @@ void textBox::setMessage(const char newMessage[MAX_INPUT_CHARS + 1]) {
     message[i] = newMessage[i];
     letterCount++;
   }
+}
+
+void View::initView(int width, int height, float *xScale, float *yScale) {
+  screenWidth = width;
+  screenHeight = height;
+
+  *xScale = screenWidth/1280.00;
+  *yScale = screenHeight/720.00;
+
+  if(!IsAudioDeviceReady()) InitAudioDevice();
+
+
+  if(!IsWindowReady()) InitWindow(screenWidth, screenHeight, "Finding Unknown");
+  else SetWindowSize(width, height);
+
+  SetWindowPosition(0, 0);
+
+  freeTextures();
+
+  loadTextures(*xScale, *yScale);
+
+  sprite_sheets[0].frameWidth = 400;
+  sprite_sheets[0].frameHeight = 400;
+  sprite_sheets[0].setFrames("assets/BurstEffect/Burst_SpriteSheet.png", *xScale, *yScale);
+
+  sprite_sheets[1].frameWidth = 132;
+  sprite_sheets[1].frameHeight = 161;
+  sprite_sheets[1].setFrames("assets/Ships/Main/Main.png", *xScale, *yScale);
+
+  sprite_sheets[2].frameWidth = 8;
+  sprite_sheets[2].frameHeight = 22;
+  sprite_sheets[2].setFrames("assets/Ships/Beams/BasicBeam.png", *xScale, *yScale);
+
+  sprite_sheets[3].frameWidth = 12;
+  sprite_sheets[3].frameHeight = 56;
+  sprite_sheets[3].setFrames("assets/Ships/Beams/BasicBeamCharge.png", *xScale, *yScale);
+
+  sprite_sheets[4].frameWidth = 22;
+  sprite_sheets[4].frameHeight = 74;
+  sprite_sheets[4].setFrames("assets/Ships/Beams/HelixBeam.png", *xScale, *yScale);
+
+  sprite_sheets[5].frameWidth = 22;
+  sprite_sheets[5].frameHeight = 11;
+  sprite_sheets[5].setFrames("assets/Ships/Burners/BurnerRepeat.png", *xScale, *yScale);
+
+  sprite_sheets[6].frameWidth = 150;
+  sprite_sheets[6].frameHeight = 150;
+  sprite_sheets[6].setFrames("assets/Ships/Enemy/Enemy_1_Spin.png", *xScale, *yScale);
+
+  sprite_sheets[7].frameWidth = 150;
+  sprite_sheets[7].frameHeight = 150;
+  sprite_sheets[7].setFrames("assets/Ships/Enemy/Enemy_2_Spin.png", *xScale, *yScale);
+
+  sprite_sheets[8].frameWidth = 150;
+  sprite_sheets[8].frameHeight = 150;
+  sprite_sheets[8].setFrames("assets/Ships/Enemy/Enemy_3_Spin.png", *xScale, *yScale);
+
+  sprite_sheets[9].frameWidth = 50;
+  sprite_sheets[9].frameHeight = 50;
+  sprite_sheets[9].setFrames("assets/Ships/Beams/ShotHit.png", *xScale, *yScale);
+
+  sprite_sheets[10].frameWidth = 146;
+  sprite_sheets[10].frameHeight = 140;
+  sprite_sheets[10].setFrames("assets/Ships/Enemy/Enemy_4.png", *xScale, *yScale);
+
+  sounds[0] = LoadSound("assets/Audio/Music/Alert\ Bagel\ Danger\ BulletDarkness.mp3");
+  sounds[1] = LoadSound("assets/Audio/Music/Arcade\ Geometry\ VEUSKEMINI.mp3");
+  sounds[2] = LoadSound("assets/Audio/Music/Asteroid\ Panic\ Burn7.mp3");
+  sounds[3] = LoadSound("assets/Audio/Music/Evil\ Intent\ IViqrr.mp3");
+  sounds[4] = LoadSound("assets/Audio/Music/NUKE\ VEUSKEMINI.mp3");
+  sounds[5] = LoadSound("assets/Audio/Music/Red\ Soil\ Greyvoice.mp3");
+  sounds[6] = LoadSound("assets/Audio/Sfx/explosion.wav");
+  sounds[7] = LoadSound("assets/Audio/Sfx/shoot.wav");
+  sounds[8] = LoadSound("assets/Audio/Sfx/hit.wav");
+
+  for(int i = 0; i < 8; i++) {
+      SetSoundVolume(sounds[i], 0.1);
+  }
+  SetSoundVolume(sounds[7], 0.1);
+  SetSoundVolume(sounds[8], 0.1);
+
+
+  SetTargetFPS(60);
+
+  //SetConfigFlags(FLAG_VSYNC_HINT | FLAG_MSAA_4X_HINT);
 }
 
 void View::setFullScreen(float *xScale, float *yScale) {
@@ -352,13 +365,13 @@ void View::freeTextures() {
     for(int i = 0; i < 21; i++) {
         UnloadTexture(textures[i]);
     }
-    for(int i = 0; i < 9; i++) {
+    for(int i = 0; i < 10; i++) {
       sprite_sheets[i].unloadTexture();
     }
 }
 
 void View::freeSounds() {
-  for(int i = 0; i < 5; i++) {
+  for(int i = 0; i < 8; i++) {
     UnloadSound(sounds[i]);
   }
   CloseAudioDevice();

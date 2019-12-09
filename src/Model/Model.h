@@ -80,6 +80,7 @@ extern void basic_enemy_update();
 extern void adv_enemy_update();
 extern void tracker_enemy_update();
 extern void bomber_enemy_update();
+extern void fighter_update();
 
 extern void basic_bullet_hit();
 extern void player_hit();
