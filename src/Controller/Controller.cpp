@@ -932,6 +932,7 @@ void Controller::levelToTxt(std::vector<Entity> ent_list, int level_start, std::
 
 void Controller::levelSelect(bool edit) {
   std::vector<std::string> level_list; //to hold the list of level names.
+  if(edit) level_list.push_back("new_level");
 
   level_list.push_back("level_01");
   level_list.push_back("level_02");
@@ -974,9 +975,16 @@ void Controller::levelSelect(bool edit) {
         finalPath += level_list[cursor_pos];
         finalPath += ".txt";
         current_level = level_list[cursor_pos];
-        if(cursor_pos == 0) level_one();
-        else if(cursor_pos == 1) level_two();
-        else generate_Level(finalPath);
+        if(!edit) {
+            if(cursor_pos == 0) level_one();
+            else if(cursor_pos == 1) level_two();
+            else generate_Level(finalPath);
+        }
+        else {
+            if(cursor_pos == 1) level_one();
+            else if(cursor_pos == 2) level_two();
+            else generate_Level(finalPath);
+        }
         if(edit)
           gamestatus = STATUS_EDIT;
         else
