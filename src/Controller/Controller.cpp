@@ -485,6 +485,8 @@ void Controller::doGame() {
 
     if(levelComplete || gameOver) {
         endTimer++;
+        player.xVel = 0;
+        player.yVel = 0;
     }
     if(endTimer > 60*5) {
         gamestatus = STATUS_START;
