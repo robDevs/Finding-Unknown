@@ -482,6 +482,30 @@ control_info View::getControlInfo() {
     if(IsGamepadButtonReleased(GAMEPAD_PLAYER1, GAMEPAD_BUFFALOSNES_BUTTON_A)) {
       gamepad.back_released = true;
     }
+
+    if(IsGamepadButtonPressed(GAMEPAD_PLAYER1, GAMEPAD_BUFFALOSNES_BUTTON_Y)) {
+      gamepad.space_pressed = true;
+    }
+
+    if(IsGamepadButtonDown(GAMEPAD_PLAYER1, GAMEPAD_BUFFALOSNES_BUTTON_Y)) {
+      gamepad.space_held = true;
+    }
+
+    if(IsGamepadButtonReleased(GAMEPAD_PLAYER1, GAMEPAD_BUFFALOSNES_BUTTON_Y)) {
+      gamepad.space_released = true;
+    }
+
+    if(IsGamepadButtonPressed(GAMEPAD_PLAYER1, GAMEPAD_BUFFALOSNES_BUTTON_START)) {
+      gamepad.pause_pressed = true;
+    }
+
+    if(IsGamepadButtonDown(GAMEPAD_PLAYER1, GAMEPAD_BUFFALOSNES_BUTTON_START)) {
+      gamepad.pause_held = true;
+    }
+
+    if(IsGamepadButtonReleased(GAMEPAD_PLAYER1, GAMEPAD_BUFFALOSNES_BUTTON_START)) {
+      gamepad.pause_released = true;
+    }
   }
   //Read the input from the keyboard.
   if(IsKeyPressed(KEY_W)) {
