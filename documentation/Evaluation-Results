@@ -1,28 +1,68 @@
 Evaluation Results
 Evaluating the program that my group has created it is clear to see that we have been able to implement almost everything we have set out 
 to create.
+Does the game have key controls and gamepad controls? 
 + This game also allows users to use the space bar to shoot their enemies and ASDW keys to move the space ship.
   + We have not been able to implement a device to control movement but that is something that will be added later on in the development.
+
+Did raylib work well for the project? (Graphics library)
 + The programmers have created a game using C++ and the Raylib graphics library. The graphics library works well with the
-game as well as graphics that our group has created.
+game as well as graphics that our graphic designer has created.
+
+Is the collision detection accurate? 
 + The collison detection is accurate to a point. It detects collison in a scope of an area and can detect the collison.
+
+Are files saved as json? 
 + We have not been able to save files into a JSON file. We have levels in a text file instead.
-+ The project has stayed the same since the original plan. We have added more of a storyoutline to our game but 
+
+Did the project change from the original plan? 
++ The project has stayed the same since the original plan. We have added more of a story outline to our game but 
 overall the thought of the game is the same.
-+ There is a story to the game. Our title is finding unknown. The player is a villain who is trying to find out
+
+Does the game have a story? 
++ There is a story to the game. Our title is Finding Unknown. The player is a villain who is trying to find out
 who he is throughout the whole game.
+
+Does the player recieve upgrades upon level completion? 
 + We have not been able to implement upgrades into the game yet. The plan is to have the players ship upgrade after
 every couple of levels.
-+ There are mutliple levels to the game. AN arcade mode has not been implemented yet into the game.    
-+This is a secure game as it is a functioning desk top application. 
+
+Multiple levels and an arcade mode?
++ There are mutliple levels to the game. An arcade mode has not been implemented yet into the game.    
+
+Is the game secure? 
++This is a secure game as it is a functioning desktop application. 
   +Since it is not being moved into an internet application it is very secure.  
+
+Are the planned enemies in the game? 
 + The enemies are planned during the creation of a level from a text file.
++ Between programming and designer, the game has audio sfx, as well as a unique music library. 
+
+Testing
+- Do we check entity function pointers before calling? 
+- Do entities draw the correct frame of the spritesheet? 
+- Are enemies removed when destroyed or are off screen? 
+- Do all the controlls work as intended? 
+- Do real world testing for bugs. 
+- Get person not in group to test while group watches. 
++ Yes, all these componets work and were tested manually and by other players.
+
+Was anything planned but not added to the project?
++ During the beginning of our project we were hoping to add upgrades and cut scenes or in game story.
+We were not able to implement this however, but at a later version would  like to add this to the game.
+
+Was anything not planned but added to the game?
++ We created a level editor, this was much more feasible to create levels as we could then see how the games
+would be created and how they would look. This is all done in a text file, and is available for a user to create
+their own levels.
+
+Was anything really cool done in the code?
 
 Project Critique
 This project overall was completed efficently and my group was able to implement almost everything that we had set out
-to implement.  The few things we were not able to implement were the gamepad control and an arcade mode for the game.
+to implement.  The few things we were not able to implement were the gamepad control on all computer OS's and an arcade mode for the game.
 We decided to use a txt file isntead of a json file for game saveage. The coding to create this game was not simple
 by any means.  Collison detection and the implementation of key usage and shooting can become complex.  This portion
-of the code was difficult to implement as well as some of the design aspects. My group created orginal artwork for the game.
-Our homescreen, enemies and character space ship are all originally and uniquely design. As a group we were able to work 
+of the code was difficult to implement as well as some of the design aspects. My group created orginal artwork and sfx for the game.
+Our homescreen, enemies and character space ship are all originally and uniquely designed. As a group we were able to work 
 cohesively and function well to create a game that works well and is entertaining.
