@@ -1,0 +1,7 @@
+The project the group has created is an outer space shooter game. The player is a villain that throughout the game
+is trying to find out who he is.  This game was created using C++ and the Raylib graphic library.  With this 
+implementation our group was able to create a player that is moveable and can shoot at oncoming targets with a moving
+screen.  The graphics in the game are original and creative. This part of are project was extremely innovative since our graphic designer
+had to create these by hand and with this had to use original thought and design skills.  As we look into the code of our program we have
+some extremely complex code. One of these being the code to move players. It is created not to know which specific button is pushed but
+rather when the button for up is pushed. This allows a programmer at any time to go in and switch the key for up without a problem.
