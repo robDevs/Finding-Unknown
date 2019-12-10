@@ -597,6 +597,34 @@ void Controller::doGame() {
   while(!explosions.empty()) {
     explosions.pop_back();
   }
+    
+  while(!enemy_bullets.empty()) {
+    enemy_bullets.pop_back();
+  }
+  
+  std::fstream myfile;
+  std::string file_path = "assets/highscores/";
+  file_path += current_level;
+  file_path += ".txt";
+  std::cout << file_path << std::endl;
+  myfile.open (file_path.c_str());
+  std::string line;
+  if (!myfile){
+    std::ofstream create(file_path);
+    create << "1";
+    create.close();
+    myfile.open (file_path.c_str());    
+  }
+  if (myfile.is_open()){
+    getline(myfile, line);
+    
+    int top = std::stoi(line);
+    if (points > top){
+        myfile.seekg(0);
+        myfile << points;
+    }
+  }
+  myfile.close();
 
   if(gameOver) gamestatus = STATUS_MENU;
   if(levelComplete) gamestatus = STATUS_PLAYING;
@@ -614,6 +642,7 @@ void Controller::level_one() {
   spawn_enemy((float)810*xScale, (float)-2390*yScale, xScale, yScale, 3, &enemies);
   spawn_enemy((float)590*xScale, (float)-2640*yScale, xScale, yScale, 2, &enemies);
 }
+
 void Controller::level_two() {
   spawn_enemy((float)140*xScale, (float)-270*yScale, xScale, yScale, 0, &enemies);
   spawn_enemy((float)315*xScale, (float)-415*yScale, xScale, yScale, 0, &enemies);
