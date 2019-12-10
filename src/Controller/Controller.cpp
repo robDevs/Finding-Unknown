@@ -9,6 +9,7 @@ Controller::Controller() {
   respawn_timer = 181;
   pause = false;
   pause_menu_pos = 0;
+  highscore = 0;
 
   current_level = "";
 
@@ -353,10 +354,29 @@ void Controller::doSettings(){
 
 void Controller::doGame() {
   pause = false;
+  
+  //open highscore file and check to see if it exists, loads highscore to display while playing
+  std::fstream myfile;
+  std::string file_path = "assets/highscores/";
+  file_path += current_level;
+  file_path += ".txt";
+  std::cout << file_path << std::endl;
+  myfile.open (file_path.c_str());
+  std::string line;
+  if (!myfile){
+    std::ofstream create(file_path);
+    create << "0";
+    create.close();
+    myfile.open (file_path.c_str());    
+  }
+  if (myfile.is_open()){
+    getline(myfile, line);
+    int highscore = std::stoi(line);
+  }
+  myfile.close();
 
   player.update = &player_update;
   player.hit = &player_hit;
-  player.lives = 3;
   player.setX(100);
   player.setY(100);
   player.health = 1;
@@ -564,8 +584,16 @@ void Controller::doGame() {
 
     std::string points_string = "Points: ";
     points_string += std::to_string(points);
-
+    if (points > highscore){
+        highscore = points;
+    }
+    std::string highscore_string = "Highscore: ";
+    highscore_string += std::to_string(highscore);
+    
+    
     view.drawText(points_string, 20, 20*yScale, 40, WHITE);
+    
+    view.drawText(highscore_string, (view.getScreenWidth() / 2) - (MeasureText(highscore_string.c_str(), 40*yScale) / 2), 20*yScale, 40, WHITE);
 
     std::string lives_string = "Extra Ships: ";
     lives_string += std::to_string(extraLives);
@@ -576,7 +604,14 @@ void Controller::doGame() {
     }
 
     if(levelComplete) {
-        view.drawText("Level Complete!", (view.getScreenWidth() / 2) - (MeasureText("Level Complete!", 70*yScale) / 2), 20*yScale, 70*yScale, BLUE);
+        points += extraLives * 100;
+        extraLives = 0;
+        view.drawText("Level Complete!", (view.getScreenWidth() / 2) - (MeasureText("Level Complete!", 70*yScale) / 2), 70*yScale, 70*yScale, BLUE);
+        if (points >= highscore){
+            std::string highscore_string = "New Highscore: ";
+            highscore_string += std::to_string(points);
+            view.drawText(highscore_string, (view.getScreenWidth() / 2) - (MeasureText(highscore_string.c_str(), 70*yScale) / 2), 160*yScale, 70*yScale, BLUE);
+        }
     }
 
     if(gameOver) {
@@ -602,29 +637,11 @@ void Controller::doGame() {
     enemy_bullets.pop_back();
   }
   
-  std::fstream myfile;
-  std::string file_path = "assets/highscores/";
-  file_path += current_level;
-  file_path += ".txt";
-  std::cout << file_path << std::endl;
-  myfile.open (file_path.c_str());
-  std::string line;
-  if (!myfile){
-    std::ofstream create(file_path);
-    create << "1";
-    create.close();
-    myfile.open (file_path.c_str());    
+  if (points > highscore){
+    myfile.open (file_path.c_str());
+    myfile << points;
+    myfile.close();
   }
-  if (myfile.is_open()){
-    getline(myfile, line);
-    
-    int top = std::stoi(line);
-    if (points > top){
-        myfile.seekg(0);
-        myfile << points;
-    }
-  }
-  myfile.close();
 
   if(gameOver) gamestatus = STATUS_MENU;
   if(levelComplete) gamestatus = STATUS_PLAYING;

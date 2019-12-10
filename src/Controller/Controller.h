@@ -37,6 +37,7 @@ private:
   int extraLives;
   bool gameOver;
   bool levelComplete;
+  int highscore;
 
   Entity player;
 public:

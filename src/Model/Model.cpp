@@ -454,6 +454,7 @@ void bomber_enemy_update() {
     self->status = ENTITY_DESTROY;
   }
 }
+
 void fighter_update() {
   if(self->health > 0) {
     self->status = ENTITY_KEEP;

@@ -376,6 +376,7 @@ void View::freeSounds() {
   }
   CloseAudioDevice();
 }
+
 void View::startFrame() {
   BeginDrawing();
   ClearBackground(BLACK);
@@ -645,9 +646,11 @@ void View::readFolder(std::string path, std::vector<std::string> *list) {
 void View::playSound(int sound) {
   PlaySound(sounds[sound]);
 }
+
 void View::stodSound(int sound) {
   StopSound(sounds[sound]);
 }
+
 void View::loopSound(int sound) {
     if(!IsSoundPlaying(sounds[sound])) PlaySound(sounds[sound]);
 }
