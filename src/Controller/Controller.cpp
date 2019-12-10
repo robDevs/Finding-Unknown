@@ -354,26 +354,8 @@ void Controller::doSettings(){
 
 void Controller::doGame() {
   pause = false;
-  
-  //open highscore file and check to see if it exists, loads highscore to display while playing
-  std::fstream myfile;
-  std::string file_path = "assets/highscores/";
-  file_path += current_level;
-  file_path += ".txt";
-  std::cout << file_path << std::endl;
-  myfile.open (file_path.c_str());
-  std::string line;
-  if (!myfile){
-    std::ofstream create(file_path);
-    create << "0";
-    create.close();
-    myfile.open (file_path.c_str());    
-  }
-  if (myfile.is_open()){
-    getline(myfile, line);
-    int highscore = std::stoi(line);
-  }
-  myfile.close();
+
+  highscore = getHighScore();
 
   player.update = &player_update;
   player.hit = &player_hit;
@@ -589,10 +571,10 @@ void Controller::doGame() {
     }
     std::string highscore_string = "Highscore: ";
     highscore_string += std::to_string(highscore);
-    
-    
+
+
     view.drawText(points_string, 20, 20*yScale, 40, WHITE);
-    
+
     view.drawText(highscore_string, (view.getScreenWidth() / 2) - (MeasureText(highscore_string.c_str(), 40*yScale) / 2), 20*yScale, 40, WHITE);
 
     std::string lives_string = "Extra Ships: ";
@@ -632,15 +614,13 @@ void Controller::doGame() {
   while(!explosions.empty()) {
     explosions.pop_back();
   }
-    
+
   while(!enemy_bullets.empty()) {
     enemy_bullets.pop_back();
   }
-  
-  if (points > highscore){
-    myfile.open (file_path.c_str());
-    myfile << points;
-    myfile.close();
+
+  if (points >= highscore){
+    setHighScore();
   }
 
   if(gameOver) gamestatus = STATUS_MENU;
@@ -1085,4 +1065,28 @@ void Controller::levelSelect(bool edit) {
       enemies[i].rect.y += view.getScreenHeight();
     }
   }
+}
+
+int Controller::getHighScore() {
+    std::string path = "assets/highscores/" + current_level + ".txt";
+    std::ifstream file(path.c_str());
+
+    if(!file.good()) return 0;
+
+    std::string line;
+    getline(file, line);
+    file.close();
+    return std::stoi(line);
+}
+void Controller::setHighScore() {
+    std::string path = "assets/highscores/" + current_level + ".txt";
+    std::ofstream file;
+
+    file.open(path.c_str(), std::fstream::trunc);
+
+    if(file.is_open()) {
+        file << highscore << std::endl;
+    }
+
+    file.close();
 }

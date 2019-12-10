@@ -59,6 +59,9 @@ public:
   void levelToTxt(std::vector<Entity> ent_list, int level_start, std::string file_path, bool code);
 
   void levelSelect(bool edit);
+
+  int getHighScore();
+  void setHighScore();
 };
 
 #endif
