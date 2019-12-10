@@ -16,3 +16,24 @@ Kenndle:
   December 8: Evaluation Results & Critique - 2 hours
   December 9: Description - 1 hour
   December 10: Evaluation Results & Project Journal & Description - 2 hours
+
+Max:
+  November 12: Proposal - 1 hour
+  November 12: Game Discussion - 1.5 hours
+  November 14: Added the settings screen to change the game resolution - 1 hour
+  November 21: Requirements - 2 hours
+  November 22: Added collision check with the edge of the screen - 1 hour
+  November 22: Added the tracker enemy type and started working on the level editor - 1.5 hours
+  November 26: Added the bomber enemy type and worked on the editor a little - 1.5 hours
+  December 3: Added player hit, health and lives functions - 2 hours
+  December 10: Added highscores and saving top score to a file - 1.5 hours
+
+Quinn:
+  November 12: Proposal - 1 hour
+  November 12: Game Discussion - 1.5 hours
+  November 21: Requirements - 2 hours
+
+Rob:
+  November 12: Proposal - 1 hour
+  November 12: Game Discussion - 1.5 hours
+  November 21: Requirements - 2 hours
