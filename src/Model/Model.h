@@ -1,7 +1,6 @@
 #ifndef _MODEL_
 #define _MODEL
 
-#include "raylib.h"
 #include <string>
 #include <vector>
 #include <cstdlib>
@@ -15,6 +14,13 @@
 #define ENEMY_BULLET      1
 #define PLAYER_PLAYER     2
 
+typedef struct {
+    int x;
+    int y;
+    int width;
+    int height;
+}rectangle;
+
 extern int screenWidth_model; //assigned by controller.cpp
 extern int screenHeight_model;
 
@@ -24,7 +30,7 @@ public:
     float xVel; //Moves the entity.
     float yVel;
     int frame; //sets the frame for the spritesheet.
-    Rectangle rect; //hit box, and position.
+    rectangle rect; //hit box, and position.
     int className; //Name of the entity. can be used to check what it is.
     int textureName; //Name of the texture or sprite sheet. Check view.h for definitions.
     int status; //status of the ent. Used for checking what to do with the entity.
@@ -50,12 +56,14 @@ public:
     void move();
     float getX();
     float getY();
-    Rectangle getRect();
+    rectangle getRect();
     int getStatus();
     int getHealth();
     int getFrame();
 };
 
+extern bool checkCollision(rectangle a, rectangle b);
+extern bool checkCollisionPointRect(int pX, int pY, rectangle rect);
 
 //----------------------------------------------
 //Entity functions.

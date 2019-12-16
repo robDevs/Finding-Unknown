@@ -56,13 +56,13 @@ void Controller::entityLoop() {
 
     for(int x = 0; x < bullets.size(); x++) {
       other = &bullets[x];
-      if(CheckCollisionRecs(enemies[i].rect, bullets[x].rect)) {
+      if(checkCollision(enemies[i].rect, bullets[x].rect)) {
         if(enemies[i].hit != NULL) enemies[i].hit();
         view.playSound(SFX_HIT);
       }
     }
 
-    if(CheckCollisionRecs(player.rect, enemies[i].rect) && respawn_timer > 180) {
+    if(checkCollision(player.rect, enemies[i].rect) && respawn_timer > 180) {
         other = &player;
         if(enemies[i].hit != NULL) enemies[i].hit();
     }
@@ -97,7 +97,7 @@ void Controller::entityLoop() {
     self = &enemy_bullets[i];
     if(enemy_bullets[i].update != NULL) enemy_bullets[i].update();
 
-    if(CheckCollisionRecs(player.rect, enemy_bullets[i].rect)  && respawn_timer > 180) {
+    if(checkCollision(player.rect, enemy_bullets[i].rect)  && respawn_timer > 180) {
         other = &player;
         if(enemy_bullets[i].hit != NULL) enemy_bullets[i].hit();
     }
@@ -867,7 +867,7 @@ void Controller::createLevel() {
       }
       if(gamepad.back_released) {
         for(int i = 0; i < enemies.size(); i++) {
-          if(CheckCollisionPointRec((Vector2){cursor_x, cursor_y}, enemies[i].rect)) {
+          if(checkCollisionPointRect(cursor_x, cursor_y, enemies[i].rect)) {
             enemies.erase(enemies.begin() + i);
           }
         }
@@ -885,7 +885,7 @@ void Controller::createLevel() {
     }
 
     for(int i = 0; i < enemies.size(); i++) {
-      if(CheckCollisionPointRec((Vector2){cursor_x, cursor_y}, enemies[i].rect)) {
+      if(checkCollisionPointRect(cursor_x, cursor_y, enemies[i].rect)) {
         view.drawRectBorders(enemies[i].rect.x, enemies[i].rect.y,enemies[i].rect.width,enemies[i].rect.height, RED, BLACK);
       }
     }

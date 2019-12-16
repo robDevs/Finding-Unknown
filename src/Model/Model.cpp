@@ -55,7 +55,7 @@ float Entity::getY() {
     return rect.y;
 }
 
-Rectangle Entity::getRect() {
+rectangle Entity::getRect() {
     return rect;
 }
 
@@ -79,6 +79,58 @@ void Entity::setRect(int w, int h) {
 // End Entity class functions.
 //---------------------------------------------
 
+bool checkCollision(rectangle a, rectangle b) {
+  //The sides of the rectangles
+  double leftA, leftB;
+  double rightA, rightB;
+  double topA, topB;
+  double bottomA, bottomB;
+
+  //Calculate the sides of rect A
+  leftA = a.x;
+  rightA = a.x + a.width;
+  topA = a.y;
+  bottomA = a.y + a.height;
+
+  //Calculate the sides of rect B
+  leftB = b.x;
+  rightB = b.x + b.width;
+  topB = b.y;
+  bottomB = b.y + b.height;
+
+  //If any of the sides from A are outside of B
+  if( bottomA <= topB )
+  {
+    return false;
+  }
+
+  if( topA >= bottomB )
+  {
+    return false;
+  }
+  
+  if( rightA <= leftB )
+  {
+    return false;
+  }
+
+  if( leftA >= rightB )
+  {
+    return false;
+  }
+
+  //If none of the sides from A are outside B
+  return true;
+}
+
+bool checkCollisionPointRect(int pX, int pY, rectangle rect) {
+  if(pX < rect.x) return false;
+  if(pX > rect.x + rect.width) return false;
+  if(pY < rect.y) return false;
+  if(pY > rect.y + rect.width) return false;
+
+  return true;
+}
 
 //---------------------------------------------
 // Entity pointer functions go here.
