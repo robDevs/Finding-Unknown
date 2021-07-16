@@ -11,7 +11,7 @@ COMPILER_FLAGS =-w
 CXXFLAGS=-g -std=c++11
 
 #LINKER_FLAGS specifies the libraries we're linking against
-LINKER_FLAGS = -lraylib -lX11 -lXrandr -lXinerama -lXi -lXxf86vm -lXcursor
+LINKER_FLAGS = -lraylib -lX11 -lXrandr -lXinerama -lXi -lXcursor
 
 #OBJ_NAME specifies the name of our exectuable
 OBJ_NAME = Finding_Unknown

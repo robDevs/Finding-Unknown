@@ -411,100 +411,100 @@ control_info View::getControlInfo() {
   control_info gamepad;
   gamepad.init();
   //Read the input from usb gamepad.
-  if (IsGamepadAvailable(GAMEPAD_PLAYER1)) {
-    if(IsGamepadButtonPressed(GAMEPAD_PLAYER1, GAMEPAD_BUFFALOSNES_BUTTON_LEFT)) {
+  if (IsGamepadAvailable(0)) {
+    if(IsGamepadButtonPressed(0 , GAMEPAD_BUFFALOSNES_BUTTON_LEFT)) {
       gamepad.left_pressed = true;
     }
 
-    if(IsGamepadButtonDown(GAMEPAD_PLAYER1, GAMEPAD_BUFFALOSNES_BUTTON_LEFT)) {
+    if(IsGamepadButtonDown(0 , GAMEPAD_BUFFALOSNES_BUTTON_LEFT)) {
       gamepad.left_held = true;
     }
 
-    if(IsGamepadButtonReleased(GAMEPAD_PLAYER1, GAMEPAD_BUFFALOSNES_BUTTON_LEFT)) {
+    if(IsGamepadButtonReleased(0 , GAMEPAD_BUFFALOSNES_BUTTON_LEFT)) {
       gamepad.left_released = true;
     }
 
-    if(IsGamepadButtonPressed(GAMEPAD_PLAYER1, GAMEPAD_BUFFALOSNES_BUTTON_RIGHT)) {
+    if(IsGamepadButtonPressed(0 , GAMEPAD_BUFFALOSNES_BUTTON_RIGHT)) {
       gamepad.right_pressed = true;
     }
 
-    if(IsGamepadButtonDown(GAMEPAD_PLAYER1, GAMEPAD_BUFFALOSNES_BUTTON_RIGHT)) {
+    if(IsGamepadButtonDown(0 , GAMEPAD_BUFFALOSNES_BUTTON_RIGHT)) {
       gamepad.right_held = true;
     }
 
-    if(IsGamepadButtonReleased(GAMEPAD_PLAYER1, GAMEPAD_BUFFALOSNES_BUTTON_RIGHT)) {
+    if(IsGamepadButtonReleased(0 , GAMEPAD_BUFFALOSNES_BUTTON_RIGHT)) {
       gamepad.right_released = true;
     }
 
-    if(IsGamepadButtonPressed(GAMEPAD_PLAYER1, GAMEPAD_BUFFALOSNES_BUTTON_UP)) {
+    if(IsGamepadButtonPressed(0 , GAMEPAD_BUFFALOSNES_BUTTON_UP)) {
       gamepad.up_pressed = true;
     }
 
-    if(IsGamepadButtonDown(GAMEPAD_PLAYER1, GAMEPAD_BUFFALOSNES_BUTTON_UP)) {
+    if(IsGamepadButtonDown(0 , GAMEPAD_BUFFALOSNES_BUTTON_UP)) {
       gamepad.up_held = true;
     }
 
-    if(IsGamepadButtonReleased(GAMEPAD_PLAYER1, GAMEPAD_BUFFALOSNES_BUTTON_UP)) {
+    if(IsGamepadButtonReleased(0 , GAMEPAD_BUFFALOSNES_BUTTON_UP)) {
       gamepad.up_released = true;
     }
 
-    if(IsGamepadButtonPressed(GAMEPAD_PLAYER1, GAMEPAD_BUFFALOSNES_BUTTON_DOWN)) {
+    if(IsGamepadButtonPressed(0 , GAMEPAD_BUFFALOSNES_BUTTON_DOWN)) {
       gamepad.down_pressed = true;
     }
 
-    if(IsGamepadButtonDown(GAMEPAD_PLAYER1, GAMEPAD_BUFFALOSNES_BUTTON_DOWN)) {
+    if(IsGamepadButtonDown(0 , GAMEPAD_BUFFALOSNES_BUTTON_DOWN)) {
       gamepad.down_held = true;
     }
 
-    if(IsGamepadButtonReleased(GAMEPAD_PLAYER1, GAMEPAD_BUFFALOSNES_BUTTON_DOWN)) {
+    if(IsGamepadButtonReleased(0 , GAMEPAD_BUFFALOSNES_BUTTON_DOWN)) {
       gamepad.down_released = true;
     }
 
-    if(IsGamepadButtonPressed(GAMEPAD_PLAYER1, GAMEPAD_BUFFALOSNES_BUTTON_B)) {
+    if(IsGamepadButtonPressed(0 , GAMEPAD_BUFFALOSNES_BUTTON_B)) {
       gamepad.enter_pressed = true;
     }
 
-    if(IsGamepadButtonDown(GAMEPAD_PLAYER1, GAMEPAD_BUFFALOSNES_BUTTON_B)) {
+    if(IsGamepadButtonDown(0 , GAMEPAD_BUFFALOSNES_BUTTON_B)) {
       gamepad.enter_held = true;
     }
 
-    if(IsGamepadButtonReleased(GAMEPAD_PLAYER1, GAMEPAD_BUFFALOSNES_BUTTON_B)) {
+    if(IsGamepadButtonReleased(0 , GAMEPAD_BUFFALOSNES_BUTTON_B)) {
       gamepad.enter_released = true;
     }
 
-    if(IsGamepadButtonPressed(GAMEPAD_PLAYER1, GAMEPAD_BUFFALOSNES_BUTTON_A)) {
+    if(IsGamepadButtonPressed(0 , GAMEPAD_BUFFALOSNES_BUTTON_A)) {
       gamepad.back_pressed = true;
     }
 
-    if(IsGamepadButtonDown(GAMEPAD_PLAYER1, GAMEPAD_BUFFALOSNES_BUTTON_A)) {
+    if(IsGamepadButtonDown(0 , GAMEPAD_BUFFALOSNES_BUTTON_A)) {
       gamepad.back_held = true;
     }
 
-    if(IsGamepadButtonReleased(GAMEPAD_PLAYER1, GAMEPAD_BUFFALOSNES_BUTTON_A)) {
+    if(IsGamepadButtonReleased(0 , GAMEPAD_BUFFALOSNES_BUTTON_A)) {
       gamepad.back_released = true;
     }
 
-    if(IsGamepadButtonPressed(GAMEPAD_PLAYER1, GAMEPAD_BUFFALOSNES_BUTTON_Y)) {
+    if(IsGamepadButtonPressed(0 , GAMEPAD_BUFFALOSNES_BUTTON_Y)) {
       gamepad.space_pressed = true;
     }
 
-    if(IsGamepadButtonDown(GAMEPAD_PLAYER1, GAMEPAD_BUFFALOSNES_BUTTON_Y)) {
+    if(IsGamepadButtonDown(0 , GAMEPAD_BUFFALOSNES_BUTTON_Y)) {
       gamepad.space_held = true;
     }
 
-    if(IsGamepadButtonReleased(GAMEPAD_PLAYER1, GAMEPAD_BUFFALOSNES_BUTTON_Y)) {
+    if(IsGamepadButtonReleased(0 , GAMEPAD_BUFFALOSNES_BUTTON_Y)) {
       gamepad.space_released = true;
     }
 
-    if(IsGamepadButtonPressed(GAMEPAD_PLAYER1, GAMEPAD_BUFFALOSNES_BUTTON_START)) {
+    if(IsGamepadButtonPressed(0 , GAMEPAD_BUFFALOSNES_BUTTON_START)) {
       gamepad.pause_pressed = true;
     }
 
-    if(IsGamepadButtonDown(GAMEPAD_PLAYER1, GAMEPAD_BUFFALOSNES_BUTTON_START)) {
+    if(IsGamepadButtonDown(0 , GAMEPAD_BUFFALOSNES_BUTTON_START)) {
       gamepad.pause_held = true;
     }
 
-    if(IsGamepadButtonReleased(GAMEPAD_PLAYER1, GAMEPAD_BUFFALOSNES_BUTTON_START)) {
+    if(IsGamepadButtonReleased(0 , GAMEPAD_BUFFALOSNES_BUTTON_START)) {
       gamepad.pause_released = true;
     }
   }
